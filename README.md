@@ -40,3 +40,4 @@ npm run test:ds-core
 - `apps/docs/figma-ds-governance.md`
 - `apps/docs/plugin-integration-checklist.md`
 - `docs/project-operating-system.md` (source de verite: stack, setup, workflow, quality gates, plan)
+- `docs/local-machine-recap.md` (recap machine: Bridge, Context7, structure plugin + DS mutual)
