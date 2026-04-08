@@ -1,10 +1,12 @@
-# Starter Tokens Monorepo
+# Ombr-plugin
+
+## Starter Tokens Monorepo
 
 Monorepo separe en deux produits relies:
 
-1. `packages/ds-core`  
+1. `packages/ds-core`
    Contrat `TokenBundle` (Figma-first), validation, normalisation, fixture et tests.
-2. `packages/plugin-starter-tokens`  
+2. `packages/plugin-starter-tokens`
    Plugin Figma Starter Tokens (wizard + generation variables), consommateur du contrat DS.
 
 Le manifest racine Figma pointe maintenant vers le package plugin:
