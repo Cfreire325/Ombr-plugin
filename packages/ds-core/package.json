@@ -1,0 +1,14 @@
+{
+  "name": "@starter-tokens/ds-core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Design system token contract, validation and normalization utilities",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "test": "node tests/token-bundle.test.mjs"
+  }
+}

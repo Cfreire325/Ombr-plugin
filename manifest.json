@@ -1,0 +1,8 @@
+{
+  "name": "Starter Tokens",
+  "id": "com.cedric.starter-tokens",
+  "api": "1.0.0",
+  "main": "packages/plugin-starter-tokens/dist/code.js",
+  "ui": "packages/plugin-starter-tokens/dist/ui.html",
+  "editorType": ["figma"]
+}

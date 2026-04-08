@@ -1,0 +1,1846 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Starter Tokens V3</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@500;600&display=swap");
+
+      :root {
+        --bg: #0e1016;
+        --panel: #111827;
+        --panel-2: #1b2333;
+        --line: #374151;
+        --text-primary: #f4f4f5;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --accent: #3b82f6;
+        --brand-secondary: #f4f4f5;
+        --danger: #ef4444;
+        --ok: #22c55e;
+        --radius: 16px;
+        --radius-sm: 10px;
+        --shadow: 0 0.6px 0.6px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text-primary);
+      }
+
+      .app {
+        width: min(620px, 100vw);
+        margin: 0 auto;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        gap: 20px;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      p {
+        margin: 0;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        letter-spacing: 0.01em;
+      }
+
+      .eyebrow::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.28);
+      }
+
+      .title {
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: var(--text-primary);
+        font-size: 28px;
+        line-height: 1.1;
+        margin-top: 6px;
+        letter-spacing: -0.02em;
+      }
+
+      .subtitle {
+        margin-top: 8px;
+        color: var(--text-muted);
+        font-size: 14px;
+        max-width: 560px;
+        line-height: 1.4;
+      }
+
+      .content {
+        flex: 1;
+        min-height: 0;
+      }
+
+      .screen {
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+
+      .token-grid {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .mode-card {
+        border: 1px solid transparent;
+        border-radius: var(--radius);
+        padding: 18px;
+        background: var(--panel-2);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        min-height: 136px;
+      }
+
+      .mode-card.selected {
+        border-color: var(--text-secondary);
+      }
+
+      .mode-card.disabled {
+        opacity: 0.58;
+        cursor: not-allowed;
+      }
+
+      .mode-tag {
+        display: inline-flex;
+        border: 1px solid #4b5563;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 11px;
+        color: #9ca3af;
+        margin-bottom: 10px;
+      }
+
+      .mode-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 4px 0 10px;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .mode-title .dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        border: 2px solid #94a3b8;
+      }
+
+      .mode-card.selected .dot {
+        border-color: #ffffff;
+        background: #ffffff;
+      }
+
+      .mode-description {
+        color: var(--text-muted);
+        font-size: 13px;
+        margin-bottom: 12px;
+        line-height: 1.35;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chips .chip {
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 4px 10px;
+        color: var(--text-secondary);
+        font-size: 11px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      .muted {
+        color: var(--text-muted);
+      }
+
+      .brand-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .brand-list {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .brand-card {
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        padding: 14px;
+        background: var(--panel-2);
+      }
+
+      .brand-title {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .brand-title button {
+        border: 0;
+        background: transparent;
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .brand-meta {
+        margin-top: 4px;
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+
+      .brand-swatch-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .brand-swatch {
+        height: 42px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: var(--shadow);
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 10px;
+        line-height: 1;
+        color: #e5e7eb;
+      }
+
+      .brand-swatch .step {
+        font-weight: 600;
+        font-size: 10px;
+      }
+
+      .brand-swatch .value {
+        font-size: 9px;
+        opacity: 0.95;
+      }
+
+      .brand-swatch.empty {
+        border-style: dashed;
+        color: #94a3b8;
+      }
+
+      .brand-actions {
+        margin-top: 14px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .inline-btn {
+        min-height: 40px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: transparent;
+        color: #e2e8f0;
+        padding: 0 14px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .inline-btn.primary {
+        border-color: #dbeafe;
+        color: #0f172a;
+        background: linear-gradient(180deg, #e0edff, #d8e8ff);
+      }
+
+      .form-row {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .label {
+        display: block;
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+
+      .input,
+      select,
+      button,
+      input[type="text"],
+      input[type="number"],
+      input[type="color"] {
+        width: 100%;
+      }
+
+      .input,
+      select,
+      input[type="text"],
+      input[type="number"] {
+        min-height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: #0b1020;
+        color: var(--text-primary);
+        padding: 0 10px;
+        font-size: 14px;
+        font-family: inherit;
+      }
+
+      .toolbar {
+        margin-top: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .toolbar.two {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .toolbar.three {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .palette-cards {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .palette-card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+        background: var(--panel-2);
+      }
+
+      .palette-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .palette-row h4 {
+        font-size: 14px;
+      }
+
+      .palette-edit {
+        margin-left: auto;
+        color: var(--accent);
+        border: 0;
+        background: transparent;
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+
+      .palette-switch {
+        border: 1px solid var(--line);
+        background: transparent;
+        border-radius: 8px;
+        color: var(--text-secondary);
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        margin-right: 8px;
+      }
+
+      .palette-swatch-row {
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .palette-swatch {
+        border-radius: 8px;
+        aspect-ratio: 1 / 1;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: var(--shadow);
+      }
+
+      .font-grid {
+        margin-top: 16px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .font-grid .field {
+        display: grid;
+        gap: 4px;
+      }
+
+      .font-grid .font-sizes {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .font-sizes .field {
+        display: grid;
+        gap: 4px;
+      }
+
+      .status {
+        margin-top: 14px;
+        min-height: 20px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .status.ok {
+        color: var(--ok);
+      }
+
+      .status.err {
+        color: var(--danger);
+      }
+
+      .report {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: #0b1222;
+        color: #e2e8f0;
+        max-height: 210px;
+        overflow: auto;
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+
+      .error {
+        margin-top: 10px;
+        color: var(--danger);
+        font-size: 13px;
+      }
+
+      .footer {
+        padding-top: 4px;
+        border-top: 1px solid var(--line);
+      }
+
+      .stepper {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+
+      .stepper-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--text-secondary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+      }
+
+      .stepper-btn.active {
+        border-color: #ffffff;
+        color: #0f172a;
+        background: #ffffff;
+        font-weight: 700;
+      }
+
+      .footer-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .primary,
+      button {
+        border-radius: 10px;
+        min-height: 42px;
+        border: 1px solid var(--line);
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .primary {
+        border-color: #ffffff;
+        background: #ffffff;
+        color: #0f172a;
+      }
+
+      .secondary {
+        background: transparent;
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(1, 2, 3, 0.45);
+        backdrop-filter: blur(2px);
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+
+      .modal.is-hidden {
+        display: none;
+      }
+
+      .modal-panel {
+        width: min(452px, 100%);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .close {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: transparent;
+        color: #d1d5db;
+        font-size: 18px;
+      }
+
+      .range {
+        width: 100%;
+      }
+
+      .swatch-preview {
+        margin-top: 10px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+      }
+
+      .swatch-hex {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 13px;
+        color: var(--text-primary);
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.35);
+      }
+
+      .hex-input {
+        display: flex;
+        gap: 8px;
+      }
+
+      .hex-input input[type="text"] {
+        flex: 1;
+      }
+
+      .hex-input input[type="color"] {
+        width: 42px;
+        min-width: 42px;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .modal-shades {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .modal-shade {
+        aspect-ratio: 1 / 1;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 4px;
+        font-size: 8px;
+        color: #ffffff;
+        text-align: center;
+      }
+
+      .modal-shade.active {
+        outline: 2px solid #ffffff;
+      }
+
+      .modal-shade.empty {
+        background: transparent !important;
+        color: #94a3b8;
+      }
+
+      .modal-actions {
+        margin-top: 16px;
+        display: flex;
+        gap: 10px;
+      }
+
+      @media (min-width: 560px) {
+        .token-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <section class="screen active" id="screen1">
+        <p class="eyebrow">Starter Tokens</p>
+        <h1 class="title">Choisis ton niveau de génération</h1>
+        <p class="subtitle">Choisis le niveau qui correspond à ton projet. Tu peux générer d'abord les bases, puis les modes sémantiques en une étape.</p>
+
+        <div class="panel">
+          <div class="token-grid">
+            <article class="mode-card selected" data-level="foundations" data-dot="foundations">
+              <span class="mode-tag">Niveau 1</span>
+              <div class="mode-title">
+                <span>Fondations</span>
+                <span class="dot"></span>
+              </div>
+              <p class="mode-description">Installe les tokens de base (couleurs, taille, espacement, radius).</p>
+              <div class="chips">
+                <span class="chip">Color brand</span>
+                <span class="chip">Palette Colors</span>
+                <span class="chip">Font</span>
+                <span class="chip">Spacing</span>
+                <span class="chip">Radius</span>
+              </div>
+            </article>
+
+            <article class="mode-card" data-level="color-modes" data-dot="color-modes">
+              <span class="mode-tag">Niveau 2 - recommandé</span>
+              <div class="mode-title">
+                <span>Color modes</span>
+                <span class="dot"></span>
+              </div>
+              <p class="mode-description">Ajoute la génération de tokens sémantiques en mode Light ou Dark.</p>
+              <div class="chips">
+                <span class="chip">Primitive</span>
+                <span class="chip">Text</span>
+                <span class="chip">Background</span>
+                <span class="chip">Border</span>
+                <span class="chip">Intent</span>
+              </div>
+            </article>
+
+            <article class="mode-card disabled" data-level="semantic">
+              <span class="mode-tag">Niveau 3 - à venir</span>
+              <div class="mode-title">
+                <span>Semantic tokens</span>
+                <span class="dot"></span>
+              </div>
+              <p class="mode-description">Bientôt disponible.</p>
+            </article>
+
+            <article class="mode-card" data-level="light">
+              <span class="mode-tag">Affichage</span>
+              <div class="mode-title">
+                <span>Mode visuel</span>
+                <span class="dot"></span>
+              </div>
+              <div class="toolbar two">
+                <label class="field">
+                  <span class="label">Mode</span>
+                  <select id="uiModeSelect">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </label>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen2">
+        <p class="eyebrow">Brand colors</p>
+        <h1 class="title">Brand colors</h1>
+        <p class="subtitle">Ajoute et édite tes palettes de marque. Tu peux modifier les ombres / nuances depuis le popup.</p>
+
+        <div class="panel">
+          <div class="brand-list" id="brandsContainer"></div>
+          <div class="brand-actions">
+            <button class="inline-btn primary" id="addBrandBtn" type="button">Ajouter votre primary brand</button>
+          </div>
+          <div class="error" id="brandError"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen3">
+        <p class="eyebrow">Preset palette</p>
+        <h1 class="title">Palette colors</h1>
+        <p class="subtitle">Choisis le preset interne et valide ton espace neutral.</p>
+
+        <div class="panel">
+          <div class="toolbar three">
+            <label class="field">
+              <span class="label">Preset</span>
+              <select id="presetSelect"></select>
+            </label>
+            <label class="field">
+              <span class="label">Neutral Gray</span>
+              <select id="neutralSelect"></select>
+            </label>
+            <label class="field">
+              <span class="label">Base white</span>
+              <input id="baseWhiteInput" type="text" value="#ffffff" />
+            </label>
+          </div>
+          <div class="toolbar two" style="margin-top: 12px;">
+            <label class="field">
+              <span class="label">Base black</span>
+              <input id="baseBlackInput" type="text" value="#000000" />
+            </label>
+            <label class="field">
+              <span class="label">Preset Shades</span>
+              <div class="swatch-preview" id="presetShadeInfo">269 Shades</div>
+            </label>
+          </div>
+
+          <div id="presetInfo" class="muted" style="margin-top: 12px; font-size: 12px;"></div>
+          <div class="palette-cards" id="paletteCards"></div>
+          <div class="error" id="presetError"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen4">
+        <p class="eyebrow">Typographie</p>
+        <h1 class="title">Styles de texte</h1>
+        <p class="subtitle">Ajuste tes familles et ta taille de fonte.</p>
+
+        <div class="panel">
+          <div class="toolbar two">
+            <label class="field">
+              <span class="label">Font family display</span>
+              <select id="displayFamilySelect"></select>
+            </label>
+            <label class="field">
+              <span class="label">Font family body</span>
+              <select id="bodyFamilySelect"></select>
+            </label>
+          </div>
+          <label class="field" style="margin-top: 12px;">
+            <span class="label">Créer et lier les styles de texte</span>
+            <input id="createTextStylesCheckbox" type="checkbox" checked />
+          </label>
+
+          <div id="fontGrid" class="font-sizes"></div>
+          <div id="status" class="status"></div>
+          <pre id="reportBox" class="report" style="display: none"></pre>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="stepper" aria-label="Étapes">
+          <button class="stepper-btn active" data-step="1" type="button">1</button>
+          <button class="stepper-btn" data-step="2" type="button">2</button>
+          <button class="stepper-btn" data-step="3" type="button">3</button>
+          <button class="stepper-btn" data-step="4" type="button">4</button>
+        </div>
+        <p id="stepHint" class="muted" style="font-size: 12px; margin: 0 0 10px; text-align: center"></p>
+        <div class="footer-actions">
+          <button id="backBtn" class="secondary" type="button">Annuler</button>
+          <button id="nextBtn" class="primary" type="button">Continuer</button>
+        </div>
+      </footer>
+    </main>
+
+    <div id="brandModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="brandModalTitle">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h3 id="brandModalTitle">Edit Color Shade</h3>
+          <button id="brandModalClose" class="close" type="button">×</button>
+        </div>
+
+        <div class="form-row" style="margin-top: 10px;">
+          <label class="field">
+            <span class="label">Name</span>
+            <input id="modalBrandName" type="text" />
+          </label>
+
+          <label class="field">
+            <span class="label">Base color</span>
+            <div class="hex-input">
+              <input id="modalBrandHex" type="text" value="#82BE5C" />
+              <input id="modalBrandPicker" type="color" value="#82BE5C" />
+            </div>
+          </label>
+
+          <label class="field">
+            <span class="label">Shade count</span>
+            <select id="shadeCountSelect"></select>
+          </label>
+
+          <label class="field">
+            <span class="label">Shade pattern</span>
+            <select id="patternSelect"></select>
+          </label>
+
+          <label class="field">
+            <span class="label">Contrast Shift</span>
+            <input id="brandContrast" class="range" type="range" min="0" max="100" value="50" />
+          </label>
+
+          <div id="modalBrandShades" class="modal-shades"></div>
+        </div>
+
+        <div id="brandModalError" class="error"></div>
+        <div class="modal-actions">
+          <button id="brandModalCancel" class="secondary" type="button">Annuler</button>
+          <button id="brandModalSave" class="primary" type="button">Ajouter votre primary brand</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const PATTERNS = [
+        { id: "tailwind", label: "50,100,200...900", steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
+        { id: "hundreds", label: "100,200,300...1000", steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+      ];
+
+      const FONT_DEFAULTS = {
+        "text-xs": 12,
+        "text-sm": 14,
+        "text-md": 16,
+        "text-lg": 18,
+        "text-xl": 20,
+        "display-xs": 24,
+        "display-sm": 30,
+        "display-md": 36,
+        "display-lg": 48,
+        "display-xl": 60,
+        "display-2xl": 72,
+      };
+
+      const FONT_ORDER = [
+        "text-xs",
+        "text-sm",
+        "text-md",
+        "text-lg",
+        "text-xl",
+        "display-xs",
+        "display-sm",
+        "display-md",
+        "display-lg",
+        "display-xl",
+        "display-2xl",
+      ];
+      const PRESET_REFERENCE_SHADE_COUNT = 269;
+
+      const state = {
+        step: 1,
+        tokenLevel: "foundations",
+        uiMode: "light",
+        namingPattern: "tailwind",
+        shadeCount: 11,
+        brands: [{ name: "azertty-color", color: "#82BE5C" }],
+        presets: [],
+        presetId: "",
+        neutralChoice: "",
+        baseWhite: "#ffffff",
+        baseBlack: "#000000",
+        createTextStyles: true,
+        fontFamilies: [],
+        typography: {
+          displayFamily: "Roboto",
+          bodyFamily: "Inter",
+          fontSizes: { ...FONT_DEFAULTS },
+        },
+      };
+
+      const BRAND_MODAL_MAX_SHADES = 16;
+
+      const stepButtons = Array.from(document.querySelectorAll(".stepper-btn"));
+      const stepHint = document.getElementById("stepHint");
+      const screens = {
+        1: document.getElementById("screen1"),
+        2: document.getElementById("screen2"),
+        3: document.getElementById("screen3"),
+        4: document.getElementById("screen4"),
+      };
+
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const uiModeSelect = document.getElementById("uiModeSelect");
+
+      const brandsContainer = document.getElementById("brandsContainer");
+      const addBrandBtn = document.getElementById("addBrandBtn");
+      const brandError = document.getElementById("brandError");
+
+      const presetSelect = document.getElementById("presetSelect");
+      const neutralSelect = document.getElementById("neutralSelect");
+      const baseWhiteInput = document.getElementById("baseWhiteInput");
+      const baseBlackInput = document.getElementById("baseBlackInput");
+      const presetInfo = document.getElementById("presetInfo");
+      const presetError = document.getElementById("presetError");
+      const paletteCards = document.getElementById("paletteCards");
+
+      const displayFamilySelect = document.getElementById("displayFamilySelect");
+      const bodyFamilySelect = document.getElementById("bodyFamilySelect");
+      const fontGrid = document.getElementById("fontGrid");
+      const createTextStylesCheckbox = document.getElementById("createTextStylesCheckbox");
+      const status = document.getElementById("status");
+      const reportBox = document.getElementById("reportBox");
+
+      const patternSelect = document.getElementById("patternSelect");
+      const shadeCountSelect = document.getElementById("shadeCountSelect");
+
+      const brandModal = document.getElementById("brandModal");
+      const brandModalTitle = document.getElementById("brandModalTitle");
+      const brandModalClose = document.getElementById("brandModalClose");
+      const brandModalCancel = document.getElementById("brandModalCancel");
+      const brandModalSave = document.getElementById("brandModalSave");
+      const brandModalName = document.getElementById("modalBrandName");
+      const brandModalHex = document.getElementById("modalBrandHex");
+      const brandModalPicker = document.getElementById("modalBrandPicker");
+      const brandContrast = document.getElementById("brandContrast");
+      const brandModalShades = document.getElementById("modalBrandShades");
+      const brandModalError = document.getElementById("brandModalError");
+
+      let editingBrandIndex = null;
+      let editingMode = "add";
+
+      function hexToRgb(input) {
+        const value = String(input || "").trim().replace("#", "");
+        if (value.length === 3) {
+          return {
+            r: parseInt(value[0] + value[0], 16),
+            g: parseInt(value[1] + value[1], 16),
+            b: parseInt(value[2] + value[2], 16),
+          };
+        }
+        if (value.length === 6) {
+          return {
+            r: parseInt(value.slice(0, 2), 16),
+            g: parseInt(value.slice(2, 4), 16),
+            b: parseInt(value.slice(4, 6), 16),
+          };
+        }
+        return null;
+      }
+
+      function rgbToHex(rgb) {
+        const toHex = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+        return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
+      }
+
+      function rgbToHsl(rgb) {
+        const r = rgb.r / 255;
+        const g = rgb.g / 255;
+        const b = rgb.b / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const d = max - min;
+        let h = 0;
+        if (d !== 0) {
+          if (max === r) h = ((g - b) / d) % 6;
+          else if (max === g) h = (b - r) / d + 2;
+          else h = (r - g) / d + 4;
+          h *= 60;
+          if (h < 0) h += 360;
+        }
+        const l = (max + min) / 2;
+        const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+        return { h, s, l };
+      }
+
+      function hslToRgb(hsl) {
+        const h = ((hsl.h % 360) + 360) % 360;
+        const s = Math.max(0, Math.min(1, hsl.s));
+        const l = Math.max(0, Math.min(1, hsl.l));
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        const m = l - c / 2;
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        if (h < 60) {
+          r = c;
+          g = x;
+        } else if (h < 120) {
+          r = x;
+          g = c;
+        } else if (h < 180) {
+          g = c;
+          b = x;
+        } else if (h < 240) {
+          g = x;
+          b = c;
+        } else if (h < 300) {
+          r = x;
+          b = c;
+        } else {
+          r = c;
+          b = x;
+        }
+        return {
+          r: (r + m) * 255,
+          g: (g + m) * 255,
+          b: (b + m) * 255,
+        };
+      }
+
+      function pickSubset(baseSteps, count) {
+        if (count >= baseSteps.length) return baseSteps.slice();
+        const points = new Set();
+        for (let i = 0; i < count; i++) {
+          points.add(Math.round((i * (baseSteps.length - 1)) / Math.max(1, count - 1)));
+        }
+        return Array.from(points)
+          .sort((a, b) => a - b)
+          .map((i) => baseSteps[i]);
+      }
+
+      function expandSteps(baseSteps, count) {
+        const min = baseSteps[0];
+        const max = baseSteps[baseSteps.length - 1];
+        const list = [];
+        for (let i = 0; i < count; i++) {
+          list.push(Math.round(min + ((max - min) * i) / Math.max(1, count - 1)));
+        }
+        return Array.from(new Set(list)).sort((a, b) => a - b);
+      }
+
+      function deriveShadeSteps(patternId, shadeCount) {
+        const pattern = PATTERNS.find((entry) => entry.id === patternId) || PATTERNS[0];
+        const count = Math.max(3, Math.min(16, Number(shadeCount) || 11));
+        return count <= pattern.steps.length ? pickSubset(pattern.steps, count) : expandSteps(pattern.steps, count);
+      }
+
+      function resolveBaseStep(steps) {
+        if (steps.includes(500)) return 500;
+        const target = (steps[0] + steps[steps.length - 1]) / 2;
+        let best = steps[0];
+        let diff = Math.abs(best - target);
+        for (const step of steps) {
+          const local = Math.abs(step - target);
+          if (local < diff) {
+            best = step;
+            diff = local;
+          }
+        }
+        return best;
+      }
+
+      function isValidColor(input) {
+        const value = String(input || "").trim();
+        if (!value) return false;
+        if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value)) return true;
+        if (/^rgba?\(([^)]+)\)$/i.test(value)) return true;
+        return false;
+      }
+
+      function textColorForHex(hex) {
+        const rgb = hexToRgb(hex);
+        if (!rgb) return "#f8fafc";
+        const lum = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+        return lum > 0.6 ? "#0f172a" : "#f8fafc";
+      }
+
+      function buildPreviewScale(color, steps, baseStep, contrast = 0.5) {
+        const parsed = hexToRgb(color);
+        if (!parsed) return {};
+        const base = rgbToHsl(parsed);
+        const minStep = steps[0];
+        const maxStep = steps[steps.length - 1];
+        const scale = {};
+        const c = Math.max(0, Math.min(1, Number(contrast) / 100));
+        for (const step of steps) {
+          if (step === baseStep) {
+            scale[step] = rgbToHex(parsed);
+            continue;
+          }
+
+          const dark = step > baseStep;
+          const ratio = dark
+            ? (step - baseStep) / Math.max(1, maxStep - baseStep)
+            : (baseStep - step) / Math.max(1, baseStep - minStep);
+          const l = dark
+            ? base.l - (base.l - 0.08) * ratio * (0.7 + c * 0.4)
+            : base.l + (0.98 - base.l) * ratio * (0.8 + c * 0.2);
+          const s = dark
+            ? base.s * (1 - ratio * (0.12 + c * 0.15))
+            : base.s * (1 - ratio * (0.2 + c * 0.1));
+          scale[step] = rgbToHex(hslToRgb({ h: base.h, s, l }));
+        }
+        return scale;
+      }
+
+      function currentPreset() {
+        return state.presets.find((preset) => preset.id === state.presetId) || null;
+      }
+
+      function currentPreviewPalettes() {
+        const preset = currentPreset();
+        if (preset && Array.isArray(preset.previewPalettes) && preset.previewPalettes.length) {
+          return preset.previewPalettes;
+        }
+        return [];
+      }
+
+      function setStatus(text, type = "") {
+        status.textContent = text;
+        status.className = `status ${type}`;
+      }
+
+      function clearReport() {
+        reportBox.style.display = "none";
+        reportBox.textContent = "";
+      }
+
+      function renderPatterns() {
+        patternSelect.innerHTML = "";
+        PATTERNS.forEach((pattern) => {
+          const option = document.createElement("option");
+          option.value = pattern.id;
+          option.textContent = pattern.label;
+          patternSelect.appendChild(option);
+        });
+        patternSelect.value = state.namingPattern;
+
+        shadeCountSelect.innerHTML = "";
+        for (let i = 3; i <= 16; i++) {
+          const option = document.createElement("option");
+          option.value = String(i);
+          option.textContent = String(i);
+          shadeCountSelect.appendChild(option);
+        }
+        shadeCountSelect.value = String(state.shadeCount);
+      }
+
+      function updateStepper() {
+        const hints = {
+          1: "Étape 1/4 : Choisis ton mode de token.",
+          2: "Étape 2/4 : Ajoute tes couleurs de marque.",
+          3: "Étape 3/4 : Choisis ton preset de palette.",
+          4: "Étape 4/4 : Configure la typographie.",
+        };
+
+        stepButtons.forEach((node, index) => {
+          const step = Number(node.dataset.step);
+          node.classList.toggle("active", step === state.step);
+          node.disabled = step > 4;
+        });
+
+        Object.entries(screens).forEach(([key, node]) => {
+          node.classList.toggle("active", Number(key) === state.step);
+        });
+
+        backBtn.disabled = state.step === 1;
+        if (state.step === 4) {
+          nextBtn.textContent = "Générer";
+        } else {
+          nextBtn.textContent = "Continuer";
+        }
+
+        stepHint.textContent = hints[state.step] || "";
+      }
+
+      function renderModeCards() {
+        document.querySelectorAll("[data-level]").forEach((card) => {
+          const selected = card.dataset.level === state.tokenLevel;
+          card.classList.toggle("selected", selected);
+          const dot = card.querySelector(".dot");
+          if (dot) {
+            dot.style.background = selected ? "#ffffff" : "transparent";
+          }
+        });
+      }
+
+      function renderBrands() {
+        brandsContainer.innerHTML = "";
+        const steps = deriveShadeSteps(state.namingPattern, state.shadeCount);
+        const baseStep = resolveBaseStep(steps);
+
+        state.brands.forEach((brand, index) => {
+          const card = document.createElement("article");
+          card.className = "brand-card";
+
+          const top = document.createElement("div");
+          top.className = "brand-title";
+          const name = document.createElement("strong");
+          name.textContent = brand.name || `brand-${index + 1}`;
+          const actions = document.createElement("div");
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", () => openBrandModal("edit", index));
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "secondary";
+          removeBtn.textContent = "Supprimer";
+          if (index === 0) {
+            removeBtn.disabled = true;
+          }
+          removeBtn.addEventListener("click", () => removeBrand(index));
+
+          actions.appendChild(editBtn);
+          actions.appendChild(removeBtn);
+          actions.style.display = "inline-flex";
+          actions.style.gap = "10px";
+          top.appendChild(name);
+          top.appendChild(actions);
+
+          const meta = document.createElement("div");
+          meta.className = "brand-meta";
+          meta.textContent = isValidColor(brand.color) ? `${brand.color}` : "Couleur invalide";
+
+          const swatches = document.createElement("div");
+          swatches.className = "brand-swatch-grid";
+
+          const scale = isValidColor(brand.color) ? buildPreviewScale(brand.color, steps, baseStep) : {};
+          for (let i = 0; i < BRAND_MODAL_MAX_SHADES; i++) {
+            const sw = document.createElement("div");
+            sw.className = "brand-swatch";
+
+            if (i < steps.length && scale[steps[i]]) {
+              const step = steps[i];
+              const value = scale[step];
+              sw.style.background = value;
+              sw.style.color = textColorForHex(value);
+              const tag = document.createElement("span");
+              tag.className = "step";
+              tag.textContent = String(step);
+              const val = document.createElement("span");
+              val.className = "value";
+              val.textContent = value.toUpperCase();
+              sw.appendChild(tag);
+              sw.appendChild(val);
+            } else {
+              sw.classList.add("empty");
+              sw.textContent = "-";
+            }
+
+            if (i < steps.length && steps[i] === baseStep) {
+              sw.style.outline = "2px solid #93c5fd";
+            }
+
+            swatches.appendChild(sw);
+          }
+
+          card.appendChild(top);
+          card.appendChild(meta);
+          card.appendChild(swatches);
+          brandsContainer.appendChild(card);
+        });
+
+        addBrandBtn.textContent = state.brands.length ? "Ajouter une couleur" : "Ajouter votre primary brand";
+      }
+
+      function removeBrand(index) {
+        if (index <= 0) return;
+        state.brands.splice(index, 1);
+        renderBrands();
+      }
+
+      function renderPresetSelector() {
+        presetSelect.innerHTML = "";
+        state.presets.forEach((preset) => {
+          const option = document.createElement("option");
+          option.value = preset.id;
+          option.textContent = preset.label;
+          presetSelect.appendChild(option);
+        });
+
+        if (!state.presetId || !state.presets.some((preset) => preset.id === state.presetId)) {
+          state.presetId = state.presets.length ? state.presets[0].id : "";
+        }
+        if (state.presets.length) {
+          presetSelect.value = state.presetId;
+        }
+
+        renderPaletteSection();
+      }
+
+      function renderPaletteSection() {
+        const preset = currentPreset();
+        if (!preset) {
+          neutralSelect.innerHTML = '<option value="gray">gray</option>';
+          neutralSelect.value = "gray";
+          state.neutralChoice = "gray";
+          presetInfo.textContent = "Preset: Default | palettes: 1 | steps: 50, 500, 900. colors/gray/* alias vers gray.";
+          renderPresetCards([]);
+          return;
+        }
+
+        neutralSelect.innerHTML = "";
+        preset.neutralOptions.forEach((optionValue) => {
+          const option = document.createElement("option");
+          option.value = optionValue;
+          option.textContent = optionValue;
+          neutralSelect.appendChild(option);
+        });
+        if (!preset.neutralOptions.includes(state.neutralChoice)) {
+          state.neutralChoice = preset.defaultNeutral;
+        }
+        neutralSelect.value = state.neutralChoice;
+
+        const count = currentPreviewPalettes().reduce((acc, palette) => acc + (Array.isArray(palette.steps) ? palette.steps.length : 0), 0);
+        document.getElementById("presetShadeInfo").textContent = `${PRESET_REFERENCE_SHADE_COUNT} Shades`;
+        presetInfo.textContent = `Preset: ${preset.label} | palettes: ${preset.paletteCount} | steps: ${preset.steps.join(", ")}. colors/gray/* alias vers ${state.neutralChoice}.`;
+
+        renderPresetCards(currentPreviewPalettes());
+      }
+
+      function renderPresetCards(palettes) {
+        paletteCards.innerHTML = "";
+        if (!Array.isArray(palettes) || !palettes.length) {
+          const empty = document.createElement("p");
+          empty.className = "muted";
+          empty.style.padding = "10px 0";
+          empty.textContent = "Prévisualisation indisponible.";
+          paletteCards.appendChild(empty);
+          return;
+        }
+
+        palettes.slice(0, 4).forEach((palette) => {
+          const card = document.createElement("article");
+          card.className = "palette-card";
+
+          const row = document.createElement("div");
+          row.className = "palette-row";
+
+          const titleWrap = document.createElement("div");
+          titleWrap.style.display = "flex";
+          titleWrap.style.alignItems = "center";
+          titleWrap.style.gap = "6px";
+
+          const checkbox = document.createElement("button");
+          checkbox.type = "button";
+          checkbox.className = "palette-switch";
+          checkbox.textContent = "✓";
+          checkbox.disabled = true;
+
+          const title = document.createElement("h4");
+          title.textContent = palette.name || "Palette";
+          titleWrap.appendChild(checkbox);
+          titleWrap.appendChild(title);
+
+          const tag = document.createElement("button");
+          tag.type = "button";
+          tag.className = "palette-edit";
+          tag.textContent = "Edit";
+
+          row.appendChild(titleWrap);
+          row.appendChild(tag);
+          card.appendChild(row);
+
+          const count = document.createElement("div");
+          count.style.fontSize = "12px";
+          count.style.color = "#94a3b8";
+          count.textContent = `${Array.isArray(palette.steps) ? palette.steps.length : 0} shades`;
+          card.appendChild(count);
+
+          const swatchRow = document.createElement("div");
+          swatchRow.className = "palette-swatch-row";
+          const steps = Array.isArray(palette.steps) ? palette.steps : [];
+          const values = palette.colorsByStep || {};
+          for (let i = 0; i < 10; i++) {
+            const step = steps[i];
+            const item = document.createElement("div");
+            item.className = "palette-swatch";
+            if (step && values[step]) item.style.background = values[step];
+            swatchRow.appendChild(item);
+          }
+          card.appendChild(swatchRow);
+
+          paletteCards.appendChild(card);
+        });
+      }
+
+      function renderTypography() {
+        const families = Array.isArray(state.fontFamilies) ? state.fontFamilies.slice() : [];
+        const displayFamilies = [...new Set([state.typography.displayFamily, "Roboto", ...families])];
+        const bodyFamilies = [...new Set([state.typography.bodyFamily, "Inter", ...families])];
+
+        displayFamilySelect.innerHTML = "";
+        displayFamilies.forEach((family) => {
+          if (!family) return;
+          const option = document.createElement("option");
+          option.value = family;
+          option.textContent = family;
+          displayFamilySelect.appendChild(option);
+        });
+
+        bodyFamilySelect.innerHTML = "";
+        bodyFamilies.forEach((family) => {
+          if (!family) return;
+          const option = document.createElement("option");
+          option.value = family;
+          option.textContent = family;
+          bodyFamilySelect.appendChild(option);
+        });
+
+        if (![...displayFamilySelect.options].some((option) => option.value === state.typography.displayFamily)) {
+          const opt = document.createElement("option");
+          opt.value = state.typography.displayFamily;
+          opt.textContent = state.typography.displayFamily;
+          displayFamilySelect.appendChild(opt);
+        }
+
+        if (![...bodyFamilySelect.options].some((option) => option.value === state.typography.bodyFamily)) {
+          const opt = document.createElement("option");
+          opt.value = state.typography.bodyFamily;
+          opt.textContent = state.typography.bodyFamily;
+          bodyFamilySelect.appendChild(opt);
+        }
+
+        displayFamilySelect.value = state.typography.displayFamily;
+        bodyFamilySelect.value = state.typography.bodyFamily;
+        createTextStylesCheckbox.checked = Boolean(state.createTextStyles);
+
+        fontGrid.innerHTML = "";
+        FONT_ORDER.forEach((key) => {
+          const wrap = document.createElement("div");
+          wrap.className = "field";
+          const label = document.createElement("label");
+          label.textContent = key;
+          label.style.fontSize = "12px";
+          label.style.color = "#94a3b8";
+          const input = document.createElement("input");
+          input.type = "number";
+          input.value = String(state.typography.fontSizes[key] || "");
+          input.min = "1";
+          input.addEventListener("input", () => {
+            const value = Number(input.value);
+            if (Number.isFinite(value) && value > 0) {
+              state.typography.fontSizes[key] = value;
+            }
+          });
+          wrap.appendChild(label);
+          wrap.appendChild(input);
+          fontGrid.appendChild(wrap);
+        });
+      }
+
+      function syncTypography() {
+        state.typography.displayFamily = String(displayFamilySelect.value || "Roboto").trim() || "Roboto";
+        state.typography.bodyFamily = String(bodyFamilySelect.value || "Inter").trim() || "Inter";
+        state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
+      }
+
+      function renderBrandModalScale() {
+        const shadeCount = Number(shadeCountSelect.value || state.shadeCount || 11);
+        state.shadeCount = shadeCount;
+        const steps = deriveShadeSteps(patternSelect.value || state.namingPattern, shadeCount);
+        const baseStep = resolveBaseStep(steps);
+        const color = String(brandModalHex.value || "").trim();
+        const scale = isValidColor(color) ? buildPreviewScale(color, steps, baseStep, Number(brandContrast.value || 0)) : {};
+
+        brandModalShades.innerHTML = "";
+
+        for (let i = 0; i < BRAND_MODAL_MAX_SHADES; i++) {
+          const shade = document.createElement("button");
+          shade.type = "button";
+          shade.className = "modal-shade";
+          if (i < steps.length && scale[steps[i]]) {
+            const step = steps[i];
+            const value = scale[step];
+            shade.style.background = value;
+            shade.style.color = textColorForHex(value);
+            shade.textContent = String(step);
+            if (step === baseStep) {
+              shade.classList.add("active");
+            }
+          } else {
+            shade.classList.add("empty");
+            shade.textContent = "-";
+          }
+          brandModalShades.appendChild(shade);
+        }
+      }
+
+      function openBrandModal(mode, index = null) {
+        editingMode = mode;
+        editingBrandIndex = index;
+        const isAdd = mode === "add";
+
+        if (isAdd) {
+          const isFirst = state.brands.length === 0;
+          const defaultName = isFirst ? "primary" : `brand-${state.brands.length + 1}`;
+          brandModalTitle.textContent = "New Brand Color Shade";
+          brandModalSave.textContent = isFirst ? "Ajouter votre primary brand" : "Ajouter une couleur";
+          brandModalName.value = defaultName;
+          brandModalHex.value = "#82BE5C";
+          brandModalPicker.value = "#82BE5C";
+        } else if (index !== null && state.brands[index]) {
+          const brand = state.brands[index];
+          brandModalTitle.textContent = "Edit Color Shade";
+          brandModalSave.textContent = "Enregistrer les changements";
+          brandModalName.value = brand.name || "";
+          const color = isValidColor(brand.color) ? brand.color : "#82BE5C";
+          brandModalHex.value = color;
+          brandModalPicker.value = color;
+        }
+
+        patternSelect.value = state.namingPattern;
+        shadeCountSelect.value = String(state.shadeCount);
+        brandContrast.value = "50";
+        brandModalError.textContent = "";
+        renderBrandModalScale();
+        brandModal.classList.remove("is-hidden");
+      }
+
+      function closeBrandModal() {
+        brandModal.classList.add("is-hidden");
+        brandModalError.textContent = "";
+        editingBrandIndex = null;
+      }
+
+      function saveBrandModal() {
+        const name = String(brandModalName.value || "").trim() || (editingBrandIndex === null ? `brand-${state.brands.length + 1}` : `brand-${editingBrandIndex + 1}`);
+        const color = String(brandModalHex.value || "").trim();
+
+        if (!isValidColor(color)) {
+          brandModalError.textContent = "Couleur invalide.";
+          return;
+        }
+
+        if (editingMode === "edit" && editingBrandIndex !== null && state.brands[editingBrandIndex]) {
+          state.brands[editingBrandIndex] = { ...state.brands[editingBrandIndex], name, color };
+          closeBrandModal();
+          renderBrands();
+          return;
+        }
+
+        if (state.brands.length >= 10) {
+          brandModalError.textContent = "Maximum 10 couleurs atteinte.";
+          return;
+        }
+
+        state.brands.push({ name, color });
+        closeBrandModal();
+        renderBrands();
+      }
+
+      function validateStep2() {
+        if (!state.brands.length) {
+          return "Ajoute au moins une primary brand.";
+        }
+        const primary = state.brands[0];
+        if (!primary || !isValidColor(primary.color)) {
+          return "Brand primary invalide.";
+        }
+
+        const invalid = state.brands.slice(1).find((brand) => brand.color && !isValidColor(brand.color));
+        if (invalid) {
+          return `Couleur invalide: ${invalid.name || "brand"} (${invalid.color})`;
+        }
+        return "";
+      }
+
+      function validateStep3() {
+        state.baseWhite = String(baseWhiteInput.value || "").trim();
+        state.baseBlack = String(baseBlackInput.value || "").trim();
+        state.neutralChoice = neutralSelect.value;
+
+        if (!isValidColor(state.baseWhite)) return "Base white invalide.";
+        if (!isValidColor(state.baseBlack)) return "Base black invalide.";
+        if (!state.neutralChoice) return "Neutral gray obligatoire.";
+        return "";
+      }
+
+      function moveStep(direction) {
+        if (direction > 0) {
+          if (state.step === 2) {
+            const err = validateStep2();
+            brandError.textContent = err;
+            if (err) return;
+          }
+          if (state.step === 3) {
+            const err = validateStep3();
+            presetError.textContent = err;
+            if (err) return;
+          }
+        }
+        const next = Math.max(1, Math.min(4, state.step + direction));
+        if (next !== state.step) {
+          state.step = next;
+        }
+        updateStepper();
+      }
+
+      function generate() {
+        const step2Error = validateStep2();
+        const step3Error = validateStep3();
+        brandError.textContent = step2Error;
+        presetError.textContent = step3Error;
+
+        if (step2Error || step3Error) {
+          if (step2Error) {
+            state.step = 2;
+          } else if (step3Error) {
+            state.step = 3;
+          }
+          updateStepper();
+          setStatus(step2Error || step3Error, "err");
+          return;
+        }
+
+        syncTypography();
+        clearReport();
+        setStatus("Génération en cours...");
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "generate-variables",
+              payload: {
+                tokenLevel: state.tokenLevel,
+                uiMode: state.uiMode,
+                namingPattern: state.namingPattern,
+                shadeCount: state.shadeCount,
+                brands: state.brands,
+                presetId: state.presetId,
+                neutralChoice: state.neutralChoice,
+                baseWhite: state.baseWhite,
+                baseBlack: state.baseBlack,
+                createTextStyles: state.createTextStyles,
+                typography: state.typography,
+              },
+            },
+          },
+          "*",
+        );
+      }
+
+      function syncStep1ModeCards() {
+        document.querySelectorAll("[data-level]").forEach((card) => {
+          card.addEventListener("click", () => {
+            const level = card.dataset.level;
+            if (!level || level === "semantic") return;
+            state.tokenLevel = level;
+            renderModeCards();
+          });
+        });
+      }
+
+      function syncEvents() {
+        stepButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const target = Number(button.dataset.step);
+            if (!Number.isFinite(target)) return;
+            if (target >= 1 && target <= 4) {
+              state.step = target;
+              updateStepper();
+              return;
+            }
+          });
+        });
+
+        backBtn.addEventListener("click", () => moveStep(-1));
+        nextBtn.addEventListener("click", () => {
+          if (state.step < 4) {
+            moveStep(1);
+            return;
+          }
+          generate();
+        });
+
+        uiModeSelect.addEventListener("change", () => {
+          state.uiMode = uiModeSelect.value === "dark" ? "dark" : "light";
+        });
+
+        patternSelect.addEventListener("change", () => {
+          state.namingPattern = patternSelect.value;
+          renderBrands();
+          renderBrandModalScale();
+        });
+
+        shadeCountSelect.addEventListener("change", () => {
+          state.shadeCount = Number(shadeCountSelect.value);
+          renderBrands();
+          renderBrandModalScale();
+        });
+
+        brandModalPicker.addEventListener("input", () => {
+          const value = brandModalPicker.value;
+          brandModalHex.value = value;
+          renderBrandModalScale();
+        });
+
+        brandModalHex.addEventListener("input", () => {
+          brandModalPicker.value = brandModalHex.value;
+          renderBrandModalScale();
+        });
+
+        brandContrast.addEventListener("input", () => {
+          renderBrandModalScale();
+        });
+
+        brandModalClose.addEventListener("click", closeBrandModal);
+        brandModalCancel.addEventListener("click", closeBrandModal);
+        brandModal.addEventListener("click", (event) => {
+          if (event.target === brandModal) {
+            closeBrandModal();
+          }
+        });
+
+        brandModalSave.addEventListener("click", saveBrandModal);
+
+        addBrandBtn.addEventListener("click", () => openBrandModal("add"));
+
+        presetSelect.addEventListener("change", () => {
+          state.presetId = presetSelect.value;
+          renderPresetSection();
+        });
+
+        neutralSelect.addEventListener("change", () => {
+          state.neutralChoice = neutralSelect.value;
+          renderPresetSection();
+        });
+
+        displayFamilySelect.addEventListener("change", () => {
+          state.typography.displayFamily = displayFamilySelect.value;
+        });
+        bodyFamilySelect.addEventListener("change", () => {
+          state.typography.bodyFamily = bodyFamilySelect.value;
+        });
+        createTextStylesCheckbox.addEventListener("change", () => {
+          state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
+        });
+
+        window.onmessage = (event) => {
+          const msg = event.data.pluginMessage;
+          if (!msg) return;
+
+          if (msg.type === "preset-list") {
+            state.presets = Array.isArray(msg.presets) ? msg.presets : [];
+            renderPresetSelector();
+            return;
+          }
+
+          if (msg.type === "font-families-list") {
+            const families = Array.isArray(msg.families)
+              ? msg.families
+                  .map((entry) => String(entry || "").trim())
+                  .filter(Boolean)
+                  .sort((a, b) => a.localeCompare(b))
+              : [];
+            state.fontFamilies = families;
+            renderTypography();
+            return;
+          }
+
+          if (msg.type === "generate-result") {
+            const report = msg.report || {};
+            const text = `OK: +${report.created || 0} / ~${report.updated || 0} / collisions ${
+              report.collisionsReplaced || 0
+            }${report.aliasMissing ? ` / alias manquants ${report.aliasMissing}` : ""}`;
+            setStatus(text, "ok");
+
+            const messages = [];
+            if (Array.isArray(report.migrations) && report.migrations.length) {
+              messages.push("Migrations:");
+              messages.push(...report.migrations.slice(0, 120));
+            }
+            if (Array.isArray(report.warnings) && report.warnings.length) {
+              messages.push("Warnings:");
+              messages.push(...report.warnings.slice(0, 120));
+            }
+            if (messages.length) {
+              reportBox.style.display = "block";
+              reportBox.textContent = messages.join("\n");
+            } else {
+              clearReport();
+            }
+            return;
+          }
+
+          if (msg.type === "generate-error") {
+            setStatus(msg.message || "Erreur inconnue", "err");
+          }
+        };
+      }
+
+      function initialize() {
+        renderPatterns();
+        renderModeCards();
+        renderBrands();
+        renderTypography();
+        updateStepper();
+        syncStep1ModeCards();
+        syncEvents();
+        parent.postMessage({ pluginMessage: { type: "ui-ready" } }, "*");
+      }
+
+      function renderPresetSection() {
+        renderPresetSelector();
+      }
+
+      initialize();
+    </script>
+  </body>
+</html>

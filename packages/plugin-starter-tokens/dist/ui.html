@@ -1,0 +1,3722 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Starter Tokens V3</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Fira+Code:wght@500;600;700&display=swap");
+
+      :root {
+        /* DS - Colors */
+        --neutral-900: #171717;
+        --neutral-800: #262626;
+        --neutral-700: #404040;
+        --neutral-400: #a3a3a3;
+        --neutral-300: #d4d4d4;
+        --zinc-50: #fafafa;
+        --zinc-300: #d4d4d8;
+        --zinc-400: #a1a1aa;
+        --zinc-800: #27272a;
+        --blue-500: #3b82f6;
+        --danger: #ef4444;
+        --ok: #22c55e;
+
+        /* DS - Spacing */
+        --ds-spacing-none: 0px;
+        --ds-spacing-xs: 4px;
+        --ds-spacing-sm: 6px;
+        --ds-spacing-md: 8px;
+        --ds-spacing-lg: 10px;
+        --ds-spacing-xl: 12px;
+        --ds-spacing-2xl: 16px;
+        --ds-spacing-3xl: 20px;
+        --ds-spacing-4xl: 24px;
+
+        /* DS - Radius */
+        --ds-radius-sm: 6px;
+        --ds-radius-md: 8px;
+        --ds-radius-lg: 10px;
+        --ds-radius-xl: 16px;
+        --ds-radius-full: 9999px;
+
+        /* DS - Typography */
+        --ds-font-family-sans: Inter, "Segoe UI", sans-serif;
+        --ds-font-size-paragraph-sm: 14px;
+        --ds-font-size-paragraph-mini: 12px;
+        --ds-font-weight-medium: 500;
+        --ds-font-weight-semibold: 600;
+        --ds-font-weight-bold: 700;
+        --ds-line-height-paragraph-sm: 1.4;
+        --ds-line-height-paragraph-mini: 1.5;
+        --ds-letter-spacing-paragraph-sm: 0.07px;
+        --ds-letter-spacing-paragraph-mini: 0.18px;
+
+        /* DS - Semantic colors */
+        --ds-color-bg-canvas: var(--neutral-900);
+        --ds-color-bg-input: var(--neutral-800);
+        --ds-color-bg-interactive-secondary: var(--neutral-700);
+        --ds-color-text-primary: #e8eaec;
+        --ds-color-text-paragraph: #9a9ca0;
+        --ds-color-text-placeholder: rgba(245, 246, 247, 0.4);
+        --ds-color-text-disabled: #525252;
+        --ds-color-text-on-light: #262626;
+        --ds-color-border-danger: var(--danger);
+        --ds-color-focus-ring-default: rgba(245, 246, 247, 0.3);
+        --ds-color-focus-ring-danger: #f87171;
+
+        /* Backward-compatible aliases */
+        --input-surface: var(--ds-color-bg-input);
+        --input-border: transparent;
+        --input-text: var(--ds-color-text-primary);
+        --input-text-placeholder: var(--ds-color-text-placeholder);
+        --input-focus-ring: var(--ds-color-focus-ring-default);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        background: var(--ds-color-bg-canvas);
+        color: var(--zinc-50);
+        font-family: var(--ds-font-family-sans);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      p {
+        margin: 0;
+      }
+
+      .app {
+        width: 100%;
+        max-width: 532px;
+        height: 100%;
+        margin: 0 auto;
+        background: var(--ds-color-bg-canvas);
+        border-radius: var(--ds-radius-xl);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .screen {
+        display: none;
+        flex: 1;
+        padding: 24px;
+        overflow: auto;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .screen-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .kicker {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--neutral-400);
+        letter-spacing: -0.5px;
+        line-height: 1.5;
+      }
+
+      .title {
+        margin-top: 2px;
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+        font-size: 24px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+        color: var(--zinc-50);
+      }
+
+      .subtitle {
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+        color: var(--neutral-400);
+      }
+
+      .panel {
+        margin-top: 24px;
+        background: transparent;
+        padding: 0;
+      }
+
+      .token-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .mode-card {
+        min-height: 236px;
+        padding: 20px;
+        border-radius: 16px;
+        background: var(--neutral-800);
+        border: 1px solid transparent;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .mode-card.full {
+        grid-column: span 2;
+        min-height: 158px;
+      }
+
+      .mode-card.selected {
+        border-color: transparent;
+      }
+
+      .mode-card.disabled {
+        cursor: not-allowed;
+        overflow: hidden;
+      }
+
+      .mode-card.disabled::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(3px);
+      }
+
+      .mode-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--zinc-400);
+        border-radius: 6px;
+        padding: 4px 6px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--zinc-300);
+      }
+
+      .mode-title {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 20px;
+        line-height: 1.2;
+        font-weight: 700;
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+      }
+
+      .mode-title .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        border: 1px solid var(--zinc-400);
+        background: transparent;
+      }
+
+      .mode-card.selected .mode-title .dot {
+        border: 0;
+        background: #e5e5e5;
+      }
+
+      .mode-description {
+        margin-top: 8px;
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--neutral-400);
+        max-width: 190px;
+      }
+
+      .mode-separator {
+        margin: 12px 0 16px;
+        border-top: 1px solid var(--neutral-400);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chips .chip {
+        background: var(--neutral-700);
+        border-radius: 6px;
+        padding: 6px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        color: var(--zinc-300);
+        font-weight: 500;
+      }
+
+      .coming-soon {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      .coming-soon-tag {
+        border: 1px solid var(--zinc-400);
+        border-radius: 6px;
+        background: rgba(23, 23, 23, 0.8);
+        padding: 6px 8px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        color: var(--zinc-300);
+      }
+
+      .field-hidden {
+        display: none;
+      }
+
+      .brand-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .brand-setup-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .brand-setup-note {
+        margin-bottom: 12px;
+      }
+
+      .brand-card {
+        border-radius: 16px;
+        background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
+        padding: 20px;
+      }
+
+      .brand-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand-title strong {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+        color: var(--zinc-300);
+      }
+
+      .brand-edit {
+        width: auto;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        border: 1px solid var(--blue-500);
+        border-radius: 6px;
+        background: rgba(23, 37, 84, 0.4);
+        color: var(--blue-500);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: normal;
+        padding: 6px;
+        cursor: pointer;
+      }
+
+      .brand-card-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand-delete {
+        width: auto;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        border: 1px solid var(--danger);
+        border-radius: 6px;
+        background: rgba(127, 29, 29, 0.35);
+        color: #fecaca;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: normal;
+        padding: 6px;
+        cursor: pointer;
+      }
+
+      .brand-delete:disabled {
+        cursor: not-allowed;
+      }
+
+      .brand-swatch-row {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 40px;
+      }
+
+      .brand-swatch {
+        flex: 1;
+        height: 40px;
+        border-radius: 5.491px;
+        box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .brand-actions {
+        margin-top: 16px;
+        border-radius: 16px;
+        background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .inline-btn {
+        width: auto;
+        min-height: auto;
+        border: 0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 600;
+        font-family: Inter, "Segoe UI", sans-serif;
+      }
+
+      .inline-btn.primary {
+        background: #f5f5f5;
+        color: #262626;
+      }
+
+      .preset-top-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .palette-config-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .field,
+      .ds-field {
+        display: grid;
+        gap: var(--ds-spacing-sm);
+      }
+
+      .label-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .label-required {
+        color: #f3ff8f;
+        font-size: 14px;
+        line-height: 1.4;
+        font-weight: 700;
+        letter-spacing: 0.07px;
+        margin-left: 2px;
+      }
+
+      .label,
+      .ds-label {
+        color: var(--ds-color-text-paragraph);
+        font-size: var(--ds-font-size-paragraph-sm);
+        line-height: var(--ds-line-height-paragraph-sm);
+        letter-spacing: var(--ds-letter-spacing-paragraph-sm);
+        font-family: var(--ds-font-family-sans);
+        font-weight: var(--ds-font-weight-semibold);
+      }
+
+      .ui-input,
+      .ui-select,
+      .ui-number,
+      .ds-input,
+      .ds-select,
+      .ds-number {
+        width: 100%;
+        min-height: 36px;
+        border: 1px solid var(--input-border);
+        border-radius: var(--ds-radius-md);
+        background: var(--input-surface);
+        color: var(--input-text);
+        padding: var(--ds-spacing-md) var(--ds-spacing-lg);
+        font-family: var(--ds-font-family-sans);
+        font-size: var(--ds-font-size-paragraph-sm);
+        line-height: 19.6px;
+        letter-spacing: var(--ds-letter-spacing-paragraph-sm);
+        font-weight: var(--ds-font-weight-medium);
+        transition: box-shadow 0.15s ease, border-color 0.15s ease;
+        outline: 0;
+      }
+
+      .ui-input::placeholder,
+      .ui-number::placeholder,
+      .ds-input::placeholder,
+      .ds-number::placeholder {
+        color: var(--input-text-placeholder);
+      }
+
+      .ui-input:disabled,
+      .ui-number:disabled,
+      .ds-input:disabled,
+      .ds-number:disabled {
+        color: var(--ds-color-text-disabled);
+        cursor: not-allowed;
+      }
+
+      .ui-input:focus,
+      .ui-select:focus,
+      .ui-number:focus,
+      .ds-input:focus,
+      .ds-select:focus,
+      .ds-number:focus {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px var(--input-focus-ring);
+      }
+
+      .ui-input.is-error,
+      .ui-select.is-error,
+      .ui-number.is-error,
+      .ds-input.is-error,
+      .ds-select.is-error,
+      .ds-number.is-error {
+        border-color: var(--ds-color-border-danger);
+        box-shadow: none;
+      }
+
+      .ui-input.is-error:focus,
+      .ui-select.is-error:focus,
+      .ui-number.is-error:focus,
+      .ds-input.is-error:focus,
+      .ds-select.is-error:focus,
+      .ds-number.is-error:focus {
+        box-shadow: 0 0 0 3px var(--ds-color-focus-ring-danger);
+      }
+
+      .ui-number::-webkit-outer-spin-button,
+      .ui-number::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      .ui-number {
+        padding-right: 10px;
+      }
+
+      .ui-select {
+        appearance: none;
+      }
+
+      .ui-select-native {
+        display: none !important;
+      }
+
+      .custom-select {
+        position: relative;
+        width: 100%;
+        margin: 0;
+      }
+
+      .custom-select-trigger,
+      .ds-select-trigger {
+        width: 100%;
+        height: 36px;
+        min-height: 36px;
+        border: 1px solid transparent;
+        border-radius: var(--ds-radius-md);
+        background: var(--input-surface);
+        color: var(--input-text);
+        padding: var(--ds-spacing-md) 36px var(--ds-spacing-md) var(--ds-spacing-lg);
+        font-family: var(--ds-font-family-sans);
+        font-size: var(--ds-font-size-paragraph-sm);
+        line-height: 19.6px;
+        letter-spacing: var(--ds-letter-spacing-paragraph-sm);
+        font-weight: var(--ds-font-weight-medium);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+        text-align: left;
+        cursor: pointer;
+        margin: 0;
+        box-shadow: none;
+        transition: box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+
+      .custom-select-trigger:focus-visible {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px var(--input-focus-ring);
+        outline: 0;
+      }
+
+      .custom-select.is-open .custom-select-trigger {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px var(--input-focus-ring);
+      }
+
+      .custom-select.is-open-up .custom-select-panel {
+        top: auto;
+        bottom: calc(100% + 10px);
+      }
+
+      .custom-select.is-error .custom-select-trigger {
+        border-color: var(--danger);
+        box-shadow: none;
+      }
+
+      .custom-select.is-error .custom-select-trigger:focus-visible,
+      .custom-select.is-open.is-error .custom-select-trigger {
+        box-shadow: 0 0 0 3px #f87171;
+      }
+
+      .custom-select.is-disabled .custom-select-trigger {
+        border-color: transparent;
+        color: var(--neutral-700);
+        cursor: not-allowed;
+      }
+
+      .custom-select--searchable .custom-select-trigger {
+        padding-left: 36px;
+      }
+
+      .custom-select-value,
+      .ds-select-value {
+        display: block;
+        width: 100%;
+        line-height: 19.6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .custom-select-value.is-placeholder {
+        color: var(--input-text-placeholder);
+      }
+
+      .custom-select.is-disabled .custom-select-value,
+      .custom-select.is-disabled .custom-select-value.is-placeholder {
+        color: var(--neutral-700);
+      }
+
+      .custom-select-leading-icon,
+      .custom-select-option-leading,
+      .custom-select-option-check {
+        width: 20px;
+        min-width: 20px;
+        height: 20px;
+        position: relative;
+        color: #f5f6f7;
+        flex: 0 0 auto;
+      }
+
+      .custom-select-leading-icon {
+        position: absolute;
+        left: 10px;
+      }
+
+      .custom-select-leading-icon.is-search::before,
+      .custom-select-option-leading.is-search::before {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        width: 10px;
+        height: 10px;
+        border: 1.67px solid currentColor;
+        border-radius: 999px;
+      }
+
+      .custom-select-leading-icon.is-search::after,
+      .custom-select-option-leading.is-search::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        width: 6px;
+        height: 1.67px;
+        border-radius: 999px;
+        background: currentColor;
+        transform-origin: left center;
+        transform: rotate(45deg);
+      }
+
+      .custom-select-option-leading.is-user::before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 3px;
+        width: 8px;
+        height: 8px;
+        border: 1.67px solid currentColor;
+        border-radius: 999px;
+      }
+
+      .custom-select-option-leading.is-user::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 11px;
+        width: 12px;
+        height: 7px;
+        border: 1.67px solid currentColor;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        border-bottom: 0;
+      }
+
+      .custom-select-chevron {
+        position: absolute;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        color: #f5f6f7;
+        transform: none;
+        transition: transform 0.15s ease;
+        pointer-events: none;
+      }
+
+      .custom-select-chevron::before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 6px;
+        width: 7px;
+        height: 7px;
+        border-right: 1.67px solid currentColor;
+        border-bottom: 1.67px solid currentColor;
+        transform: rotate(45deg);
+        transform-origin: center;
+        transition: transform 0.15s ease, top 0.15s ease;
+      }
+
+      .custom-select.is-open .custom-select-chevron::before {
+        top: 9px;
+        transform: rotate(-135deg);
+      }
+
+      .custom-select.is-disabled .custom-select-chevron,
+      .custom-select.is-disabled .custom-select-leading-icon {
+        color: var(--neutral-700);
+      }
+
+      .custom-select-panel {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        width: 100%;
+        border: 0;
+        border-radius: var(--ds-radius-md);
+        background: var(--input-surface);
+        z-index: 60;
+        padding: var(--ds-spacing-xs) 0;
+        box-shadow: 0 0 0 3px var(--input-focus-ring);
+        overflow: hidden;
+      }
+
+      .custom-select-search {
+        width: calc(100% - 16px);
+        margin: 0 8px;
+        min-height: 36px;
+        border: 0;
+        border-bottom: 1px solid var(--neutral-700);
+        border-radius: 0;
+        background: transparent;
+        color: var(--input-text);
+        padding: 8px 2px;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: 0.07px;
+        outline: none;
+      }
+
+      .custom-select-search::placeholder {
+        color: var(--input-text-placeholder);
+      }
+
+      .custom-select-options {
+        margin-top: 0;
+        max-height: 302px;
+        overflow: auto;
+        display: grid;
+        grid-auto-flow: row;
+        grid-auto-rows: minmax(0, auto);
+        align-content: start;
+        padding: 4px 0;
+        scrollbar-width: auto;
+        scrollbar-color: var(--neutral-300) transparent;
+      }
+
+      .custom-select-options::-webkit-scrollbar {
+        width: 16px;
+      }
+
+      .custom-select-options::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .custom-select-options::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        border: 4px solid transparent;
+        background-clip: padding-box;
+        background: var(--neutral-300);
+      }
+
+      .custom-select-option {
+        box-sizing: border-box;
+        margin: 0;
+        width: 100%;
+        border: 0;
+        border-radius: 0;
+        min-height: 0;
+        height: auto;
+        background: transparent;
+        color: #f9fafb;
+        padding: 1px 6px;
+        display: block;
+        flex: 0 0 auto;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: 0.07px;
+        text-align: left;
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .custom-select-option-content {
+        width: 100%;
+        min-height: 40px;
+        border-radius: 6px;
+        padding: 10px 10px 10px 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .custom-select-option-text {
+        min-width: 0;
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .custom-select-option-label,
+      .custom-select-option-support {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .custom-select-option-label {
+        color: #f9fafb;
+      }
+
+      .custom-select-option-support {
+        color: #e5e7eb;
+        font-weight: 400;
+      }
+
+      .custom-select-option-check {
+        color: #f5f6f7;
+        display: none;
+      }
+
+      .custom-select-option-check::before {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        width: 9px;
+        height: 5px;
+        border-left: 1.67px solid currentColor;
+        border-bottom: 1.67px solid currentColor;
+        transform: rotate(-45deg);
+      }
+
+      .custom-select-option:hover,
+      .custom-select-option.is-active {
+        background: transparent;
+        color: inherit;
+      }
+
+      .custom-select-option:hover .custom-select-option-content,
+      .custom-select-option.is-active .custom-select-option-content,
+      .custom-select-option.is-selected .custom-select-option-content {
+        background: var(--neutral-700);
+      }
+
+      .custom-select-option.is-selected .custom-select-option-check {
+        display: block;
+      }
+
+      .custom-select-option:disabled {
+        cursor: not-allowed;
+      }
+
+      .custom-select-option:disabled .custom-select-option-label,
+      .custom-select-option:disabled .custom-select-option-support,
+      .custom-select-option:disabled .custom-select-option-leading,
+      .custom-select-option:disabled .custom-select-option-check {
+        color: var(--neutral-700);
+      }
+
+      .custom-select-option.is-selected:disabled .custom-select-option-content,
+      .custom-select-option.is-active:disabled .custom-select-option-content {
+        background: var(--neutral-700);
+      }
+
+      .custom-select-empty {
+        color: #9a9ca0;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        font-size: 12px;
+        line-height: 1.5;
+        letter-spacing: 0.18px;
+        font-weight: 500;
+        padding: 8px 14px;
+      }
+
+      .custom-select-note {
+        color: #9a9ca0;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        font-size: 11px;
+        line-height: 1.4;
+        letter-spacing: 0.12px;
+        font-weight: 500;
+        padding: 8px 14px 6px;
+        display: block;
+      }
+
+      .custom-select--compact .custom-select-panel {
+        padding: 4px 0;
+      }
+
+      .custom-select--compact .custom-select-options {
+        max-height: 220px;
+      }
+
+      .ui-checkbox {
+        width: 18px;
+        height: 18px;
+        border: 1px solid #5f5f67;
+        border-radius: 5px;
+        appearance: none;
+        -webkit-appearance: none;
+        background: var(--input-surface);
+        position: relative;
+        cursor: pointer;
+      }
+
+      .ui-checkbox:checked {
+        background: #f3ff8f;
+        border-color: #f3ff8f;
+      }
+
+      .ui-checkbox:checked::before {
+        content: "✓";
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #111;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .total-box {
+        min-height: 48px;
+        border: 1px solid var(--zinc-400);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 0 12px;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        color: var(--zinc-300);
+        font-size: 16px;
+      }
+
+      .total-box strong {
+        font-size: 16px;
+      }
+
+      .palette-total-wrap {
+        margin-top: 16px;
+      }
+
+      .hidden-fields {
+        display: none;
+      }
+
+      .muted {
+        margin-top: 12px;
+        color: var(--neutral-400);
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .palette-cards {
+        margin-top: 16px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .palette-card {
+        border-radius: 16px;
+        background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
+        padding: 20px;
+      }
+
+      .palette-card.is-disabled {
+        opacity: 0.58;
+      }
+
+      .palette-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .palette-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .palette-check {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        background: var(--blue-500);
+        color: #f8fafc;
+        font-size: 12px;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .palette-check.is-unchecked {
+        border: 1px solid var(--zinc-400);
+        background: transparent;
+        color: transparent;
+      }
+
+      .palette-name {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+        color: var(--zinc-300);
+        font-weight: 600;
+      }
+
+      .palette-neutral-badge {
+        border-radius: 6px;
+        border: 1px solid var(--blue-500);
+        background: rgba(23, 37, 84, 0.4);
+        color: var(--blue-500);
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 6px;
+      }
+
+      .palette-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .palette-count-badge {
+        border-radius: 6px;
+        border: 1px solid var(--blue-500);
+        background: rgba(23, 37, 84, 0.4);
+        color: var(--blue-500);
+        min-width: 28px;
+        min-height: auto;
+        padding: 6px;
+        display: grid;
+        place-items: center;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .palette-edit {
+        width: auto;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        border: 1px solid var(--blue-500);
+        border-radius: 6px;
+        background: rgba(23, 37, 84, 0.4);
+        color: var(--blue-500);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: normal;
+        padding: 6px;
+        cursor: pointer;
+      }
+
+      .palette-edit:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      .palette-swatch-row {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 40px;
+      }
+
+      .palette-swatch {
+        flex: 1;
+        height: 40px;
+        border-radius: 5.491px;
+        box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .font-grid {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .status {
+        margin-top: 12px;
+        min-height: 18px;
+        color: var(--neutral-400);
+        font-size: 12px;
+      }
+
+      .status.ok {
+        color: var(--ok);
+      }
+
+      .status.err {
+        color: var(--danger);
+      }
+
+      .report {
+        margin-top: 10px;
+        max-height: 180px;
+        overflow: auto;
+        border: 1px solid var(--neutral-700);
+        border-radius: 8px;
+        background: #101010;
+        color: var(--zinc-300);
+        font-size: 11px;
+        padding: 8px;
+        white-space: pre-wrap;
+      }
+
+      .error {
+        margin-top: 8px;
+        color: var(--danger);
+        font-size: 12px;
+      }
+
+      .footer {
+        border-top: 1px solid var(--neutral-700);
+        padding: 24px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        background: var(--neutral-900);
+      }
+
+      .footer-progress {
+        width: 138px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .footer-label {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 600;
+        color: var(--zinc-50);
+        letter-spacing: -0.6px;
+      }
+
+      .stepper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .stepper-btn {
+        width: 20px;
+        height: 24px;
+        border: 1px solid var(--zinc-400);
+        border-radius: 4px;
+        background: transparent;
+        color: var(--zinc-300);
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 14px;
+        cursor: pointer;
+      }
+
+      .stepper-btn.active {
+        width: 24px;
+        border: 0;
+        background: #f5f5f5;
+        color: var(--zinc-800);
+        font-weight: 700;
+      }
+
+      .footer-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      button,
+      .ds-button {
+        width: 110px;
+        height: 42px;
+        border-radius: var(--ds-radius-lg);
+        border: 0;
+        font-size: var(--ds-font-size-paragraph-mini);
+        line-height: 16px;
+        font-weight: var(--ds-font-weight-semibold);
+        font-family: var(--ds-font-family-sans);
+      }
+
+      .secondary,
+      .ds-button.ds-button--secondary {
+        background: var(--ds-color-bg-interactive-secondary);
+        color: #f5f5f5;
+      }
+
+      .primary,
+      .ds-button.ds-button--primary {
+        background: #f5f5f5;
+        color: var(--ds-color-text-on-light);
+      }
+
+      button:disabled,
+      .ds-button:disabled {
+        opacity: 0.55;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(2px);
+        padding: 16px;
+      }
+
+      .modal.is-hidden {
+        display: none;
+      }
+
+      .modal-panel {
+        width: min(452px, 100%);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--neutral-900);
+      }
+
+      .modal-head {
+        padding: 24px 24px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .modal-head h3 {
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+        font-size: 18px;
+        line-height: 1.2;
+      }
+
+      .close {
+        width: 28px;
+        height: 28px;
+        border: 0;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--zinc-50);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .modal-body {
+        padding: 12px 24px 24px;
+        display: grid;
+        gap: 20px;
+      }
+
+      .modal-edit-layout {
+        display: flex;
+        align-items: stretch;
+        gap: 16px;
+      }
+
+      .modal-color-block {
+        flex: 0 0 88px;
+      }
+
+      .modal-color-control {
+        position: relative;
+        display: block;
+        width: 88px;
+        height: 88px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      .modal-color-swatch {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #9ca3af;
+      }
+
+      .modal-color-control input[type="color"] {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        border: 0;
+        cursor: pointer;
+      }
+
+      .modal-edit-fields {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 16px;
+      }
+
+      .modal-edit-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 80px;
+        gap: 16px;
+      }
+
+      .modal-field-compact {
+        gap: 0;
+      }
+
+      .modal-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .modal-grid.two {
+        grid-template-columns: 1fr 1fr;
+        align-items: end;
+      }
+
+      .modal-grid.split {
+        grid-template-columns: 115px 1fr;
+        align-items: end;
+      }
+
+      .modal-field-compact .ui-input,
+      .modal-field-compact .custom-select-trigger {
+        min-height: 36px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        background: var(--input-surface);
+        color: #e8eaec;
+        padding: 8px 10px;
+        font-size: 14px;
+        line-height: 1.4;
+        letter-spacing: 0.07px;
+        font-weight: 500;
+      }
+
+      .modal-field-compact .ui-input::placeholder {
+        color: rgba(245, 246, 247, 0.4);
+      }
+
+      .modal-field-hex .ui-input {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1;
+        font-weight: 600;
+      }
+
+      .modal-field-count .custom-select-trigger {
+        padding-right: 30px;
+        height: 36px;
+        min-height: 36px;
+      }
+
+      .modal-field-count .custom-select {
+        min-width: 0;
+      }
+
+      .modal-field-count .custom-select-panel {
+        top: calc(100% + 10px);
+        z-index: 90;
+      }
+
+      .modal-field-count .custom-select-options {
+        max-height: 260px;
+      }
+
+      .contrast-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .contrast-range {
+        --contrast-position: 50%;
+        --contrast-accent: #f3ff8f;
+        --contrast-segment-light: #d9d9d9;
+        --contrast-segment-dark: rgba(217, 217, 217, 0.1);
+        box-sizing: border-box;
+        width: 100%;
+        height: 36px;
+        border-radius: 6px;
+        border: 1px solid var(--zinc-400);
+        background:
+          linear-gradient(
+            90deg,
+            transparent 0,
+            transparent calc(var(--contrast-position) - 6px),
+            var(--contrast-accent) calc(var(--contrast-position) - 6px),
+            var(--contrast-accent) calc(var(--contrast-position) + 6px),
+            transparent calc(var(--contrast-position) + 6px),
+            transparent 100%
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 10px,
+            rgba(16, 16, 16, 0.8) 10px,
+            rgba(16, 16, 16, 0.8) 13px
+          ),
+          linear-gradient(
+            90deg,
+            var(--contrast-segment-light) 0,
+            var(--contrast-segment-light) var(--contrast-position),
+            var(--contrast-segment-dark) var(--contrast-position),
+            var(--contrast-segment-dark) 100%
+          );
+        padding: 4px;
+        background-clip: content-box;
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: ew-resize;
+      }
+
+      .contrast-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 12px;
+        height: 24px;
+        border: 0;
+        border-radius: 2px;
+        background: transparent;
+        box-shadow: none;
+        cursor: ew-resize;
+      }
+
+      .contrast-range::-moz-range-thumb {
+        width: 12px;
+        height: 24px;
+        border: 0;
+        border-radius: 2px;
+        background: transparent;
+        cursor: ew-resize;
+      }
+
+      .contrast-value {
+        color: #f3ff8f;
+        font-weight: 700;
+      }
+
+      .modal-shades {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 80px;
+        flex-wrap: nowrap;
+        min-width: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+      }
+
+      .modal-shade {
+        flex: 1 1 0;
+        min-width: 24px;
+        width: auto;
+        height: 80px;
+        border: 0;
+        border-radius: 5.491px;
+        box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        position: relative;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 1;
+        font-family: Inter, "Segoe UI", sans-serif;
+      }
+
+      .modal-shade.active::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 4px;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .modal-actions {
+        border-top: 1px solid var(--neutral-700);
+        padding: 24px;
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+      }
+
+      .modal-actions button {
+        height: 32px;
+        border-radius: 8px;
+      }
+
+      .modal-actions button:first-child {
+        width: auto;
+        padding: 0 12px;
+      }
+
+      .modal-actions button:last-child {
+        width: auto;
+        flex: 1;
+      }
+
+      @media (max-width: 520px) {
+        .token-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .mode-card.full {
+          grid-column: span 1;
+        }
+
+        .preset-top-grid,
+        .palette-config-grid,
+        .brand-setup-grid,
+        .modal-grid.two,
+        .modal-grid.split,
+        .modal-edit-row {
+          grid-template-columns: 1fr;
+        }
+
+        .modal-edit-layout {
+          flex-direction: column;
+        }
+
+        .footer {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .footer-progress,
+        .footer-actions {
+          width: 100%;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <section class="screen active" id="screen1">
+        <div class="screen-head">
+          <div>
+            <p class="kicker">1/4 - Niveau de tokens</p>
+            <h1 class="title">Choisis ton niveau de génération</h1>
+            <p class="subtitle">
+              Sélectionne la profondeur de tokens à créer dans ton fichier.
+              <br />
+              Tu pourras compléter le setup ensuite, étape par étape.
+            </p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="token-grid">
+            <article class="mode-card" data-level="foundations" data-dot="foundations">
+              <span class="mode-tag">Niveau 1</span>
+              <div class="mode-title">
+                <span>Fondations</span>
+                <span class="dot"></span>
+              </div>
+              <p class="mode-description">Les essentiels prêts à réutiliser partout, tout de suite.</p>
+              <div class="mode-separator"></div>
+              <div class="chips">
+                <span class="chip">colors/brand/500</span>
+                <span class="chip">radius-5xl</span>
+                <span class="chip">spacing-md</span>
+                <span class="chip">font-size/text-md</span>
+              </div>
+            </article>
+
+            <article class="mode-card selected" data-level="color-modes" data-dot="color-modes">
+              <span class="mode-tag">Niveau 2 - recommandé</span>
+              <div class="mode-title">
+                <span>Color modes</span>
+                <span class="dot"></span>
+              </div>
+              <p class="mode-description">Transforme ta palette en un thème prêt à l'emploi en 1 clic.</p>
+              <div class="mode-separator"></div>
+              <div class="chips">
+                <span class="chip">text/primary</span>
+                <span class="chip">bg/canvas</span>
+                <span class="chip">border/default</span>
+                <span class="chip">icon/secondary</span>
+              </div>
+            </article>
+
+            <article class="mode-card disabled full" data-level="semantic">
+              <span class="mode-tag">Niveau 3</span>
+              <div class="mode-title">
+                <span>Semantic tokens</span>
+                <span class="dot"></span>
+              </div>
+              <p class="mode-description">Le mode expert arrive bientôt.</p>
+              <div class="coming-soon">
+                <span class="coming-soon-tag">Le mode <strong>expert</strong> arrive bientôt!</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen2">
+        <div class="screen-head">
+          <div>
+            <p class="kicker">2/4 - Brand colors</p>
+            <h1 class="title">Brand colors</h1>
+            <p class="subtitle">Ajoute une primary brand, puis complète noir/blanc et UI mode.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <p class="muted brand-setup-note">Commence par ta couleur primaire, puis ajoute des variantes si besoin.</p>
+          <div class="brand-setup-grid">
+            <label class="field">
+              <span class="label">UI mode</span>
+              <select class="ui-select ds-select" id="uiModeSelect">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="both">Light + Dark</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="label">Base white</span>
+              <input id="baseWhiteInput" class="ui-input ds-input" type="text" value="#ffffff" />
+            </label>
+            <label class="field">
+              <span class="label">Base black</span>
+              <input id="baseBlackInput" class="ui-input ds-input" type="text" value="#000000" />
+            </label>
+          </div>
+          <div class="brand-list" id="brandsContainer"></div>
+          <div class="brand-actions">
+            <button class="inline-btn primary ds-button ds-button--primary" id="addBrandBtn" type="button">Ajouter votre primary brand</button>
+          </div>
+          <div class="error" id="brandError"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen3">
+        <div class="screen-head">
+          <div>
+            <p class="kicker">3/4 - Preset palette</p>
+            <h1 class="title">Preset palette</h1>
+            <p class="subtitle">Choisis ton preset interne et la palette.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="palette-config-grid">
+            <label class="field">
+              <span class="label">Base Librari</span>
+              <select class="ui-select ds-select" id="presetSelect"></select>
+            </label>
+            <label class="field">
+              <span class="label">Base Neutral</span>
+              <select class="ui-select ds-select" id="neutralSelect"></select>
+            </label>
+          </div>
+          <div class="palette-total-wrap">
+            <div class="total-box">
+              <span>Total:</span>
+              <strong id="presetShadeInfo">0 Shades</strong>
+            </div>
+          </div>
+
+          <div id="presetInfo" class="muted"></div>
+          <div class="palette-cards" id="paletteCards"></div>
+          <div class="error" id="presetError"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen4">
+        <div class="screen-head">
+          <div>
+            <p class="kicker">4/4 - Typography</p>
+            <h1 class="title">Styles de texte</h1>
+            <p class="subtitle">Ajuste tes familles et ta taille de fonte.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="preset-top-grid">
+            <label class="field">
+              <span class="label">Font family display</span>
+              <select class="ui-select ds-select" id="displayFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="302"></select>
+            </label>
+            <label class="field">
+              <span class="label">Font family body</span>
+              <select class="ui-select ds-select" id="bodyFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="302"></select>
+            </label>
+          </div>
+          <label class="field" style="margin-top: 12px;">
+            <span class="label">Créer et lier les styles de texte</span>
+            <input id="createTextStylesCheckbox" class="ui-checkbox" type="checkbox" checked />
+          </label>
+
+          <div id="fontGrid" class="font-grid"></div>
+          <div id="status" class="status"></div>
+          <pre id="reportBox" class="report" style="display: none"></pre>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-progress">
+          <p id="stepHint" class="footer-label">Niveau de tokens</p>
+          <div class="stepper" aria-label="Étapes">
+            <button class="stepper-btn active" data-step="1" type="button">1</button>
+            <button class="stepper-btn" data-step="2" type="button">2</button>
+            <button class="stepper-btn" data-step="3" type="button">3</button>
+            <button class="stepper-btn" data-step="4" type="button">4</button>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button id="backBtn" class="secondary ds-button ds-button--secondary" type="button">Annuler</button>
+          <button id="nextBtn" class="primary ds-button ds-button--primary" type="button">Continuer</button>
+        </div>
+      </footer>
+    </main>
+
+    <div id="brandModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="brandModalTitle">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h3 id="brandModalTitle">Ajouter Brand Primary</h3>
+          <button id="brandModalClose" class="close" type="button">×</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-edit-layout">
+            <div class="modal-color-block">
+              <label class="modal-color-control" aria-label="Select color">
+                <span id="modalBrandSwatch" class="modal-color-swatch"></span>
+                <input id="modalBrandPicker" type="color" value="#9CA3AF" />
+              </label>
+            </div>
+
+            <div class="modal-edit-fields">
+              <label class="field modal-field-compact">
+                <span class="label field-hidden">Nom</span>
+                <input id="modalBrandName" class="ui-input ds-input" type="text" placeholder="Nom de la couleur (ex: brand-primary)" />
+              </label>
+
+              <div class="modal-edit-row">
+                <label class="field modal-field-compact modal-field-hex">
+                  <span class="label field-hidden">Color</span>
+                  <input id="modalBrandHex" class="ui-input ds-input" type="text" value="#9CA3AF" placeholder="#ffffff" />
+                </label>
+
+                <label class="field modal-field-compact modal-field-count">
+                  <span class="label field-hidden">Nombre de shades</span>
+                  <select class="ui-select ds-select" id="shadeCountSelect" data-menu-max-height="260"></select>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <label class="field">
+            <div class="contrast-head">
+              <span class="label">Contrast shift</span>
+              <span id="brandContrastValue" class="label contrast-value">0.00 %</span>
+            </div>
+            <input id="brandContrast" class="contrast-range" type="range" min="-100" max="100" step="1" value="0" />
+          </label>
+
+          <div id="modalBrandShades" class="modal-shades"></div>
+          <div id="brandModalError" class="error"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="brandModalCancel" class="secondary ds-button ds-button--secondary" type="button">Annuler</button>
+          <button id="brandModalSave" class="primary ds-button ds-button--primary" type="button">Ajouter votre primary brand</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const PATTERNS = [
+        { id: "tailwind", label: "50,100,200...900,950", steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
+        { id: "hundreds", label: "100,200,300...1000", steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+      ];
+      const MIN_SHADE_COUNT = 6;
+      const MAX_SHADE_COUNT = 14;
+
+      const FONT_DEFAULTS = {
+        "text-xs": 12,
+        "text-sm": 14,
+        "text-md": 16,
+        "text-lg": 18,
+        "text-xl": 20,
+        "display-xs": 24,
+        "display-sm": 30,
+        "display-md": 36,
+        "display-lg": 48,
+        "display-xl": 60,
+        "display-2xl": 72,
+      };
+
+      const FONT_ORDER = [
+        "text-xs",
+        "text-sm",
+        "text-md",
+        "text-lg",
+        "text-xl",
+        "display-xs",
+        "display-sm",
+        "display-md",
+        "display-lg",
+        "display-xl",
+        "display-2xl",
+      ];
+      const DEFAULT_MODAL_BRAND_COLOR = "#9CA3AF";
+
+      function normalizeUiModeValue(value) {
+        if (value === "dark") return "dark";
+        if (value === "both") return "both";
+        return "light";
+      }
+
+      const state = {
+        step: 1,
+        tokenLevel: "color-modes",
+        uiMode: "light",
+        namingPattern: "tailwind",
+        shadeCount: 11,
+        brands: [],
+        presets: [],
+        presetId: "",
+        neutralChoice: "",
+        selectedPaletteKeys: [],
+        paletteOverrides: {},
+        baseWhite: "#ffffff",
+        baseBlack: "#000000",
+        createTextStyles: true,
+        fontFamilies: [],
+        typography: {
+          displayFamily: "Roboto",
+          bodyFamily: "Inter",
+          fontSizes: { ...FONT_DEFAULTS },
+        },
+      };
+
+      const BRAND_MODAL_MAX_SHADES = 16;
+
+      const stepButtons = Array.from(document.querySelectorAll(".stepper-btn"));
+      const stepHint = document.getElementById("stepHint");
+      const screens = {
+        1: document.getElementById("screen1"),
+        2: document.getElementById("screen2"),
+        3: document.getElementById("screen3"),
+        4: document.getElementById("screen4"),
+      };
+
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const uiModeSelect = document.getElementById("uiModeSelect");
+
+      const brandsContainer = document.getElementById("brandsContainer");
+      const addBrandBtn = document.getElementById("addBrandBtn");
+      const brandError = document.getElementById("brandError");
+
+      const presetSelect = document.getElementById("presetSelect");
+      const neutralSelect = document.getElementById("neutralSelect");
+      const baseWhiteInput = document.getElementById("baseWhiteInput");
+      const baseBlackInput = document.getElementById("baseBlackInput");
+      const presetInfo = document.getElementById("presetInfo");
+      const presetError = document.getElementById("presetError");
+      const paletteCards = document.getElementById("paletteCards");
+
+      const displayFamilySelect = document.getElementById("displayFamilySelect");
+      const bodyFamilySelect = document.getElementById("bodyFamilySelect");
+      const fontGrid = document.getElementById("fontGrid");
+      const createTextStylesCheckbox = document.getElementById("createTextStylesCheckbox");
+      const status = document.getElementById("status");
+      const reportBox = document.getElementById("reportBox");
+
+      const shadeCountSelect = document.getElementById("shadeCountSelect");
+
+      const brandModal = document.getElementById("brandModal");
+      const brandModalTitle = document.getElementById("brandModalTitle");
+      const brandModalClose = document.getElementById("brandModalClose");
+      const brandModalCancel = document.getElementById("brandModalCancel");
+      const brandModalSave = document.getElementById("brandModalSave");
+      const brandModalName = document.getElementById("modalBrandName");
+      const brandModalHex = document.getElementById("modalBrandHex");
+      const brandModalPicker = document.getElementById("modalBrandPicker");
+      const brandModalSwatch = document.getElementById("modalBrandSwatch");
+      const brandContrast = document.getElementById("brandContrast");
+      const brandContrastValue = document.getElementById("brandContrastValue");
+      const brandModalShades = document.getElementById("modalBrandShades");
+      const brandModalError = document.getElementById("brandModalError");
+
+      let editingBrandIndex = null;
+      let editingMode = "add";
+      let pendingBrandScale = {};
+      let pendingBrandContrast = 0;
+      let editingPaletteKey = "";
+      let generationInFlight = false;
+      let generationSlowTimer = null;
+      let generationVerySlowTimer = null;
+      let generationFailSafeTimer = null;
+      const customSelectRegistry = new Map();
+      let openCustomSelectId = "";
+
+      function hexToRgb(input) {
+        const value = String(input || "").trim().replace("#", "");
+        if (value.length === 3) {
+          return {
+            r: parseInt(value[0] + value[0], 16),
+            g: parseInt(value[1] + value[1], 16),
+            b: parseInt(value[2] + value[2], 16),
+          };
+        }
+        if (value.length === 6) {
+          return {
+            r: parseInt(value.slice(0, 2), 16),
+            g: parseInt(value.slice(2, 4), 16),
+            b: parseInt(value.slice(4, 6), 16),
+          };
+        }
+        return null;
+      }
+
+      function rgbToHex(rgb) {
+        const toHex = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+        return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
+      }
+
+      function rgbToHsl(rgb) {
+        const r = rgb.r / 255;
+        const g = rgb.g / 255;
+        const b = rgb.b / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const d = max - min;
+        let h = 0;
+        if (d !== 0) {
+          if (max === r) h = ((g - b) / d) % 6;
+          else if (max === g) h = (b - r) / d + 2;
+          else h = (r - g) / d + 4;
+          h *= 60;
+          if (h < 0) h += 360;
+        }
+        const l = (max + min) / 2;
+        const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+        return { h, s, l };
+      }
+
+      function hslToRgb(hsl) {
+        const h = ((hsl.h % 360) + 360) % 360;
+        const s = Math.max(0, Math.min(1, hsl.s));
+        const l = Math.max(0, Math.min(1, hsl.l));
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        const m = l - c / 2;
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        if (h < 60) {
+          r = c;
+          g = x;
+        } else if (h < 120) {
+          r = x;
+          g = c;
+        } else if (h < 180) {
+          g = c;
+          b = x;
+        } else if (h < 240) {
+          g = x;
+          b = c;
+        } else if (h < 300) {
+          r = x;
+          b = c;
+        } else {
+          r = c;
+          b = x;
+        }
+        return {
+          r: (r + m) * 255,
+          g: (g + m) * 255,
+          b: (b + m) * 255,
+        };
+      }
+
+      function pickSubset(baseSteps, count) {
+        if (count >= baseSteps.length) return baseSteps.slice();
+        const points = new Set();
+        for (let i = 0; i < count; i++) {
+          points.add(Math.round((i * (baseSteps.length - 1)) / Math.max(1, count - 1)));
+        }
+        return Array.from(points)
+          .sort((a, b) => a - b)
+          .map((i) => baseSteps[i]);
+      }
+
+      function nextShadeStep(previous) {
+        return previous === 950 ? 1000 : previous + 100;
+      }
+
+      function extendSteps(baseSteps, count) {
+        const steps = Array.from(new Set(baseSteps)).sort((a, b) => a - b);
+        while (steps.length < count) {
+          const last = steps[steps.length - 1];
+          steps.push(nextShadeStep(last));
+        }
+        return steps.slice(0, count);
+      }
+
+      function deriveShadeSteps(patternId, shadeCount) {
+        const pattern = PATTERNS.find((entry) => entry.id === patternId) || PATTERNS[0];
+        const count = Math.max(MIN_SHADE_COUNT, Math.min(MAX_SHADE_COUNT, Number(shadeCount) || 11));
+        return count <= pattern.steps.length ? pickSubset(pattern.steps, count) : extendSteps(pattern.steps, count);
+      }
+
+      function resolveBaseStep(steps) {
+        if (steps.includes(500)) return 500;
+        const target = (steps[0] + steps[steps.length - 1]) / 2;
+        let best = steps[0];
+        let diff = Math.abs(best - target);
+        for (const step of steps) {
+          const local = Math.abs(step - target);
+          if (local < diff) {
+            best = step;
+            diff = local;
+          }
+        }
+        return best;
+      }
+
+      function isValidColor(input) {
+        const value = String(input || "").trim();
+        if (!value) return false;
+        if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value)) return true;
+        if (/^rgba?\(([^)]+)\)$/i.test(value)) return true;
+        return false;
+      }
+
+      function textColorForHex(hex) {
+        const rgb = hexToRgb(hex);
+        if (!rgb) return "#f8fafc";
+        const lum = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+        return lum > 0.6 ? "#0f172a" : "#f8fafc";
+      }
+
+      function buildPreviewScale(color, steps, baseStep, contrast = 0.5) {
+        const parsed = hexToRgb(color);
+        if (!parsed) return {};
+        const base = rgbToHsl(parsed);
+        const minStep = steps[0];
+        const maxStep = steps[steps.length - 1];
+        const scale = {};
+        const shift = Math.max(-1, Math.min(1, Number(contrast) / 100));
+        const positive = Math.max(0, shift);
+        const negative = Math.max(0, -shift);
+        const flatten = 1 - negative * 0.75;
+        for (const step of steps) {
+          if (step === baseStep) {
+            scale[step] = rgbToHex(parsed);
+            continue;
+          }
+
+          const dark = step > baseStep;
+          const ratio = dark
+            ? (step - baseStep) / Math.max(1, maxStep - baseStep)
+            : (baseStep - step) / Math.max(1, baseStep - minStep);
+          const l = dark
+            ? base.l - (base.l - 0.08) * ratio * (0.7 + positive * 0.4) * flatten
+            : base.l + (0.98 - base.l) * ratio * (0.8 + positive * 0.2) * flatten;
+          const saturationDrop = dark ? ratio * (0.12 + positive * 0.15) : ratio * (0.2 + positive * 0.1);
+          const s = base.s * (1 - saturationDrop * (1 - negative * 0.8));
+          scale[step] = rgbToHex(hslToRgb({ h: base.h, s: Math.max(0, Math.min(1, s)), l: Math.max(0.02, Math.min(0.98, l)) }));
+        }
+        return scale;
+      }
+
+      function clampContrastValue(value) {
+        const parsed = Number(value);
+        if (!Number.isFinite(parsed)) return 0;
+        return Math.max(-100, Math.min(100, Math.round(parsed)));
+      }
+
+      function formatContrastValue(value) {
+        return `${(value / 100).toFixed(2)} %`;
+      }
+
+      function updateContrastDisplay(value) {
+        const clamped = clampContrastValue(value);
+        const position = ((clamped + 100) / 200) * 100;
+        brandContrast.style.setProperty("--contrast-position", `${position}%`);
+        brandContrastValue.textContent = formatContrastValue(clamped);
+        return clamped;
+      }
+
+      function currentPreset() {
+        return state.presets.find((preset) => preset.id === state.presetId) || null;
+      }
+
+      function normalizePaletteKey(input) {
+        return String(input || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      function sanitizeFontFamilyLabel(input) {
+        return String(input || "")
+          .replace(/[\u0000-\u001f\u007f]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function buildPaletteKey(palette, index = 0) {
+        return normalizePaletteKey(palette?.key || palette?.name) || `palette-${index + 1}`;
+      }
+
+      function currentPreviewPalettes() {
+        const preset = currentPreset();
+        if (preset && Array.isArray(preset.previewPalettes) && preset.previewPalettes.length) {
+          return preset.previewPalettes.map((palette, index) => ({
+            ...palette,
+            key: buildPaletteKey(palette, index),
+          }));
+        }
+        return [];
+      }
+
+      function currentPresetPaletteOverrides() {
+        if (!state.presetId) return {};
+        const root = state.paletteOverrides && typeof state.paletteOverrides === "object" ? state.paletteOverrides : {};
+        return root[state.presetId] && typeof root[state.presetId] === "object" ? root[state.presetId] : {};
+      }
+
+      function getPaletteOverride(paletteKey) {
+        const overrides = currentPresetPaletteOverrides();
+        const normalizedKey = normalizePaletteKey(paletteKey);
+        return overrides[normalizedKey] && typeof overrides[normalizedKey] === "object" ? overrides[normalizedKey] : {};
+      }
+
+      function getResolvedPaletteColors(palette) {
+        const base = palette && palette.colorsByStep && typeof palette.colorsByStep === "object" ? palette.colorsByStep : {};
+        const overrides = getPaletteOverride(buildPaletteKey(palette));
+        return { ...base, ...overrides };
+      }
+
+      function ensureSelectedPaletteKeys(palettes) {
+        const keys = Array.isArray(palettes) ? palettes.map((palette, index) => buildPaletteKey(palette, index)) : [];
+        const available = new Set(keys);
+        const current = Array.isArray(state.selectedPaletteKeys) ? state.selectedPaletteKeys : [];
+        const filtered = current.map((key) => normalizePaletteKey(key)).filter((key) => available.has(key));
+        state.selectedPaletteKeys = filtered.length ? filtered : keys;
+      }
+
+      function customSelectEntries(select) {
+        return Array.from(select.options || []).map((option) => ({
+          value: String(option.value || ""),
+          label: String(option.textContent || option.label || option.value || "").trim(),
+          supportingText: String(option.dataset.supportingText || "").trim(),
+          icon: String(option.dataset.icon || "")
+            .trim()
+            .toLowerCase(),
+          disabled: Boolean(option.disabled),
+        }));
+      }
+
+      function createCustomSelectIcon(className, variant) {
+        if (!variant) return null;
+        const icon = document.createElement("span");
+        icon.className = `${className} is-${variant}`;
+        icon.setAttribute("aria-hidden", "true");
+        return icon;
+      }
+
+      function updateCustomSelectOptionStates(custom) {
+        if (!custom || !custom.optionsEl) return;
+        const buttons = Array.from(custom.optionsEl.querySelectorAll(".custom-select-option"));
+        for (const button of buttons) {
+          const value = String(button.dataset.value || "");
+          button.classList.toggle("is-selected", value === custom.select.value);
+          button.classList.toggle("is-active", value === custom.activeValue);
+          button.setAttribute("aria-selected", value === custom.select.value ? "true" : "false");
+        }
+      }
+
+      function closeCustomSelect(selectId = "", restoreFocus = false) {
+        const id = selectId || openCustomSelectId;
+        if (!id) return;
+        const custom = customSelectRegistry.get(id);
+        if (!custom) return;
+        custom.root.classList.remove("is-open");
+        custom.root.classList.remove("is-open-up");
+        custom.trigger.setAttribute("aria-expanded", "false");
+        custom.panel.hidden = true;
+        if (custom.searchInput) {
+          custom.searchInput.value = "";
+        }
+        if (custom.optionsEl) {
+          custom.optionsEl.style.maxHeight = `${custom.menuMaxHeight}px`;
+        }
+        custom.activeValue = custom.select.value;
+        if (restoreFocus) {
+          custom.trigger.focus();
+        }
+        if (openCustomSelectId === id) {
+          openCustomSelectId = "";
+        }
+      }
+
+      function closeAllCustomSelects(exceptId = "") {
+        for (const [id] of customSelectRegistry.entries()) {
+          if (exceptId && id === exceptId) continue;
+          closeCustomSelect(id, false);
+        }
+      }
+
+      function ensureCustomActiveVisible(custom) {
+        if (!custom || !custom.optionsEl) return;
+        const target = custom.optionsEl.querySelector(`.custom-select-option.is-active`);
+        if (target && typeof target.scrollIntoView === "function") {
+          target.scrollIntoView({ block: "nearest" });
+        }
+      }
+
+      function updateCustomSelectPanelLayout(custom) {
+        if (!custom || !custom.root || !custom.optionsEl) return;
+        const panelGap = 10;
+        const container = custom.root.closest(".modal-panel") || document.documentElement;
+        const rootRect = custom.root.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const availableBelow = Math.max(0, containerRect.bottom - rootRect.bottom - panelGap - 4);
+        const availableAbove = Math.max(0, rootRect.top - containerRect.top - panelGap - 4);
+        const preferred = custom.menuMaxHeight;
+        const minimum = Math.min(160, preferred);
+        const shouldOpenUp = availableBelow < minimum && availableAbove > availableBelow;
+        custom.root.classList.toggle("is-open-up", shouldOpenUp);
+        const available = shouldOpenUp ? availableAbove : availableBelow;
+        const resolved = Math.max(120, Math.min(preferred, Math.floor(available)));
+        custom.optionsEl.style.maxHeight = `${resolved}px`;
+      }
+
+      function renderCustomSelectOptions(custom) {
+        if (!custom) return;
+        const query = custom.searchable ? String(custom.searchInput?.value || "").trim().toLowerCase() : "";
+        const filtered = custom.entries.filter((entry) => {
+          if (!query) return true;
+          const optionText = `${entry.label} ${entry.supportingText || ""}`.trim().toLowerCase();
+          return optionText.includes(query);
+        });
+        let renderEntries = filtered;
+        if (custom.searchable && filtered.length > custom.renderLimit) {
+          renderEntries = filtered.slice(0, custom.renderLimit);
+          const selectedEntry = filtered.find((entry) => entry.value === custom.select.value);
+          if (selectedEntry && !renderEntries.some((entry) => entry.value === selectedEntry.value)) {
+            renderEntries = [selectedEntry, ...renderEntries.slice(0, Math.max(0, custom.renderLimit - 1))];
+          }
+        }
+        custom.filteredValues = renderEntries.map((entry) => entry.value);
+
+        if (!custom.filteredValues.includes(custom.activeValue)) {
+          custom.activeValue = custom.filteredValues.includes(custom.select.value)
+            ? custom.select.value
+            : custom.filteredValues.find((value) => {
+                const entry = renderEntries.find((item) => item.value === value);
+                return entry && !entry.disabled;
+              }) || "";
+        }
+
+        custom.optionsEl.innerHTML = "";
+        if (!renderEntries.length) {
+          const empty = document.createElement("div");
+          empty.className = "custom-select-empty";
+          empty.textContent = "Aucun résultat";
+          custom.optionsEl.appendChild(empty);
+          return;
+        }
+
+        renderEntries.forEach((entry) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "custom-select-option ds-select-option";
+          option.dataset.value = entry.value;
+          option.disabled = entry.disabled;
+          option.setAttribute("role", "option");
+          option.setAttribute("aria-selected", entry.value === custom.select.value ? "true" : "false");
+
+          const content = document.createElement("span");
+          content.className = "custom-select-option-content ds-select-option-content";
+
+          const leading = createCustomSelectIcon("custom-select-option-leading", entry.icon);
+          if (leading) {
+            content.appendChild(leading);
+          }
+
+          const text = document.createElement("span");
+          text.className = "custom-select-option-text ds-select-option-text";
+
+          const label = document.createElement("span");
+          label.className = "custom-select-option-label ds-select-option-label";
+          label.textContent = entry.label || entry.value;
+          text.appendChild(label);
+
+          if (entry.supportingText) {
+            const support = document.createElement("span");
+            support.className = "custom-select-option-support ds-select-option-support";
+            support.textContent = entry.supportingText;
+            text.appendChild(support);
+          }
+
+          content.appendChild(text);
+
+          const check = document.createElement("span");
+          check.className = "custom-select-option-check ds-select-option-check";
+          check.setAttribute("aria-hidden", "true");
+          content.appendChild(check);
+
+          option.appendChild(content);
+
+          option.addEventListener("mouseenter", () => {
+            if (entry.disabled) return;
+            custom.activeValue = entry.value;
+            updateCustomSelectOptionStates(custom);
+          });
+          option.addEventListener("click", () => {
+            if (entry.disabled) return;
+            if (custom.select.value !== entry.value) {
+              custom.select.value = entry.value;
+              custom.select.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+            closeCustomSelect(custom.id, true);
+            refreshCustomSelect(custom.select);
+          });
+          custom.optionsEl.appendChild(option);
+        });
+
+        if (renderEntries.length < filtered.length) {
+          const note = document.createElement("div");
+          note.className = "custom-select-note";
+          note.textContent = `${renderEntries.length}/${filtered.length} polices affichées. Tape pour filtrer.`;
+          custom.optionsEl.appendChild(note);
+        }
+
+        updateCustomSelectOptionStates(custom);
+      }
+
+      function moveCustomSelectActive(custom, direction) {
+        if (!custom || !Array.isArray(custom.filteredValues) || !custom.filteredValues.length) return;
+        const selectable = custom.filteredValues.filter((value) => {
+          const entry = custom.entries.find((item) => item.value === value);
+          return entry && !entry.disabled;
+        });
+        if (!selectable.length) return;
+        const current = selectable.indexOf(custom.activeValue);
+        const base = current >= 0 ? current : Math.max(0, selectable.indexOf(custom.select.value));
+        const next = Math.max(0, Math.min(selectable.length - 1, base + direction));
+        custom.activeValue = selectable[next];
+        updateCustomSelectOptionStates(custom);
+        ensureCustomActiveVisible(custom);
+      }
+
+      function openCustomSelect(custom) {
+        if (!custom || custom.select.disabled) return;
+        closeAllCustomSelects(custom.id);
+        custom.root.classList.add("is-open");
+        custom.trigger.setAttribute("aria-expanded", "true");
+        custom.panel.hidden = false;
+        updateCustomSelectPanelLayout(custom);
+        custom.activeValue = custom.select.value;
+        renderCustomSelectOptions(custom);
+        openCustomSelectId = custom.id;
+        if (custom.searchable && custom.searchInput) {
+          custom.searchInput.focus();
+          custom.searchInput.select();
+        } else {
+          custom.trigger.focus();
+        }
+      }
+
+      function refreshCustomSelect(selectInput) {
+        const select = selectInput && selectInput.tagName === "SELECT" ? selectInput : null;
+        if (!select || !select.id) return;
+        const custom = customSelectRegistry.get(select.id);
+        if (!custom) return;
+        custom.entries = customSelectEntries(select);
+        custom.root.classList.toggle("is-disabled", select.disabled);
+        custom.trigger.disabled = Boolean(select.disabled);
+        const selected = custom.entries.find((entry) => entry.value === select.value);
+        const fallback = custom.entries.find((entry) => !entry.disabled) || custom.entries[0];
+        const current = selected || fallback || null;
+        if (current && select.value !== current.value) {
+          select.value = current.value;
+        }
+        custom.valueEl.textContent = current ? current.label : "";
+        const showPlaceholder = !current || current.value === "";
+        custom.valueEl.classList.toggle("is-placeholder", showPlaceholder);
+        custom.trigger.setAttribute("title", current ? current.label : "");
+        if (!current) {
+          custom.activeValue = "";
+        } else if (!custom.entries.some((entry) => entry.value === custom.activeValue)) {
+          custom.activeValue = current.value;
+        }
+        if (custom.root.classList.contains("is-open")) {
+          updateCustomSelectPanelLayout(custom);
+        }
+        renderCustomSelectOptions(custom);
+      }
+
+      function refreshAllCustomSelects() {
+        for (const custom of customSelectRegistry.values()) {
+          refreshCustomSelect(custom.select);
+        }
+      }
+
+      function initCustomSelects() {
+        const selects = Array.from(document.querySelectorAll("select.ui-select"));
+        for (const select of selects) {
+          if (!select.id || customSelectRegistry.has(select.id)) continue;
+          select.classList.add("ui-select-native");
+          const searchable = String(select.dataset.searchable || "") === "true";
+          const menuMaxHeightCandidate = Number(select.dataset.menuMaxHeight || "");
+          const menuMaxHeight = Number.isFinite(menuMaxHeightCandidate) && menuMaxHeightCandidate > 0
+            ? Math.round(menuMaxHeightCandidate)
+            : select.closest(".modal-field-count")
+              ? 260
+              : 302;
+          const renderLimitCandidate = Number(select.dataset.renderLimit || "");
+          const renderLimit = Number.isFinite(renderLimitCandidate) && renderLimitCandidate > 0
+            ? Math.round(renderLimitCandidate)
+            : 250;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "custom-select ds-select-root";
+          if (select.closest(".modal-field-count")) {
+            wrapper.classList.add("custom-select--compact");
+          }
+          if (searchable) {
+            wrapper.classList.add("custom-select--searchable");
+          }
+
+          const trigger = document.createElement("button");
+          trigger.type = "button";
+          trigger.className = "custom-select-trigger ds-select-trigger";
+          trigger.setAttribute("aria-haspopup", "listbox");
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.setAttribute("aria-controls", `custom-select-panel-${select.id}`);
+
+          if (searchable) {
+            const searchIcon = createCustomSelectIcon("custom-select-leading-icon", "search");
+            if (searchIcon) {
+              trigger.appendChild(searchIcon);
+            }
+          }
+
+          const value = document.createElement("span");
+          value.className = "custom-select-value ds-select-value";
+          const chevron = document.createElement("span");
+          chevron.className = "custom-select-chevron ds-select-chevron";
+          trigger.appendChild(value);
+          trigger.appendChild(chevron);
+
+          const panel = document.createElement("div");
+          panel.className = "custom-select-panel ds-select-panel";
+          panel.id = `custom-select-panel-${select.id}`;
+          panel.hidden = true;
+          panel.setAttribute("role", "listbox");
+
+          let searchInput = null;
+          if (searchable) {
+            searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.className = "custom-select-search ds-select-search";
+            searchInput.placeholder = String(select.dataset.searchPlaceholder || "Rechercher...");
+            panel.appendChild(searchInput);
+          }
+
+          const options = document.createElement("div");
+          options.className = "custom-select-options ds-select-options";
+          options.style.maxHeight = `${menuMaxHeight}px`;
+          panel.appendChild(options);
+
+          wrapper.appendChild(trigger);
+          wrapper.appendChild(panel);
+          select.insertAdjacentElement("afterend", wrapper);
+
+          const custom = {
+            id: select.id,
+            select,
+            root: wrapper,
+            trigger,
+            valueEl: value,
+            panel,
+            optionsEl: options,
+            searchInput,
+            searchable,
+            menuMaxHeight,
+            renderLimit,
+            entries: [],
+            filteredValues: [],
+            activeValue: String(select.value || ""),
+          };
+          customSelectRegistry.set(select.id, custom);
+
+          trigger.addEventListener("click", () => {
+            if (custom.root.classList.contains("is-open")) {
+              closeCustomSelect(custom.id, true);
+              return;
+            }
+            openCustomSelect(custom);
+          });
+
+          trigger.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowDown") {
+              event.preventDefault();
+              if (!custom.root.classList.contains("is-open")) openCustomSelect(custom);
+              moveCustomSelectActive(custom, 1);
+              return;
+            }
+            if (event.key === "ArrowUp") {
+              event.preventDefault();
+              if (!custom.root.classList.contains("is-open")) openCustomSelect(custom);
+              moveCustomSelectActive(custom, -1);
+              return;
+            }
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              if (!custom.root.classList.contains("is-open")) {
+                openCustomSelect(custom);
+              } else if (custom.activeValue !== "" && custom.select.value !== custom.activeValue) {
+                custom.select.value = custom.activeValue;
+                custom.select.dispatchEvent(new Event("change", { bubbles: true }));
+                closeCustomSelect(custom.id, true);
+                refreshCustomSelect(custom.select);
+              } else {
+                closeCustomSelect(custom.id, true);
+              }
+              return;
+            }
+            if (event.key === "Escape") {
+              event.preventDefault();
+              closeCustomSelect(custom.id, true);
+            }
+          });
+
+          if (searchInput) {
+            searchInput.addEventListener("input", () => {
+              renderCustomSelectOptions(custom);
+            });
+            searchInput.addEventListener("keydown", (event) => {
+              if (event.key === "ArrowDown") {
+                event.preventDefault();
+                moveCustomSelectActive(custom, 1);
+                return;
+              }
+              if (event.key === "ArrowUp") {
+                event.preventDefault();
+                moveCustomSelectActive(custom, -1);
+                return;
+              }
+              if (event.key === "Enter") {
+                event.preventDefault();
+                if (custom.activeValue !== "" && custom.select.value !== custom.activeValue) {
+                  custom.select.value = custom.activeValue;
+                  custom.select.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+                closeCustomSelect(custom.id, true);
+                refreshCustomSelect(custom.select);
+                return;
+              }
+              if (event.key === "Escape") {
+                event.preventDefault();
+                closeCustomSelect(custom.id, true);
+              }
+            });
+          }
+
+          select.addEventListener("change", () => {
+            refreshCustomSelect(select);
+          });
+
+          refreshCustomSelect(select);
+        }
+
+        if (!window.__starterTokensCustomSelectGlobalHandlers) {
+          window.__starterTokensCustomSelectGlobalHandlers = true;
+          document.addEventListener("pointerdown", (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const inside = target.closest(".custom-select");
+            if (!inside) {
+              closeAllCustomSelects();
+            }
+          });
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+              closeAllCustomSelects();
+              return;
+            }
+            if (event.key === "Tab") {
+              closeAllCustomSelects();
+            }
+          });
+          document.addEventListener("focusin", (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const inside = target.closest(".custom-select");
+            if (!inside) {
+              closeAllCustomSelects();
+            }
+          });
+        }
+      }
+
+      function setInputError(input, hasError) {
+        if (!input) return;
+        input.classList.toggle("is-error", Boolean(hasError));
+        if (input.tagName === "SELECT" && input.id) {
+          const custom = customSelectRegistry.get(input.id);
+          if (custom) {
+            custom.root.classList.toggle("is-error", Boolean(hasError));
+          }
+        }
+      }
+
+      function applyStep2FieldErrors() {
+        setInputError(baseWhiteInput, !isValidColor(state.baseWhite));
+        setInputError(baseBlackInput, !isValidColor(state.baseBlack));
+      }
+
+      function applyStep3FieldErrors() {
+        setInputError(presetSelect, !state.presetId);
+        setInputError(neutralSelect, Boolean(state.presetId) && !state.neutralChoice);
+      }
+
+      function clearStep3FieldErrors() {
+        setInputError(presetSelect, false);
+        setInputError(neutralSelect, false);
+      }
+
+      function isHexColor(input) {
+        return /^#([0-9a-f]{6})$/i.test(String(input || "").trim());
+      }
+
+      function normalizeHexColor(input) {
+        const raw = String(input || "").trim();
+        if (!raw) return "";
+        let value = raw;
+        if (!value.startsWith("#") && /^[0-9a-f]{6}$/i.test(value)) {
+          value = `#${value}`;
+        }
+        const shortMatch = value.match(/^#([0-9a-f]{3})$/i);
+        if (shortMatch) {
+          const [, short] = shortMatch;
+          value = `#${short[0]}${short[0]}${short[1]}${short[1]}${short[2]}${short[2]}`;
+        }
+        return isHexColor(value) ? value.toUpperCase() : "";
+      }
+
+      function resolveModalBrandColor() {
+        const fromHexField = normalizeHexColor(brandModalHex?.value);
+        if (fromHexField) return fromHexField;
+        const fromPicker = normalizeHexColor(brandModalPicker?.value);
+        if (fromPicker) return fromPicker;
+        return DEFAULT_MODAL_BRAND_COLOR;
+      }
+
+      function computePaletteShadeCount(palettes) {
+        if (!Array.isArray(palettes)) return 0;
+        return palettes.reduce((total, palette) => {
+          const steps = Array.isArray(palette.steps) ? palette.steps.length : 0;
+          if (steps) return total + steps;
+          const values = palette.colorsByStep && typeof palette.colorsByStep === "object" ? Object.keys(palette.colorsByStep).length : 0;
+          return total + values;
+        }, 0);
+      }
+
+      function resolveBrandScale(brand, steps, baseStep) {
+        const fromBrand = {};
+        const inputScale = brand && brand.scale && typeof brand.scale === "object" ? brand.scale : null;
+        if (inputScale) {
+          for (const step of steps) {
+            const value = inputScale[String(step)];
+            if (isValidColor(value)) {
+              fromBrand[step] = String(value).trim();
+            }
+          }
+        }
+        if (Object.keys(fromBrand).length === steps.length) return fromBrand;
+        const contrast = Number(brand && Number.isFinite(Number(brand.contrast)) ? brand.contrast : 0);
+        if (!isValidColor(brand?.color)) return fromBrand;
+        return buildPreviewScale(brand.color, steps, baseStep, contrast);
+      }
+
+      function syncBrandSetupValues() {
+        state.uiMode = normalizeUiModeValue(uiModeSelect.value);
+        state.baseWhite = String(baseWhiteInput.value || "").trim();
+        state.baseBlack = String(baseBlackInput.value || "").trim();
+      }
+
+      function syncPaletteSetupValues() {
+        state.neutralChoice = normalizePaletteKey(neutralSelect.value);
+      }
+
+      function syncBrandModalSwatch() {
+        if (!brandModalSwatch) return;
+        const color = resolveModalBrandColor();
+        brandModalSwatch.style.background = color;
+      }
+
+      function setStatus(text, type = "") {
+        status.textContent = text;
+        status.className = `status ${type}`;
+      }
+
+      function setGenerationControlsDisabled(disabled) {
+        nextBtn.disabled = Boolean(disabled);
+        backBtn.disabled = Boolean(disabled);
+        stepButtons.forEach((button) => {
+          button.disabled = Boolean(disabled);
+        });
+      }
+
+      function clearGenerationWatchdog() {
+        generationInFlight = false;
+        if (generationSlowTimer) {
+          clearTimeout(generationSlowTimer);
+          generationSlowTimer = null;
+        }
+        if (generationVerySlowTimer) {
+          clearTimeout(generationVerySlowTimer);
+          generationVerySlowTimer = null;
+        }
+        if (generationFailSafeTimer) {
+          clearTimeout(generationFailSafeTimer);
+          generationFailSafeTimer = null;
+        }
+        setGenerationControlsDisabled(false);
+      }
+
+      function startGenerationWatchdog() {
+        clearGenerationWatchdog();
+        generationInFlight = true;
+        setGenerationControlsDisabled(true);
+        generationSlowTimer = setTimeout(() => {
+          if (!generationInFlight) return;
+          setStatus("Génération en cours... (traitement des variables)");
+        }, 8000);
+        generationVerySlowTimer = setTimeout(() => {
+          if (!generationInFlight) return;
+          setStatus("Toujours en cours... (vérification des polices et variables)");
+        }, 20000);
+        generationFailSafeTimer = setTimeout(() => {
+          if (!generationInFlight) return;
+          clearGenerationWatchdog();
+          setStatus("Aucun retour du moteur de génération. Réessaie ou relance le plugin.", "err");
+        }, 60000);
+      }
+
+      function clearReport() {
+        reportBox.style.display = "none";
+        reportBox.textContent = "";
+      }
+
+      function reportUiRuntimeError(prefix, detail) {
+        const message = `${prefix}: ${detail || "Erreur inconnue"}`;
+        console.error(`[Starter Tokens][UI] ${message}`);
+        clearGenerationWatchdog();
+        setStatus(message, "err");
+        reportBox.style.display = "block";
+        reportBox.textContent = message;
+      }
+
+      function installUiDiagnostics() {
+        if (window.__starterTokensUiDiagnosticsInstalled) return;
+        window.__starterTokensUiDiagnosticsInstalled = true;
+        window.addEventListener("error", (event) => {
+          reportUiRuntimeError("Erreur UI", event?.message || "");
+        });
+        window.addEventListener("unhandledrejection", (event) => {
+          const reason = event?.reason;
+          const detail = reason instanceof Error ? reason.message : String(reason || "");
+          reportUiRuntimeError("Promesse non gérée", detail);
+        });
+      }
+
+      function renderPatterns() {
+        shadeCountSelect.innerHTML = "";
+        for (let i = MIN_SHADE_COUNT; i <= MAX_SHADE_COUNT; i++) {
+          const option = document.createElement("option");
+          option.value = String(i);
+          option.textContent = String(i);
+          shadeCountSelect.appendChild(option);
+        }
+        shadeCountSelect.value = String(state.shadeCount);
+        refreshCustomSelect(shadeCountSelect);
+      }
+
+      function updateStepper() {
+        const hints = {
+          1: "Niveau de tokens",
+          2: "Brand colors",
+          3: "Palette colors",
+          4: "Typography",
+        };
+
+        stepButtons.forEach((node, index) => {
+          const step = Number(node.dataset.step);
+          node.classList.toggle("active", step === state.step);
+          node.disabled = step > 4;
+        });
+
+        Object.entries(screens).forEach(([key, node]) => {
+          node.classList.toggle("active", Number(key) === state.step);
+        });
+
+        backBtn.disabled = state.step === 1;
+        if (state.step === 4) {
+          nextBtn.textContent = "Générer";
+        } else {
+          nextBtn.textContent = "Continuer";
+        }
+
+        stepHint.textContent = hints[state.step] || "";
+      }
+
+      function renderModeCards() {
+        document.querySelectorAll("[data-level]").forEach((card) => {
+          const selected = card.dataset.level === state.tokenLevel;
+          card.classList.toggle("selected", selected);
+          const dot = card.querySelector(".dot");
+          if (dot) {
+            dot.style.background = selected ? "#ffffff" : "transparent";
+          }
+        });
+      }
+
+      function renderBrands() {
+        brandsContainer.innerHTML = "";
+        const steps = deriveShadeSteps(state.namingPattern, state.shadeCount);
+        const baseStep = resolveBaseStep(steps);
+
+        state.brands.forEach((brand, index) => {
+          const card = document.createElement("article");
+          card.className = "brand-card";
+
+          const top = document.createElement("div");
+          top.className = "brand-title";
+          const name = document.createElement("strong");
+          name.textContent = brand.name || `brand-${index + 1}`;
+
+          const actions = document.createElement("div");
+          actions.className = "brand-card-actions";
+
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.className = "brand-edit";
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", () => openBrandModal("edit", index));
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.type = "button";
+          deleteBtn.className = "brand-delete";
+          deleteBtn.textContent = "Supprimer";
+          deleteBtn.disabled = state.brands.length <= 1;
+          deleteBtn.addEventListener("click", () => removeBrand(index));
+
+          top.appendChild(name);
+          actions.appendChild(editBtn);
+          actions.appendChild(deleteBtn);
+          top.appendChild(actions);
+
+          const swatches = document.createElement("div");
+          swatches.className = "brand-swatch-row";
+
+          const scale = resolveBrandScale(brand, steps, baseStep);
+          for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+            if (!scale[step]) continue;
+            const sw = document.createElement("div");
+            sw.className = "brand-swatch";
+            sw.style.background = scale[step];
+            swatches.appendChild(sw);
+          }
+
+          card.appendChild(top);
+          card.appendChild(swatches);
+          brandsContainer.appendChild(card);
+        });
+
+        addBrandBtn.textContent = state.brands.length ? "Ajouter une couleur" : "Ajouter votre primary brand";
+      }
+
+      function removeBrand(index) {
+        if (!Number.isInteger(index) || index < 0 || index >= state.brands.length) return;
+        if (state.brands.length <= 1) {
+          brandError.textContent = "Il faut garder au moins une primary brand.";
+          return;
+        }
+        state.brands.splice(index, 1);
+        brandError.textContent = "";
+        renderBrands();
+      }
+
+      function renderPresetSelector() {
+        presetSelect.innerHTML = "";
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Select Base Librari";
+        presetSelect.appendChild(placeholder);
+
+        state.presets.forEach((preset) => {
+          const option = document.createElement("option");
+          option.value = preset.id;
+          option.textContent = preset.label;
+          presetSelect.appendChild(option);
+        });
+
+        if (!state.presetId || !state.presets.some((preset) => preset.id === state.presetId)) {
+          state.presetId = "";
+        }
+        presetSelect.value = state.presetId;
+        clearStep3FieldErrors();
+        refreshCustomSelect(presetSelect);
+
+        renderPaletteSection();
+      }
+
+      function renderPaletteSection() {
+        const preset = currentPreset();
+        if (!preset) {
+          neutralSelect.innerHTML = "";
+          const neutralPlaceholder = document.createElement("option");
+          neutralPlaceholder.value = "";
+          neutralPlaceholder.textContent = "Select Base Neutral";
+          neutralSelect.appendChild(neutralPlaceholder);
+          neutralSelect.value = "";
+          neutralSelect.disabled = true;
+          refreshCustomSelect(neutralSelect);
+          state.neutralChoice = "";
+          state.selectedPaletteKeys = [];
+          document.getElementById("presetShadeInfo").textContent = "0 Shades";
+          presetInfo.textContent = "Choisis une base librari pour charger les palettes.";
+          renderPresetCards([]);
+          return;
+        }
+
+        const palettes = currentPreviewPalettes();
+        ensureSelectedPaletteKeys(palettes);
+
+        neutralSelect.innerHTML = "";
+        const neutralPlaceholder = document.createElement("option");
+        neutralPlaceholder.value = "";
+        neutralPlaceholder.textContent = "Select Base Neutral";
+        neutralSelect.appendChild(neutralPlaceholder);
+        preset.neutralOptions.forEach((optionValue) => {
+          const option = document.createElement("option");
+          option.value = normalizePaletteKey(optionValue);
+          option.textContent = optionValue;
+          neutralSelect.appendChild(option);
+        });
+        neutralSelect.disabled = false;
+        const normalizedNeutralOptions = preset.neutralOptions.map((optionValue) => normalizePaletteKey(optionValue));
+        if (!normalizedNeutralOptions.includes(state.neutralChoice)) {
+          state.neutralChoice = "";
+        }
+        if (state.neutralChoice && !state.selectedPaletteKeys.includes(state.neutralChoice)) {
+          state.selectedPaletteKeys.push(state.neutralChoice);
+        }
+        neutralSelect.value = state.neutralChoice;
+        refreshCustomSelect(neutralSelect);
+        syncPaletteSetupValues();
+
+        const selectedPalettes = palettes.filter((palette) => state.selectedPaletteKeys.includes(buildPaletteKey(palette)));
+        const totalShades = computePaletteShadeCount(selectedPalettes);
+        document.getElementById("presetShadeInfo").textContent = `${totalShades} Shades`;
+        const neutralLabel = state.neutralChoice || "not selected";
+        presetInfo.textContent = `Preset: ${preset.label} | palettes sélectionnées: ${selectedPalettes.length}/${preset.paletteCount} | steps: ${preset.steps.join(", ")}. colors/gray/* alias vers ${neutralLabel}.`;
+
+        renderPresetCards(palettes);
+      }
+
+      function renderPresetCards(palettes) {
+        paletteCards.innerHTML = "";
+        if (!Array.isArray(palettes) || !palettes.length) {
+          const empty = document.createElement("p");
+          empty.className = "muted";
+          empty.style.padding = "4px 0";
+          empty.textContent = "Prévisualisation indisponible.";
+          paletteCards.appendChild(empty);
+          return;
+        }
+
+        palettes.forEach((palette, index) => {
+          const paletteKey = buildPaletteKey(palette, index);
+          const isSelected = state.selectedPaletteKeys.includes(paletteKey);
+          const isNeutralPalette = state.neutralChoice === paletteKey;
+          const card = document.createElement("article");
+          card.className = "palette-card";
+          if (!isSelected) card.classList.add("is-disabled");
+
+          const row = document.createElement("div");
+          row.className = "palette-row";
+
+          const left = document.createElement("div");
+          left.className = "palette-left";
+
+          const checkbox = document.createElement("span");
+          checkbox.className = "palette-check";
+          if (!isSelected) checkbox.classList.add("is-unchecked");
+          checkbox.textContent = "✓";
+          checkbox.addEventListener("click", () => togglePaletteSelection(paletteKey));
+
+          const title = document.createElement("span");
+          title.className = "palette-name";
+          title.textContent = palette.name || "Palette";
+          left.appendChild(checkbox);
+          left.appendChild(title);
+          if (isNeutralPalette) {
+            const neutralBadge = document.createElement("span");
+            neutralBadge.className = "palette-neutral-badge";
+            neutralBadge.textContent = "Base neutral";
+            left.appendChild(neutralBadge);
+          }
+
+          const controls = document.createElement("div");
+          controls.className = "palette-controls";
+
+          const shadeCount = document.createElement("span");
+          shadeCount.className = "palette-count-badge";
+          const stepCount = Array.isArray(palette.steps) ? palette.steps.length : 0;
+          shadeCount.textContent = String(stepCount);
+
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.className = "palette-edit";
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", () => openPaletteInBrandModal(palette, index));
+
+          row.appendChild(left);
+          controls.appendChild(shadeCount);
+          controls.appendChild(editBtn);
+          row.appendChild(controls);
+          card.appendChild(row);
+
+          const swatchRow = document.createElement("div");
+          swatchRow.className = "palette-swatch-row";
+          const steps = Array.isArray(palette.steps) ? palette.steps : [];
+          const values = getResolvedPaletteColors(palette);
+          for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+            const item = document.createElement("div");
+            item.className = "palette-swatch";
+            if (step && values[step]) item.style.background = values[step];
+            swatchRow.appendChild(item);
+          }
+          card.appendChild(swatchRow);
+
+          paletteCards.appendChild(card);
+        });
+      }
+
+      function togglePaletteSelection(paletteKey) {
+        const key = normalizePaletteKey(paletteKey);
+        if (!key) return;
+        const selected = new Set(state.selectedPaletteKeys.map((entry) => normalizePaletteKey(entry)));
+        if (selected.has(key)) {
+          if (state.neutralChoice === key) {
+            presetError.textContent = "Base Neutral doit rester sélectionnée.";
+            return;
+          }
+          if (selected.size <= 1) {
+            presetError.textContent = "Sélectionne au moins une palette.";
+            return;
+          }
+          selected.delete(key);
+        } else {
+          selected.add(key);
+          presetError.textContent = "";
+        }
+        state.selectedPaletteKeys = Array.from(selected);
+        renderPaletteSection();
+      }
+
+      function openPaletteInBrandModal(palette, index = 0) {
+        if (!palette) return;
+        const paletteKey = buildPaletteKey(palette, index);
+        const values = getResolvedPaletteColors(palette);
+        const steps = Array.isArray(palette.steps) && palette.steps.length ? palette.steps.map((step) => Number(step)).filter(Number.isFinite) : [];
+        const currentShadeCount = Math.max(MIN_SHADE_COUNT, Math.min(MAX_SHADE_COUNT, steps.length || state.shadeCount || 11));
+        const numericKeys = Object.keys(values)
+          .map((step) => Number(step))
+          .filter(Number.isFinite)
+          .sort((a, b) => a - b);
+        const preferredStep = numericKeys.includes(500)
+          ? 500
+          : numericKeys[Math.floor(numericKeys.length / 2)] || 500;
+        const preferredColor =
+          values[String(preferredStep)] ||
+          values["500"] ||
+          Object.values(values).find((value) => isValidColor(value)) ||
+          DEFAULT_MODAL_BRAND_COLOR;
+        const modalColor = isValidColor(preferredColor) ? String(preferredColor).trim() : DEFAULT_MODAL_BRAND_COLOR;
+
+        editingMode = "edit-palette";
+        editingPaletteKey = paletteKey;
+        editingBrandIndex = null;
+        brandModalTitle.textContent = "Edit Color Shade";
+        brandModalSave.textContent = "Enregistré les changements";
+        brandModalName.value = String(palette.name || paletteKey);
+        brandModalName.disabled = true;
+        brandModalHex.value = modalColor;
+        brandModalPicker.value = isHexColor(modalColor) ? modalColor : DEFAULT_MODAL_BRAND_COLOR;
+        brandContrast.value = "0";
+        state.shadeCount = currentShadeCount;
+        shadeCountSelect.value = String(currentShadeCount);
+        refreshCustomSelect(shadeCountSelect);
+        brandModalError.textContent = "";
+        renderBrandModalScale();
+        syncBrandModalSwatch();
+        brandModal.classList.remove("is-hidden");
+      }
+
+      function renderTypography() {
+        const families = Array.isArray(state.fontFamilies) ? state.fontFamilies.slice() : [];
+        const displayFamilies = [...new Set([state.typography.displayFamily, "Roboto", ...families])];
+        const bodyFamilies = [...new Set([state.typography.bodyFamily, "Inter", ...families])];
+
+        displayFamilySelect.innerHTML = "";
+        displayFamilies.forEach((family) => {
+          if (!family) return;
+          const option = document.createElement("option");
+          option.value = family;
+          option.textContent = family;
+          displayFamilySelect.appendChild(option);
+        });
+
+        bodyFamilySelect.innerHTML = "";
+        bodyFamilies.forEach((family) => {
+          if (!family) return;
+          const option = document.createElement("option");
+          option.value = family;
+          option.textContent = family;
+          bodyFamilySelect.appendChild(option);
+        });
+
+        if (![...displayFamilySelect.options].some((option) => option.value === state.typography.displayFamily)) {
+          const opt = document.createElement("option");
+          opt.value = state.typography.displayFamily;
+          opt.textContent = state.typography.displayFamily;
+          displayFamilySelect.appendChild(opt);
+        }
+
+        if (![...bodyFamilySelect.options].some((option) => option.value === state.typography.bodyFamily)) {
+          const opt = document.createElement("option");
+          opt.value = state.typography.bodyFamily;
+          opt.textContent = state.typography.bodyFamily;
+          bodyFamilySelect.appendChild(opt);
+        }
+
+        displayFamilySelect.value = state.typography.displayFamily;
+        bodyFamilySelect.value = state.typography.bodyFamily;
+        refreshCustomSelect(displayFamilySelect);
+        refreshCustomSelect(bodyFamilySelect);
+        createTextStylesCheckbox.checked = Boolean(state.createTextStyles);
+
+        fontGrid.innerHTML = "";
+        FONT_ORDER.forEach((key) => {
+          const wrap = document.createElement("div");
+          wrap.className = "field";
+          const label = document.createElement("label");
+          label.textContent = key;
+          label.style.fontSize = "12px";
+          label.style.color = "#94a3b8";
+          const input = document.createElement("input");
+          input.className = "ui-number";
+          input.type = "number";
+          input.value = String(state.typography.fontSizes[key] || "");
+          input.min = "1";
+          input.addEventListener("input", () => {
+            const value = Number(input.value);
+            if (Number.isFinite(value) && value > 0) {
+              state.typography.fontSizes[key] = value;
+            }
+          });
+          wrap.appendChild(label);
+          wrap.appendChild(input);
+          fontGrid.appendChild(wrap);
+        });
+      }
+
+      function syncTypography() {
+        state.typography.displayFamily = String(displayFamilySelect.value || "Roboto").trim() || "Roboto";
+        state.typography.bodyFamily = String(bodyFamilySelect.value || "Inter").trim() || "Inter";
+        state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
+      }
+
+      function renderBrandModalScale() {
+        const shadeCount = Math.max(
+          MIN_SHADE_COUNT,
+          Math.min(MAX_SHADE_COUNT, Number(shadeCountSelect.value || state.shadeCount || 11)),
+        );
+        state.shadeCount = shadeCount;
+        const steps = deriveShadeSteps(state.namingPattern, shadeCount);
+        const baseStep = resolveBaseStep(steps);
+        const color = resolveModalBrandColor();
+        const contrast = updateContrastDisplay(brandContrast.value || 0);
+        brandContrast.value = String(contrast);
+        const scale = isValidColor(color) ? buildPreviewScale(color, steps, baseStep, contrast) : {};
+        pendingBrandContrast = contrast;
+        pendingBrandScale = {};
+
+        brandModalShades.innerHTML = "";
+
+        for (let i = 0; i < steps.length; i++) {
+          const shade = document.createElement("button");
+          shade.type = "button";
+          shade.className = "modal-shade";
+          const step = steps[i];
+          const value = scale[step];
+          if (!value) continue;
+          pendingBrandScale[String(step)] = value;
+          shade.style.background = value;
+          shade.style.color = textColorForHex(value);
+          shade.textContent = String(step);
+          if (step === baseStep) {
+            shade.classList.add("active");
+          }
+          brandModalShades.appendChild(shade);
+        }
+      }
+
+      function openBrandModal(mode, index = null) {
+        editingMode = mode;
+        editingBrandIndex = index;
+        editingPaletteKey = "";
+        brandModalName.disabled = false;
+        const isAdd = mode === "add";
+
+        if (isAdd) {
+          const isFirst = state.brands.length === 0;
+          brandModalTitle.textContent = isFirst ? "Ajouter Brand Primary" : "Ajouter Brand Color";
+          brandModalSave.textContent = isFirst ? "Ajouter votre primary brand" : "Ajouter une couleur";
+          brandModalName.value = "";
+          brandModalName.placeholder = "Nom de la couleur (ex: brand-primary)";
+          brandModalHex.value = "";
+          brandModalHex.placeholder = "#ffffff";
+          brandModalPicker.value = "#FFFFFF";
+          brandContrast.value = "0";
+        } else if (index !== null && state.brands[index]) {
+          const brand = state.brands[index];
+          brandModalTitle.textContent = "Edit Color Shade";
+          brandModalSave.textContent = "Enregistré les changements";
+          brandModalName.placeholder = "Nom de la couleur (ex: brand-primary)";
+          brandModalHex.placeholder = "#ffffff";
+          brandModalName.value = brand.name || "";
+          const color = isValidColor(brand.color) ? brand.color : DEFAULT_MODAL_BRAND_COLOR;
+          brandModalHex.value = color;
+          brandModalPicker.value = isHexColor(color) ? color : DEFAULT_MODAL_BRAND_COLOR;
+          brandContrast.value = String(Number(brand.contrast || 0));
+        }
+
+        shadeCountSelect.value = String(state.shadeCount);
+        refreshCustomSelect(shadeCountSelect);
+        brandModalError.textContent = "";
+        renderBrandModalScale();
+        brandModal.classList.remove("is-hidden");
+      }
+
+      function closeBrandModal() {
+        brandModal.classList.add("is-hidden");
+        brandModalError.textContent = "";
+        editingBrandIndex = null;
+        editingPaletteKey = "";
+        editingMode = "add";
+        brandModalName.disabled = false;
+        pendingBrandScale = {};
+        pendingBrandContrast = 0;
+      }
+
+      function saveBrandModal() {
+        const fallbackName =
+          editingBrandIndex === null
+            ? state.brands.length === 0
+              ? "brand-primary"
+              : `brand-${state.brands.length + 1}`
+            : `brand-${editingBrandIndex + 1}`;
+        const name = String(brandModalName.value || "").trim() || fallbackName;
+        const color = resolveModalBrandColor();
+
+        if (!isValidColor(color)) {
+          brandModalError.textContent = "Couleur invalide.";
+          return;
+        }
+        brandModalHex.value = color;
+        brandModalPicker.value = color;
+
+        const payload = {
+          name,
+          color,
+          contrast: pendingBrandContrast,
+          scale: { ...pendingBrandScale },
+        };
+
+        if (editingMode === "edit-palette" && editingPaletteKey) {
+          if (!state.presetId) {
+            brandModalError.textContent = "Preset introuvable.";
+            return;
+          }
+          if (!state.paletteOverrides[state.presetId]) {
+            state.paletteOverrides[state.presetId] = {};
+          }
+          state.paletteOverrides[state.presetId][editingPaletteKey] = { ...pendingBrandScale };
+          presetError.textContent = "";
+          closeBrandModal();
+          renderPaletteSection();
+          return;
+        }
+
+        if (editingMode === "edit" && editingBrandIndex !== null && state.brands[editingBrandIndex]) {
+          state.brands[editingBrandIndex] = payload;
+          brandError.textContent = "";
+          closeBrandModal();
+          renderBrands();
+          return;
+        }
+
+        if (state.brands.length >= 10) {
+          brandModalError.textContent = "Maximum 10 couleurs atteinte.";
+          return;
+        }
+
+        state.brands.push(payload);
+        brandError.textContent = "";
+        closeBrandModal();
+        renderBrands();
+      }
+
+      function validateStep2() {
+        syncBrandSetupValues();
+        applyStep2FieldErrors();
+
+        if (!isValidColor(state.baseWhite)) return "Base white invalide.";
+        if (!isValidColor(state.baseBlack)) return "Base black invalide.";
+
+        if (!state.brands.length) {
+          return "Ajoute au moins une primary brand.";
+        }
+        const primary = state.brands[0];
+        if (!primary || !isValidColor(primary.color)) {
+          return "Brand primary invalide.";
+        }
+
+        const invalid = state.brands.slice(1).find((brand) => brand.color && !isValidColor(brand.color));
+        if (invalid) {
+          return `Couleur invalide: ${invalid.name || "brand"} (${invalid.color})`;
+        }
+        return "";
+      }
+
+      function validateStep3() {
+        syncPaletteSetupValues();
+        applyStep3FieldErrors();
+        if (!state.presetId) return "Base Librari obligatoire.";
+        if (!state.neutralChoice) return "Base Neutral obligatoire.";
+        if (!Array.isArray(state.selectedPaletteKeys) || !state.selectedPaletteKeys.length) {
+          return "Sélectionne au moins une palette.";
+        }
+        return "";
+      }
+
+      function moveStep(direction) {
+        if (direction > 0) {
+          if (state.step === 2) {
+            const err = validateStep2();
+            brandError.textContent = err;
+            if (err) return;
+          }
+          if (state.step === 3) {
+            const err = validateStep3();
+            presetError.textContent = err;
+            if (err) return;
+          }
+        }
+        const next = Math.max(1, Math.min(4, state.step + direction));
+        if (next !== state.step) {
+          state.step = next;
+        }
+        updateStepper();
+      }
+
+      function canNavigateToStep(targetStep) {
+        if (!Number.isFinite(targetStep) || targetStep < 1 || targetStep > 4) return false;
+        if (targetStep <= state.step) return true;
+
+        brandError.textContent = "";
+        presetError.textContent = "";
+
+        for (let step = state.step; step < targetStep; step += 1) {
+          if (step === 2) {
+            const err = validateStep2();
+            if (err) {
+              brandError.textContent = err;
+              state.step = 2;
+              updateStepper();
+              setStatus(err, "err");
+              return false;
+            }
+          }
+          if (step === 3) {
+            const err = validateStep3();
+            if (err) {
+              presetError.textContent = err;
+              state.step = 3;
+              updateStepper();
+              setStatus(err, "err");
+              return false;
+            }
+          }
+        }
+
+        return true;
+      }
+
+      function generate() {
+        if (generationInFlight) {
+          setStatus("Une génération est déjà en cours. Patiente quelques secondes.");
+          return;
+        }
+
+        const step2Error = validateStep2();
+        const step3Error = validateStep3();
+        brandError.textContent = step2Error;
+        presetError.textContent = step3Error;
+
+        if (step2Error || step3Error) {
+          if (step2Error) {
+            state.step = 2;
+          } else if (step3Error) {
+            state.step = 3;
+          }
+          updateStepper();
+          setStatus(step2Error || step3Error, "err");
+          return;
+        }
+
+        syncTypography();
+        clearReport();
+        setStatus("Génération en cours...");
+        startGenerationWatchdog();
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "generate-variables",
+              payload: {
+                tokenLevel: state.tokenLevel,
+                uiMode: state.uiMode,
+                namingPattern: state.namingPattern,
+                shadeCount: state.shadeCount,
+                brands: state.brands,
+                presetId: state.presetId,
+                neutralChoice: state.neutralChoice,
+                selectedPalettes: state.selectedPaletteKeys,
+                paletteOverrides: currentPresetPaletteOverrides(),
+                baseWhite: state.baseWhite,
+                baseBlack: state.baseBlack,
+                createTextStyles: state.createTextStyles,
+                typography: state.typography,
+              },
+            },
+          },
+          "*",
+        );
+      }
+
+      function syncStep1ModeCards() {
+        document.querySelectorAll("[data-level]").forEach((card) => {
+          card.addEventListener("click", () => {
+            const level = card.dataset.level;
+            if (!level || level === "semantic") return;
+            state.tokenLevel = level;
+            renderModeCards();
+          });
+        });
+      }
+
+      function syncEvents() {
+        stepButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const target = Number(button.dataset.step);
+            if (!Number.isFinite(target)) return;
+            if (target < 1 || target > 4) return;
+            if (!canNavigateToStep(target)) return;
+            state.step = target;
+            updateStepper();
+          });
+        });
+
+        backBtn.addEventListener("click", () => moveStep(-1));
+        nextBtn.addEventListener("click", () => {
+          if (state.step < 4) {
+            moveStep(1);
+            return;
+          }
+          generate();
+        });
+
+        uiModeSelect.addEventListener("change", () => {
+          state.uiMode = normalizeUiModeValue(uiModeSelect.value);
+        });
+
+        baseWhiteInput.addEventListener("input", () => {
+          state.baseWhite = String(baseWhiteInput.value || "").trim();
+          applyStep2FieldErrors();
+        });
+        baseBlackInput.addEventListener("input", () => {
+          state.baseBlack = String(baseBlackInput.value || "").trim();
+          applyStep2FieldErrors();
+        });
+
+        shadeCountSelect.addEventListener("change", () => {
+          state.shadeCount = Number(shadeCountSelect.value);
+          renderBrands();
+          renderBrandModalScale();
+        });
+
+        brandModalPicker.addEventListener("input", () => {
+          const value = normalizeHexColor(brandModalPicker.value) || DEFAULT_MODAL_BRAND_COLOR;
+          brandModalPicker.value = value;
+          brandModalHex.value = value;
+          syncBrandModalSwatch();
+          renderBrandModalScale();
+        });
+
+        brandModalHex.addEventListener("input", () => {
+          const normalized = normalizeHexColor(brandModalHex.value);
+          if (normalized) {
+            brandModalPicker.value = normalized;
+          }
+          syncBrandModalSwatch();
+          renderBrandModalScale();
+        });
+
+        brandContrast.addEventListener("input", () => {
+          renderBrandModalScale();
+        });
+
+        brandModalClose.addEventListener("click", closeBrandModal);
+        brandModalCancel.addEventListener("click", closeBrandModal);
+        brandModal.addEventListener("click", (event) => {
+          if (event.target === brandModal) {
+            closeBrandModal();
+          }
+        });
+
+        brandModalSave.addEventListener("click", saveBrandModal);
+
+        addBrandBtn.addEventListener("click", () => openBrandModal("add"));
+
+        presetSelect.addEventListener("change", () => {
+          state.presetId = String(presetSelect.value || "").trim();
+          state.neutralChoice = "";
+          state.selectedPaletteKeys = [];
+          clearStep3FieldErrors();
+          renderPaletteSection();
+        });
+
+        neutralSelect.addEventListener("change", () => {
+          state.neutralChoice = normalizePaletteKey(neutralSelect.value);
+          if (state.neutralChoice && !state.selectedPaletteKeys.includes(state.neutralChoice)) {
+            state.selectedPaletteKeys.push(state.neutralChoice);
+          }
+          clearStep3FieldErrors();
+          renderPaletteSection();
+        });
+
+        displayFamilySelect.addEventListener("change", () => {
+          state.typography.displayFamily = displayFamilySelect.value;
+        });
+        bodyFamilySelect.addEventListener("change", () => {
+          state.typography.bodyFamily = bodyFamilySelect.value;
+        });
+        createTextStylesCheckbox.addEventListener("change", () => {
+          state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
+        });
+
+        window.onmessage = (event) => {
+          const msg = event.data.pluginMessage;
+          if (!msg) return;
+
+          if (msg.type === "preset-list") {
+            state.presets = Array.isArray(msg.presets) ? msg.presets : [];
+            renderPresetSelector();
+            return;
+          }
+
+          if (msg.type === "font-families-list") {
+            const families = Array.isArray(msg.families)
+              ? msg.families
+                  .map((entry) => sanitizeFontFamilyLabel(entry))
+                  .filter(Boolean)
+                  .sort((a, b) => a.localeCompare(b))
+              : [];
+            state.fontFamilies = families;
+            renderTypography();
+            return;
+          }
+
+          if (msg.type === "generate-result") {
+            clearGenerationWatchdog();
+            const report = msg.report || {};
+            const text = `OK: +${report.created || 0} / ~${report.updated || 0} / collisions ${
+              report.collisionsReplaced || 0
+            }${report.aliasMissing ? ` / alias manquants ${report.aliasMissing}` : ""}`;
+            setStatus(text, "ok");
+
+            const messages = [];
+            if (Array.isArray(report.migrations) && report.migrations.length) {
+              messages.push("Migrations:");
+              messages.push(...report.migrations.slice(0, 120));
+            }
+            if (Array.isArray(report.warnings) && report.warnings.length) {
+              messages.push("Warnings:");
+              messages.push(...report.warnings.slice(0, 120));
+            }
+            if (messages.length) {
+              reportBox.style.display = "block";
+              reportBox.textContent = messages.join("\n");
+            } else {
+              clearReport();
+            }
+            return;
+          }
+
+          if (msg.type === "generate-progress") {
+            setStatus(msg.message || "Génération en cours...");
+            return;
+          }
+
+          if (msg.type === "generate-error") {
+            clearGenerationWatchdog();
+            setStatus(msg.message || "Erreur inconnue", "err");
+          }
+        };
+      }
+
+      function initialize() {
+        installUiDiagnostics();
+        state.uiMode = normalizeUiModeValue(state.uiMode);
+        uiModeSelect.value = state.uiMode;
+        baseWhiteInput.value = state.baseWhite;
+        baseBlackInput.value = state.baseBlack;
+        syncBrandModalSwatch();
+        renderPatterns();
+        renderModeCards();
+        renderBrands();
+        renderTypography();
+        initCustomSelects();
+        refreshAllCustomSelects();
+        updateStepper();
+        syncStep1ModeCards();
+        syncEvents();
+        parent.postMessage({ pluginMessage: { type: "ui-ready" } }, "*");
+      }
+
+      function renderPresetSection() {
+        renderPresetSelector();
+      }
+
+      initialize();
+    </script>
+  </body>
+</html>

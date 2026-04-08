@@ -1,0 +1,20 @@
+{
+  "name": "@starter-tokens/plugin-starter-tokens",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Starter Tokens Figma plugin package",
+  "scripts": {
+    "extract:presets": "node scripts/extract-presets.mjs",
+    "extract:palette-presets": "node scripts/extract-preset-palettes.mjs",
+    "extract:text-styles": "node scripts/extract-text-styles.mjs",
+    "extract:typography-reference": "node scripts/extract-typography-reference.mjs",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@esbuild/darwin-arm64": "^0.27.4",
+    "@figma/plugin-typings": "^1.117.0",
+    "esbuild": "^0.25.10",
+    "typescript": "^5.9.2"
+  }
+}
