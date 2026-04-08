@@ -1,0 +1,1682 @@
+﻿<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Starter Tokens V3</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --line: #cbd5e1;
+        --line-soft: #d0d5dd;
+        --text: #111827;
+        --muted: #4b5563;
+        --card: #e2e8f0;
+        --chip: #f8fafc;
+        --dark: #0f172a;
+        --danger: #b42318;
+        --ok: #047857;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: Inter, "Segoe UI", sans-serif;
+        background: var(--bg);
+      }
+
+      .root {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      .header {
+        border-bottom: 1px solid var(--line);
+        padding: 16px 24px;
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .content {
+        flex: 1;
+        padding: 24px;
+      }
+
+      .stepper {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+      }
+
+      .stepper-btn {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #cbd5e1;
+        color: var(--text);
+        padding: 9px 14px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .stepper-btn.active {
+        background: var(--dark);
+        border-color: var(--dark);
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .screen {
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 42px;
+        line-height: 1.1;
+      }
+
+      .subtitle {
+        margin: 10px 0 22px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.3;
+      }
+
+      .level-cards {
+        display: grid;
+        gap: 16px;
+      }
+
+      .level-card {
+        border: 2px solid transparent;
+        border-radius: 16px;
+        padding: 20px;
+        background: var(--card);
+        cursor: pointer;
+      }
+
+      .level-card.selected {
+        border-color: #94a3b8;
+      }
+
+      .level-card.disabled {
+        opacity: 0.52;
+        cursor: not-allowed;
+      }
+
+      .level-tag {
+        display: inline-flex;
+        margin-bottom: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--chip);
+        color: var(--muted);
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+
+      .level-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .level-title {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.1;
+      }
+
+      .radio-dot {
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        border: 2px solid #64748b;
+        background: white;
+      }
+
+      .radio-dot.active {
+        border-color: var(--dark);
+        box-shadow: inset 0 0 0 6px var(--dark);
+      }
+
+      .level-desc {
+        margin: 10px 0 14px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.3;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fafc;
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+
+      .mode-row {
+        margin-top: 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+        background: #f8fafc;
+      }
+
+      .mode-title {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .mode-options {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .mode-options label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+      }
+
+      .fields-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 16px;
+        align-items: end;
+        margin-bottom: 14px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        color: #111827;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        border: 1px solid var(--line-soft);
+        border-radius: 10px;
+        background: #ffffff;
+        color: var(--text);
+        padding: 10px 12px;
+        font-size: 13px;
+        font-family: inherit;
+      }
+
+      .add-btn {
+        width: 180px;
+        font-weight: 600;
+      }
+
+      .brands {
+        display: grid;
+        gap: 16px;
+      }
+
+      .brand-card {
+        border-radius: 16px;
+        background: var(--card);
+        padding: 16px;
+      }
+
+      .brand-title {
+        margin: 0 0 12px;
+        font-size: 32px;
+      }
+
+      .brand-input-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 44px;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .icon-btn {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+      }
+
+      .shades {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .shade {
+        position: relative;
+        height: 88px;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        background: #cbd5e1;
+        padding: 7px;
+        overflow: hidden;
+      }
+
+      .shade.empty {
+        color: #cbd5e1;
+      }
+
+      .shade-step {
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .shade-value {
+        position: absolute;
+        left: 7px;
+        bottom: 6px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .shade-dot {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      .preset-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .preset-preview {
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #ffffff;
+        padding: 14px;
+      }
+
+      .preset-preview-title {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .palette-section-title {
+        margin: 10px 0 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .palette-preview-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .palette-preview-item {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f8fafc;
+        padding: 8px;
+      }
+
+      .palette-preview-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .palette-preview-name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .palette-preview-count {
+        font-size: 12px;
+        color: #475569;
+      }
+
+      .swatch-row {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .swatch {
+        width: 24px;
+        height: 24px;
+        flex: 0 0 24px;
+        border-radius: 6px;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+      }
+
+      .notice {
+        margin-top: 14px;
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 13px;
+        color: #334155;
+        background: #f8fafc;
+        line-height: 1.35;
+      }
+
+      .font-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .font-dropdown-field {
+        position: relative;
+        display: grid;
+        gap: 4px;
+      }
+
+      .font-dropdown-label {
+        margin: 0;
+        font-family: Inter, "Segoe UI", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        color: #0f172a;
+      }
+
+      .font-dropdown-trigger {
+        height: 32px;
+        padding: 0 8px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .font-dropdown-trigger-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .font-dropdown-chevron {
+        width: 8px;
+        height: 8px;
+        border-right: 1.5px solid #64748b;
+        border-bottom: 1.5px solid #64748b;
+        transform: rotate(45deg);
+        transition: transform 0.15s ease;
+        flex: 0 0 auto;
+        margin-right: 1px;
+      }
+
+      .font-dropdown-trigger.open .font-dropdown-chevron {
+        transform: rotate(-135deg);
+      }
+
+      .font-dropdown-panel {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        z-index: 40;
+        max-height: 240px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+        padding: 8px;
+        display: none;
+        gap: 8px;
+      }
+
+      .font-dropdown-field.open .font-dropdown-panel {
+        display: grid;
+      }
+
+      .font-dropdown-search {
+        height: 32px;
+        padding: 0 8px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #0f172a;
+        font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .font-dropdown-list {
+        max-height: 184px;
+        overflow-y: auto;
+        display: grid;
+        gap: 2px;
+      }
+
+      .font-dropdown-item {
+        width: 100%;
+        border: 0;
+        border-radius: 4px;
+        background: transparent;
+        color: #0f172a;
+        text-align: left;
+        padding: 4px;
+        font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .font-dropdown-item:hover,
+      .font-dropdown-item.active {
+        background: #e8eefc;
+      }
+
+      .font-dropdown-empty {
+        padding: 4px;
+        border-radius: 4px;
+        color: #64748b;
+        font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .status {
+        margin-top: 14px;
+        min-height: 24px;
+        font-size: 13px;
+      }
+
+      .status.ok {
+        color: var(--ok);
+      }
+
+      .status.err {
+        color: var(--danger);
+      }
+
+      .report {
+        margin-top: 8px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+        max-height: 220px;
+        overflow: auto;
+        padding: 10px;
+        white-space: pre-wrap;
+        font-size: 12px;
+      }
+
+      .error {
+        margin-top: 8px;
+        color: var(--danger);
+        font-size: 13px;
+      }
+
+      .footer {
+        border-top: 1px solid var(--line);
+        padding: 18px 24px 24px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .primary {
+        border-color: var(--dark);
+        background: var(--dark);
+        color: #fff;
+        font-weight: 600;
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="root">
+      <header class="header">Starter Tokens</header>
+      <main class="content">
+        <div class="stepper">
+          <div class="stepper-btn active" data-step="1">1. Niveau de tokens</div>
+          <div class="stepper-btn" data-step="2">2. Brand colors</div>
+          <div class="stepper-btn" data-step="3">3. Preset palette</div>
+          <div class="stepper-btn" data-step="4">4. Typographie</div>
+        </div>
+
+        <section class="screen active" id="screen1">
+          <h1>Choisis ton niveau de gÃ©nÃ©ration</h1>
+          <p class="subtitle">
+            SÃ©lectionne la profondeur de tokens Ã  crÃ©er dans ton fichier. Tu peux commencer simple (fondations), ou
+            gÃ©nÃ©rer directement des tokens sÃ©mantiques prÃªts pour le Light/Dark. Le mode Expert arrivera bientÃ´t.
+          </p>
+
+          <div class="level-cards">
+            <article class="level-card selected" data-level="foundations">
+              <span class="level-tag">Niveau 1</span>
+              <div class="level-title-row">
+                <h2 class="level-title">Fondations</h2>
+                <span class="radio-dot active" data-dot="foundations"></span>
+              </div>
+              <p class="level-desc">
+                Installe les valeurs brutes de ton design system (palettes & dimensions). Parfait si tu veux garder le
+                contrÃ´le et construire tes rÃ´les plus tard.
+              </p>
+              <div class="chips">
+                <span class="chip">Color brand</span>
+                <span class="chip">Palette Colors</span>
+                <span class="chip">Font</span>
+                <span class="chip">Spacing</span>
+                <span class="chip">Radius</span>
+              </div>
+            </article>
+
+            <article class="level-card" data-level="color-modes">
+              <span class="level-tag">Niveau 2 - RecommandÃ©</span>
+              <div class="level-title-row">
+                <h2 class="level-title">Color modes</h2>
+                <span class="radio-dot" data-dot="color-modes"></span>
+              </div>
+              <p class="level-desc">
+                GÃ©nÃ¨re les fondations + des tokens sÃ©mantiques (text/background/border/icon) en mode unique.
+              </p>
+              <div class="chips">
+                <span class="chip">Primitive</span>
+                <span class="chip">Dimension</span>
+                <span class="chip">Text</span>
+                <span class="chip">Background</span>
+                <span class="chip">Border</span>
+                <span class="chip">Icon</span>
+                <span class="chip">Intent</span>
+              </div>
+            </article>
+
+            <article class="level-card disabled">
+              <span class="level-tag">Niveau 3 - bientÃ´t</span>
+              <div class="level-title-row">
+                <h2 class="level-title">Semantic tokens</h2>
+                <span class="radio-dot"></span>
+              </div>
+              <p class="level-desc">Le niveau Expert/components tokens sera ajoutÃ© prochainement.</p>
+              <div class="chips">
+                <span class="chip">Components</span>
+                <span class="chip">States</span>
+                <span class="chip">Advanced</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="mode-row">
+            <p class="mode-title">Mode unique</p>
+            <div class="mode-options">
+              <label><input type="radio" name="uiMode" value="light" checked />Mode : Light</label>
+              <label><input type="radio" name="uiMode" value="dark" />Mode : Dark</label>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="screen2">
+          <h1>Brand colors</h1>
+          <p class="subtitle">
+            DÃ©finis tes couleurs de marque. Le plugin gÃ©nÃ¨re automatiquement une gamme de nuances (shades) Ã  partir de
+            chaque couleur, puis les connecte aux tokens sÃ©mantiques si tu choisis un niveau â€œColor modesâ€.
+          </p>
+
+          <div class="fields-row">
+            <div>
+              <label for="patternSelect">Naming pattern</label>
+              <select id="patternSelect"></select>
+            </div>
+            <div>
+              <label for="shadeCountSelect">Shade count</label>
+              <select id="shadeCountSelect"></select>
+            </div>
+            <button type="button" class="add-btn" id="addBrandBtn">Ajouter une couleur</button>
+          </div>
+
+          <div class="brands" id="brandsContainer"></div>
+          <div class="error" id="brandError"></div>
+        </section>
+
+        <section class="screen" id="screen3">
+          <h1>Preset palette</h1>
+          <p class="subtitle">Choisis ton preset interne et la palette neutral gray canon utilisÃ©e par `colors/gray/*`.</p>
+
+          <div class="preset-grid">
+            <div>
+              <label for="presetSelect">Preset</label>
+              <select id="presetSelect"></select>
+            </div>
+            <div>
+              <label for="neutralSelect">Neutral gray palette</label>
+              <select id="neutralSelect"></select>
+            </div>
+            <div>
+              <label for="baseWhiteInput">Base white</label>
+              <input id="baseWhiteInput" value="#ffffff" />
+            </div>
+            <div>
+              <label for="baseBlackInput">Base black</label>
+              <input id="baseBlackInput" value="#000000" />
+            </div>
+          </div>
+
+          <div class="notice" id="presetInfo"></div>
+          <section class="preset-preview">
+            <h3 class="preset-preview-title">Preset selectionne: <span id="presetPreviewName">Default</span></h3>
+            <div class="palette-section-title">Color Palettes</div>
+            <div class="palette-preview-list" id="presetPreviewList"></div>
+          </section>
+          <div class="error" id="presetError"></div>
+        </section>
+
+        <section class="screen" id="screen4">
+          <h1>Typographie</h1>
+          <p class="subtitle">DÃ©finis tes primitives de typo (font family + scale). Toutes les valeurs sont Ã©ditables.</p>
+
+          <div class="preset-grid">
+            <div class="font-dropdown-field" data-font-dropdown="display">
+              <label class="font-dropdown-label" for="displayFamilyTrigger">Font family display</label>
+              <button type="button" id="displayFamilyTrigger" class="font-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="font-dropdown-trigger-text" id="displayFamilyValue">Roboto</span>
+                <span class="font-dropdown-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="font-dropdown-panel" id="displayFamilyPanel">
+                <input id="displayFamilySearch" class="font-dropdown-search" placeholder="Rechercher une police..." />
+                <div id="displayFamilyList" class="font-dropdown-list" role="listbox" aria-label="Font family display"></div>
+              </div>
+            </div>
+            <div class="font-dropdown-field" data-font-dropdown="body">
+              <label class="font-dropdown-label" for="bodyFamilyTrigger">Font family body</label>
+              <button type="button" id="bodyFamilyTrigger" class="font-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="font-dropdown-trigger-text" id="bodyFamilyValue">Inter</span>
+                <span class="font-dropdown-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="font-dropdown-panel" id="bodyFamilyPanel">
+                <input id="bodyFamilySearch" class="font-dropdown-search" placeholder="Rechercher une police..." />
+                <div id="bodyFamilyList" class="font-dropdown-list" role="listbox" aria-label="Font family body"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mode-row">
+            <p class="mode-title">Text styles</p>
+            <div class="mode-options">
+              <label><input type="checkbox" id="createTextStylesCheckbox" checked />Créer et lier les styles de texte</label>
+            </div>
+          </div>
+
+          <div class="font-grid" id="fontGrid"></div>
+          <div class="status" id="status"></div>
+          <div class="report" id="reportBox" style="display: none"></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <button type="button" id="backBtn">Retour</button>
+        <button type="button" class="primary" id="nextBtn">Continuer</button>
+      </footer>
+    </div>
+
+    <script>
+      const PATTERNS = [
+        { id: "tailwind", label: "50,100,200...900", steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
+        { id: "hundreds", label: "100,200,300...1000", steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+      ];
+
+      const FONT_DEFAULTS = {
+        "text-xs": 12,
+        "text-sm": 14,
+        "text-md": 16,
+        "text-lg": 18,
+        "text-xl": 20,
+        "display-xs": 24,
+        "display-sm": 30,
+        "display-md": 36,
+        "display-lg": 48,
+        "display-xl": 60,
+        "display-2xl": 72,
+      };
+
+      const DEFAULT_PREVIEW_PALETTES = [
+        {
+          name: "Gray",
+          steps: ["50", "500", "900"],
+          colorsByStep: { "50": "#f8fafc", "500": "#64748b", "900": "#0f172a" },
+        },
+      ];
+
+      const state = {
+        step: 1,
+        tokenLevel: "foundations",
+        uiMode: "light",
+        namingPattern: "tailwind",
+        shadeCount: 11,
+        brands: [
+          { name: "azertty-color", color: "#82BE5C" },
+          { name: "brand-secondary", color: "" },
+        ],
+        presets: [],
+        presetId: "",
+        neutralChoice: "slate",
+        baseWhite: "#ffffff",
+        baseBlack: "#000000",
+        fontFamilies: [],
+        fontDropdown: {
+          open: null,
+          search: {
+            display: "",
+            body: "",
+          },
+        },
+        createTextStyles: true,
+        typography: {
+          displayFamily: "Roboto",
+          bodyFamily: "Inter",
+          fontSizes: { ...FONT_DEFAULTS },
+        },
+      };
+
+      const stepButtons = Array.from(document.querySelectorAll(".stepper-btn"));
+      const screens = {
+        1: document.getElementById("screen1"),
+        2: document.getElementById("screen2"),
+        3: document.getElementById("screen3"),
+        4: document.getElementById("screen4"),
+      };
+
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      const patternSelect = document.getElementById("patternSelect");
+      const shadeCountSelect = document.getElementById("shadeCountSelect");
+      const addBrandBtn = document.getElementById("addBrandBtn");
+      const brandsContainer = document.getElementById("brandsContainer");
+      const brandError = document.getElementById("brandError");
+
+      const presetSelect = document.getElementById("presetSelect");
+      const neutralSelect = document.getElementById("neutralSelect");
+      const baseWhiteInput = document.getElementById("baseWhiteInput");
+      const baseBlackInput = document.getElementById("baseBlackInput");
+      const presetInfo = document.getElementById("presetInfo");
+      const presetPreviewName = document.getElementById("presetPreviewName");
+      const presetPreviewList = document.getElementById("presetPreviewList");
+      const presetError = document.getElementById("presetError");
+
+      const displayFamilyField = document.querySelector('[data-font-dropdown="display"]');
+      const displayFamilyTrigger = document.getElementById("displayFamilyTrigger");
+      const displayFamilyValue = document.getElementById("displayFamilyValue");
+      const displayFamilyPanel = document.getElementById("displayFamilyPanel");
+      const displayFamilySearch = document.getElementById("displayFamilySearch");
+      const displayFamilyList = document.getElementById("displayFamilyList");
+      const bodyFamilyField = document.querySelector('[data-font-dropdown="body"]');
+      const bodyFamilyTrigger = document.getElementById("bodyFamilyTrigger");
+      const bodyFamilyValue = document.getElementById("bodyFamilyValue");
+      const bodyFamilyPanel = document.getElementById("bodyFamilyPanel");
+      const bodyFamilySearch = document.getElementById("bodyFamilySearch");
+      const bodyFamilyList = document.getElementById("bodyFamilyList");
+      const createTextStylesCheckbox = document.getElementById("createTextStylesCheckbox");
+      const fontGrid = document.getElementById("fontGrid");
+      const status = document.getElementById("status");
+      const reportBox = document.getElementById("reportBox");
+
+      function setStatus(text, type = "") {
+        status.textContent = text;
+        status.className = `status ${type}`;
+      }
+
+      function clearReport() {
+        reportBox.style.display = "none";
+        reportBox.textContent = "";
+      }
+
+      function isValidColor(input) {
+        const value = String(input || "").trim();
+        if (!value) return false;
+        if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value)) return true;
+        if (/^rgba?\(([^)]+)\)$/i.test(value)) return true;
+        return false;
+      }
+
+      function hexToRgb(input) {
+        const value = String(input || "").trim().replace("#", "");
+        if (value.length === 3) {
+          return {
+            r: parseInt(value[0] + value[0], 16),
+            g: parseInt(value[1] + value[1], 16),
+            b: parseInt(value[2] + value[2], 16),
+          };
+        }
+        if (value.length === 6) {
+          return {
+            r: parseInt(value.slice(0, 2), 16),
+            g: parseInt(value.slice(2, 4), 16),
+            b: parseInt(value.slice(4, 6), 16),
+          };
+        }
+        return null;
+      }
+
+      function rgbToHex(rgb) {
+        const toHex = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+        return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
+      }
+
+      function rgbToHsl(rgb) {
+        const r = rgb.r / 255;
+        const g = rgb.g / 255;
+        const b = rgb.b / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const d = max - min;
+        let h = 0;
+        if (d !== 0) {
+          if (max === r) h = ((g - b) / d) % 6;
+          else if (max === g) h = (b - r) / d + 2;
+          else h = (r - g) / d + 4;
+          h *= 60;
+          if (h < 0) h += 360;
+        }
+        const l = (max + min) / 2;
+        const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+        return { h, s, l };
+      }
+
+      function hslToRgb(hsl) {
+        const h = ((hsl.h % 360) + 360) % 360;
+        const s = Math.max(0, Math.min(1, hsl.s));
+        const l = Math.max(0, Math.min(1, hsl.l));
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        const m = l - c / 2;
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        if (h < 60) {
+          r = c;
+          g = x;
+        } else if (h < 120) {
+          r = x;
+          g = c;
+        } else if (h < 180) {
+          g = c;
+          b = x;
+        } else if (h < 240) {
+          g = x;
+          b = c;
+        } else if (h < 300) {
+          r = x;
+          b = c;
+        } else {
+          r = c;
+          b = x;
+        }
+        return { r: (r + m) * 255, g: (g + m) * 255, b: (b + m) * 255 };
+      }
+
+      function pickSubset(baseSteps, count) {
+        if (count >= baseSteps.length) return baseSteps.slice();
+        const points = new Set();
+        for (let i = 0; i < count; i++) {
+          points.add(Math.round((i * (baseSteps.length - 1)) / Math.max(1, count - 1)));
+        }
+        return Array.from(points)
+          .sort((a, b) => a - b)
+          .map((i) => baseSteps[i]);
+      }
+
+      function expandSteps(baseSteps, count) {
+        const min = baseSteps[0];
+        const max = baseSteps[baseSteps.length - 1];
+        const list = [];
+        for (let i = 0; i < count; i++) {
+          list.push(Math.round(min + ((max - min) * i) / Math.max(1, count - 1)));
+        }
+        return Array.from(new Set(list)).sort((a, b) => a - b);
+      }
+
+      function deriveShadeSteps(patternId, shadeCount) {
+        const pattern = PATTERNS.find((entry) => entry.id === patternId) || PATTERNS[0];
+        const count = Math.max(3, Math.min(16, Number(shadeCount) || 11));
+        return count <= pattern.steps.length ? pickSubset(pattern.steps, count) : expandSteps(pattern.steps, count);
+      }
+
+      function resolveBaseStep(steps) {
+        if (steps.includes(500)) return 500;
+        const target = (steps[0] + steps[steps.length - 1]) / 2;
+        let best = steps[0];
+        let diff = Math.abs(best - target);
+        for (const step of steps) {
+          const d = Math.abs(step - target);
+          if (d < diff) {
+            best = step;
+            diff = d;
+          }
+        }
+        return best;
+      }
+
+      function buildPreviewScale(color, steps, baseStep) {
+        const parsed = hexToRgb(color);
+        if (!parsed) return {};
+        const base = rgbToHsl(parsed);
+        const minStep = steps[0];
+        const maxStep = steps[steps.length - 1];
+        const scale = {};
+        for (const step of steps) {
+          if (step === baseStep) {
+            scale[step] = rgbToHex(parsed);
+            continue;
+          }
+          const dark = step > baseStep;
+          const ratio = dark
+            ? (step - baseStep) / Math.max(1, maxStep - baseStep)
+            : (baseStep - step) / Math.max(1, baseStep - minStep);
+          const l = dark ? base.l - (base.l - 0.08) * ratio : base.l + (0.98 - base.l) * ratio;
+          const s = dark ? base.s * (1 - ratio * 0.12) : base.s * (1 - ratio * 0.2);
+          scale[step] = rgbToHex(hslToRgb({ h: base.h, s, l }));
+        }
+        return scale;
+      }
+
+      function currentPreset() {
+        return state.presets.find((preset) => preset.id === state.presetId) || null;
+      }
+
+      function currentPreviewPalettes() {
+        const preset = currentPreset();
+        if (preset && Array.isArray(preset.previewPalettes) && preset.previewPalettes.length) {
+          return preset.previewPalettes;
+        }
+        return DEFAULT_PREVIEW_PALETTES;
+      }
+
+      function logPresetDebug() {
+        const preset = currentPreset();
+        const paletteNames = currentPreviewPalettes().map((palette) => palette.name);
+        console.log("[Starter Tokens] Preset selected:", preset ? `${preset.label} (${preset.id})` : "Default");
+        console.log("[Starter Tokens] Palettes detected:", paletteNames);
+      }
+
+      function renderPresetPreview() {
+        const preset = currentPreset();
+        presetPreviewName.textContent = preset ? preset.label : "Default";
+        presetPreviewList.innerHTML = "";
+
+        currentPreviewPalettes().forEach((palette) => {
+          const card = document.createElement("article");
+          card.className = "palette-preview-item";
+
+          const head = document.createElement("div");
+          head.className = "palette-preview-head";
+
+          const title = document.createElement("div");
+          title.className = "palette-preview-name";
+          title.textContent = palette.name || "Palette";
+
+          const count = document.createElement("div");
+          count.className = "palette-preview-count";
+          const shadeCount = Array.isArray(palette.steps) ? palette.steps.length : 0;
+          count.textContent = `${shadeCount} shades`;
+
+          head.appendChild(title);
+          head.appendChild(count);
+          card.appendChild(head);
+
+          const row = document.createElement("div");
+          row.className = "swatch-row";
+          const steps = Array.isArray(palette.steps) ? palette.steps : [];
+
+          steps.forEach((step) => {
+            const color = palette.colorsByStep ? palette.colorsByStep[step] : "";
+            if (!color) return;
+            const swatch = document.createElement("div");
+            swatch.className = "swatch";
+            swatch.style.background = color;
+            swatch.title = `${palette.name} ${step}: ${color}`;
+            row.appendChild(swatch);
+          });
+
+          card.appendChild(row);
+          presetPreviewList.appendChild(card);
+        });
+      }
+
+      function updateStepper() {
+        stepButtons.forEach((node) => node.classList.toggle("active", Number(node.dataset.step) === state.step));
+        Object.entries(screens).forEach(([id, node]) => {
+          node.classList.toggle("active", Number(id) === state.step);
+        });
+        backBtn.disabled = state.step === 1;
+        nextBtn.textContent = state.step === 4 ? "GÃ©nÃ©rer" : "Continuer";
+      }
+
+      function renderPatterns() {
+        patternSelect.innerHTML = "";
+        PATTERNS.forEach((pattern) => {
+          const option = document.createElement("option");
+          option.value = pattern.id;
+          option.textContent = pattern.label;
+          patternSelect.appendChild(option);
+        });
+        patternSelect.value = state.namingPattern;
+
+        shadeCountSelect.innerHTML = "";
+        for (let i = 3; i <= 16; i++) {
+          const option = document.createElement("option");
+          option.value = String(i);
+          option.textContent = String(i);
+          shadeCountSelect.appendChild(option);
+        }
+        shadeCountSelect.value = String(state.shadeCount);
+      }
+
+      function renderLevelCards() {
+        document.querySelectorAll("[data-level]").forEach((card) => {
+          const level = card.dataset.level;
+          card.classList.toggle("selected", state.tokenLevel === level);
+        });
+        document.querySelectorAll("[data-dot]").forEach((dot) => {
+          dot.classList.toggle("active", dot.dataset.dot === state.tokenLevel);
+        });
+      }
+
+      function textColorForHex(hex) {
+        const rgb = hexToRgb(hex);
+        if (!rgb) return "#cbd5e1";
+        const lum = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+        return lum > 0.62 ? "#1f2937" : "#f8fafc";
+      }
+
+      function renderBrands() {
+        brandsContainer.innerHTML = "";
+        const steps = deriveShadeSteps(state.namingPattern, state.shadeCount);
+        const baseStep = resolveBaseStep(steps);
+
+        state.brands.forEach((brand, index) => {
+          const section = document.createElement("section");
+          section.className = "brand-card";
+
+          const title = document.createElement("h3");
+          title.className = "brand-title";
+          title.textContent =
+            index === 0 ? "Brand primary" : index === 1 ? "Brand secondary" : `Brand ${index + 1}`;
+          section.appendChild(title);
+
+          const row = document.createElement("div");
+          row.className = "brand-input-row";
+
+          const nameInput = document.createElement("input");
+          nameInput.value = brand.name || "";
+          nameInput.placeholder = index === 0 ? "brand-primary" : `brand-${index + 1}`;
+          nameInput.addEventListener("input", () => {
+            state.brands[index].name = nameInput.value;
+          });
+
+          const colorInput = document.createElement("input");
+          colorInput.value = brand.color || "";
+          colorInput.placeholder = "#82BE5C";
+          colorInput.addEventListener("input", () => {
+            state.brands[index].color = colorInput.value;
+            renderBrands();
+          });
+
+          const removeBtn = document.createElement("button");
+          removeBtn.className = "icon-btn";
+          removeBtn.type = "button";
+          removeBtn.textContent = "x";
+          removeBtn.disabled = index === 0;
+          removeBtn.addEventListener("click", () => {
+            state.brands.splice(index, 1);
+            if (state.brands.length === 1) {
+              state.brands.push({ name: "brand-secondary", color: "" });
+            }
+            renderBrands();
+          });
+
+          row.appendChild(nameInput);
+          row.appendChild(colorInput);
+          row.appendChild(removeBtn);
+          section.appendChild(row);
+
+          const shades = document.createElement("div");
+          shades.className = "shades";
+          const scale = isValidColor(brand.color) ? buildPreviewScale(brand.color, steps, baseStep) : {};
+
+          for (let slot = 0; slot < 16; slot++) {
+            const card = document.createElement("div");
+            card.className = "shade";
+            if (slot < steps.length && scale[steps[slot]]) {
+              const step = steps[slot];
+              const value = scale[step];
+              card.style.background = value;
+              card.style.color = textColorForHex(value);
+              const stepNode = document.createElement("div");
+              stepNode.className = "shade-step";
+              stepNode.textContent = String(step);
+              const valueNode = document.createElement("div");
+              valueNode.className = "shade-value";
+              valueNode.textContent = value.toUpperCase();
+              card.appendChild(stepNode);
+              card.appendChild(valueNode);
+              if (step === baseStep) {
+                const dot = document.createElement("span");
+                dot.className = "shade-dot";
+                card.appendChild(dot);
+              }
+            } else {
+              card.classList.add("empty");
+              card.textContent = "EMPTY";
+            }
+            shades.appendChild(card);
+          }
+          section.appendChild(shades);
+          brandsContainer.appendChild(section);
+        });
+      }
+
+      function renderPresets() {
+        presetSelect.innerHTML = "";
+        state.presets.forEach((preset) => {
+          const option = document.createElement("option");
+          option.value = preset.id;
+          option.textContent = preset.label;
+          presetSelect.appendChild(option);
+        });
+        const hasSelectedPreset = state.presets.some((preset) => preset.id === state.presetId);
+        if ((!state.presetId || !hasSelectedPreset) && state.presets.length) {
+          state.presetId = state.presets[0].id;
+        }
+        if (state.presets.length) {
+          presetSelect.value = state.presetId;
+        }
+        renderNeutralOptions();
+        logPresetDebug();
+      }
+
+      function renderNeutralOptions() {
+        const preset = currentPreset();
+        if (!preset) {
+          neutralSelect.innerHTML = '<option value="gray">gray</option>';
+          state.neutralChoice = "gray";
+          neutralSelect.value = state.neutralChoice;
+          presetInfo.textContent = "Preset: Default | palettes: 1 | steps: 50, 500, 900. colors/gray/* sera aliasé vers gray.";
+          renderPresetPreview();
+          return;
+        }
+        neutralSelect.innerHTML = "";
+        preset.neutralOptions.forEach((optionValue) => {
+          const option = document.createElement("option");
+          option.value = optionValue;
+          option.textContent = optionValue;
+          neutralSelect.appendChild(option);
+        });
+        if (!preset.neutralOptions.includes(state.neutralChoice)) {
+          state.neutralChoice = preset.defaultNeutral;
+        }
+        neutralSelect.value = state.neutralChoice;
+        presetInfo.textContent = `Preset: ${preset.label} | palettes: ${preset.paletteCount} | steps: ${preset.steps.join(
+          ", ",
+        )}. colors/gray/* sera aliasé vers ${state.neutralChoice}.`;
+        renderPresetPreview();
+      }
+
+      function normalizeFontFamilyValue(value) {
+        return String(value || "").trim();
+      }
+
+      function normalizeFontFamilyLookup(value) {
+        return normalizeFontFamilyValue(value).toLowerCase();
+      }
+
+      function fontFamilyListWithFallback(selectedFamily, fallbackFamily) {
+        const known = Array.isArray(state.fontFamilies) ? state.fontFamilies : [];
+        const merged = [...known];
+        [selectedFamily, fallbackFamily].forEach((candidate) => {
+          const value = normalizeFontFamilyValue(candidate);
+          if (!value) return;
+          if (!merged.some((entry) => normalizeFontFamilyLookup(entry) === normalizeFontFamilyLookup(value))) {
+            merged.unshift(value);
+          }
+        });
+        return merged;
+      }
+
+      function currentFamilyByKind(kind) {
+        return kind === "display" ? state.typography.displayFamily : state.typography.bodyFamily;
+      }
+
+      function setFamilyByKind(kind, value) {
+        if (kind === "display") {
+          state.typography.displayFamily = value;
+          return;
+        }
+        state.typography.bodyFamily = value;
+      }
+
+      function fallbackFamilyByKind(kind) {
+        return kind === "display" ? "Roboto" : "Inter";
+      }
+
+      function dropdownRefs(kind) {
+        if (kind === "display") {
+          return {
+            field: displayFamilyField,
+            trigger: displayFamilyTrigger,
+            value: displayFamilyValue,
+            panel: displayFamilyPanel,
+            search: displayFamilySearch,
+            list: displayFamilyList,
+          };
+        }
+        return {
+          field: bodyFamilyField,
+          trigger: bodyFamilyTrigger,
+          value: bodyFamilyValue,
+          panel: bodyFamilyPanel,
+          search: bodyFamilySearch,
+          list: bodyFamilyList,
+        };
+      }
+
+      function allFontFamilies() {
+        const displayFamilies = fontFamilyListWithFallback(state.typography.displayFamily, "Roboto");
+        const allFamilies = fontFamilyListWithFallback(state.typography.bodyFamily, "Inter").concat(displayFamilies);
+        const unique = [];
+        for (const family of allFamilies) {
+          if (!unique.some((entry) => normalizeFontFamilyLookup(entry) === normalizeFontFamilyLookup(family))) {
+            unique.push(family);
+          }
+        }
+        return unique.sort((a, b) => a.localeCompare(b));
+      }
+
+      function filteredFontFamilies(kind) {
+        const query = normalizeFontFamilyLookup(state.fontDropdown.search[kind]);
+        const selected = normalizeFontFamilyValue(currentFamilyByKind(kind)) || fallbackFamilyByKind(kind);
+        const allFamilies = allFontFamilies();
+
+        let list = query
+          ? allFamilies.filter((family) => normalizeFontFamilyLookup(family).includes(query))
+          : allFamilies.slice();
+
+        if (!list.some((entry) => normalizeFontFamilyLookup(entry) === normalizeFontFamilyLookup(selected))) {
+          list.unshift(selected);
+        }
+
+        const unique = [];
+        for (const family of list) {
+          if (!unique.some((entry) => normalizeFontFamilyLookup(entry) === normalizeFontFamilyLookup(family))) {
+            unique.push(family);
+          }
+        }
+        return unique;
+      }
+
+      function setDropdownOpen(kindOrNull) {
+        state.fontDropdown.open = kindOrNull;
+        renderFontDropdown("display");
+        renderFontDropdown("body");
+      }
+
+      function selectFontFamily(kind, family) {
+        const value = normalizeFontFamilyValue(family) || fallbackFamilyByKind(kind);
+        setFamilyByKind(kind, value);
+        state.fontDropdown.search[kind] = "";
+        setDropdownOpen(null);
+      }
+
+      function renderFontDropdown(kind) {
+        const refs = dropdownRefs(kind);
+        const selected = normalizeFontFamilyValue(currentFamilyByKind(kind)) || fallbackFamilyByKind(kind);
+        const isOpen = state.fontDropdown.open === kind;
+
+        refs.field.classList.toggle("open", isOpen);
+        refs.value.textContent = selected;
+        refs.trigger.classList.toggle("open", isOpen);
+        refs.trigger.setAttribute("aria-expanded", String(isOpen));
+        refs.search.value = state.fontDropdown.search[kind];
+        refs.list.innerHTML = "";
+
+        const options = filteredFontFamilies(kind);
+        if (!options.length) {
+          const empty = document.createElement("div");
+          empty.className = "font-dropdown-empty";
+          empty.textContent = "Aucun résultat";
+          refs.list.appendChild(empty);
+          return;
+        }
+
+        options.forEach((family) => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = "font-dropdown-item";
+          if (normalizeFontFamilyLookup(family) === normalizeFontFamilyLookup(selected)) {
+            item.classList.add("active");
+          }
+          item.textContent = family;
+          item.addEventListener("click", () => {
+            selectFontFamily(kind, family);
+          });
+          refs.list.appendChild(item);
+        });
+      }
+
+      function renderTypography() {
+        if (!normalizeFontFamilyValue(state.typography.displayFamily)) {
+          state.typography.displayFamily = "Roboto";
+        }
+        if (!normalizeFontFamilyValue(state.typography.bodyFamily)) {
+          state.typography.bodyFamily = "Inter";
+        }
+        renderFontDropdown("display");
+        renderFontDropdown("body");
+        createTextStylesCheckbox.checked = Boolean(state.createTextStyles);
+        fontGrid.innerHTML = "";
+        Object.keys(state.typography.fontSizes).forEach((key) => {
+          const wrap = document.createElement("div");
+          const label = document.createElement("label");
+          label.textContent = key;
+          const input = document.createElement("input");
+          input.type = "number";
+          input.value = String(state.typography.fontSizes[key]);
+          input.addEventListener("input", () => {
+            const value = Number(input.value);
+            if (Number.isFinite(value) && value > 0) {
+              state.typography.fontSizes[key] = value;
+            }
+          });
+          wrap.appendChild(label);
+          wrap.appendChild(input);
+          fontGrid.appendChild(wrap);
+        });
+      }
+
+      function validateStep2() {
+        const primary = state.brands[0];
+        if (!primary || !isValidColor(primary.color)) return "Brand primary invalide.";
+        const invalid = state.brands.slice(1).find((brand) => brand.color && !isValidColor(brand.color));
+        if (invalid) return `Couleur invalide: ${invalid.color}`;
+        return "";
+      }
+
+      function validateStep3() {
+        state.baseWhite = String(baseWhiteInput.value || "").trim();
+        state.baseBlack = String(baseBlackInput.value || "").trim();
+        state.neutralChoice = neutralSelect.value;
+        if (!isValidColor(state.baseWhite)) return "Base white invalide.";
+        if (!isValidColor(state.baseBlack)) return "Base black invalide.";
+        if (!state.neutralChoice) return "Neutral gray obligatoire.";
+        return "";
+      }
+
+      function syncTypography() {
+        state.typography.displayFamily = normalizeFontFamilyValue(state.typography.displayFamily) || "Roboto";
+        state.typography.bodyFamily = normalizeFontFamilyValue(state.typography.bodyFamily) || "Inter";
+        state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
+      }
+
+      function moveStep(direction) {
+        if (direction > 0) {
+          if (state.step === 2) {
+            const err = validateStep2();
+            brandError.textContent = err;
+            if (err) return;
+          }
+          if (state.step === 3) {
+            const err = validateStep3();
+            presetError.textContent = err;
+            if (err) return;
+          }
+        }
+        state.step = Math.max(1, Math.min(4, state.step + direction));
+        updateStepper();
+      }
+
+      function generate() {
+        const err2 = validateStep2();
+        const err3 = validateStep3();
+        brandError.textContent = err2;
+        presetError.textContent = err3;
+        if (err2) {
+          state.step = 2;
+          updateStepper();
+          setStatus(err2, "err");
+          return;
+        }
+        if (err3) {
+          state.step = 3;
+          updateStepper();
+          setStatus(err3, "err");
+          return;
+        }
+
+        syncTypography();
+        clearReport();
+        setStatus("GÃ©nÃ©ration en cours...");
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "generate-variables",
+              payload: {
+                tokenLevel: state.tokenLevel,
+                uiMode: state.uiMode,
+                namingPattern: state.namingPattern,
+                shadeCount: state.shadeCount,
+                brands: state.brands,
+                presetId: state.presetId,
+                neutralChoice: state.neutralChoice,
+                baseWhite: state.baseWhite,
+                baseBlack: state.baseBlack,
+                createTextStyles: state.createTextStyles,
+                typography: state.typography,
+              },
+            },
+          },
+          "*",
+        );
+      }
+
+      document.querySelectorAll("[data-level]").forEach((card) => {
+        card.addEventListener("click", () => {
+          state.tokenLevel = card.dataset.level;
+          renderLevelCards();
+        });
+      });
+
+      document.querySelectorAll('input[name="uiMode"]').forEach((node) => {
+        node.addEventListener("change", () => {
+          state.uiMode = document.querySelector('input[name="uiMode"]:checked').value;
+        });
+      });
+
+      patternSelect.addEventListener("change", () => {
+        state.namingPattern = patternSelect.value;
+        renderBrands();
+      });
+
+      shadeCountSelect.addEventListener("change", () => {
+        state.shadeCount = Number(shadeCountSelect.value);
+        renderBrands();
+      });
+
+      addBrandBtn.addEventListener("click", () => {
+        if (state.brands.length >= 10) {
+          brandError.textContent = "Maximum 10 couleurs.";
+          return;
+        }
+        state.brands.push({ name: `brand-${state.brands.length + 1}`, color: "" });
+        brandError.textContent = "";
+        renderBrands();
+      });
+
+      presetSelect.addEventListener("change", () => {
+        state.presetId = presetSelect.value;
+        renderNeutralOptions();
+        logPresetDebug();
+      });
+
+      neutralSelect.addEventListener("change", () => {
+        state.neutralChoice = neutralSelect.value;
+        renderNeutralOptions();
+      });
+
+      displayFamilyTrigger.addEventListener("click", () => {
+        const next = state.fontDropdown.open === "display" ? null : "display";
+        setDropdownOpen(next);
+        if (next === "display") {
+          displayFamilySearch.focus();
+          displayFamilySearch.select();
+        }
+      });
+
+      bodyFamilyTrigger.addEventListener("click", () => {
+        const next = state.fontDropdown.open === "body" ? null : "body";
+        setDropdownOpen(next);
+        if (next === "body") {
+          bodyFamilySearch.focus();
+          bodyFamilySearch.select();
+        }
+      });
+
+      displayFamilySearch.addEventListener("input", () => {
+        state.fontDropdown.search.display = displayFamilySearch.value;
+        renderFontDropdown("display");
+      });
+
+      bodyFamilySearch.addEventListener("input", () => {
+        state.fontDropdown.search.body = bodyFamilySearch.value;
+        renderFontDropdown("body");
+      });
+
+      displayFamilySearch.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setDropdownOpen(null);
+        }
+      });
+
+      bodyFamilySearch.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setDropdownOpen(null);
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (!target.closest("[data-font-dropdown]")) {
+          setDropdownOpen(null);
+        }
+      });
+
+      createTextStylesCheckbox.addEventListener("change", () => {
+        state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
+      });
+
+      backBtn.addEventListener("click", () => moveStep(-1));
+      nextBtn.addEventListener("click", () => {
+        if (state.step < 4) {
+          moveStep(1);
+          return;
+        }
+        generate();
+      });
+
+      window.onmessage = (event) => {
+        const msg = event.data.pluginMessage;
+        if (!msg) return;
+
+        if (msg.type === "preset-list") {
+          state.presets = Array.isArray(msg.presets) ? msg.presets : [];
+          renderPresets();
+          return;
+        }
+
+        if (msg.type === "font-families-list") {
+          const families = Array.isArray(msg.families)
+            ? msg.families
+                .map((entry) => normalizeFontFamilyValue(entry))
+                .filter(Boolean)
+                .sort((a, b) => a.localeCompare(b))
+            : [];
+          state.fontFamilies = families;
+          renderTypography();
+          return;
+        }
+
+        if (msg.type === "generate-result") {
+          const report = msg.report || {};
+          const text =
+            `OK: +${report.created || 0} / ~${report.updated || 0} / collisions ${report.collisionsReplaced || 0}` +
+            ((report.aliasMissing || 0) ? ` / alias manquants ${report.aliasMissing}` : "");
+          setStatus(text, "ok");
+
+          const messages = [];
+          if (Array.isArray(report.migrations) && report.migrations.length) {
+            messages.push("Migrations:");
+            messages.push(...report.migrations.slice(0, 120));
+          }
+          if (Array.isArray(report.warnings) && report.warnings.length) {
+            messages.push("Warnings:");
+            messages.push(...report.warnings.slice(0, 120));
+          }
+          if (messages.length) {
+            reportBox.style.display = "block";
+            reportBox.textContent = messages.join("\\n");
+          } else {
+            clearReport();
+          }
+          return;
+        }
+
+        if (msg.type === "generate-error") {
+          setStatus(msg.message || "Erreur inconnue", "err");
+        }
+      };
+
+      renderPatterns();
+      renderLevelCards();
+      renderBrands();
+      renderTypography();
+      renderPresetPreview();
+      updateStepper();
+      parent.postMessage({ pluginMessage: { type: "ui-ready" } }, "*");
+    </script>
+  </body>
+</html>
+
+
+

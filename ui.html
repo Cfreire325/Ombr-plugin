@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Starter Tokens</title>
+    <style>
+      :root {
+        --bg: #f7f7f2;
+        --card: #fffef8;
+        --line: #d6d3c8;
+        --text: #1d241f;
+        --muted: #5e675f;
+        --accent: #0b7285;
+        --accent-strong: #095c6a;
+        --danger: #b42318;
+        --ok: #027a48;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 16px;
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 0% 0%, #f0ebe0 0%, transparent 35%),
+          radial-gradient(circle at 100% 0%, #e8f3f4 0%, transparent 35%),
+          var(--bg);
+      }
+
+      .title {
+        margin: 0;
+        font-family: "Space Grotesk", "Segoe UI", sans-serif;
+        font-size: 22px;
+        letter-spacing: 0.01em;
+      }
+
+      .subtitle {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .stepper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .step {
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #faf8ef;
+        font-size: 11px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .step.active {
+        color: var(--text);
+        border-color: var(--accent);
+        background: #e7f3f6;
+        font-weight: 600;
+      }
+
+      .panel {
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--card);
+        padding: 12px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      select,
+      input,
+      button {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px;
+        font-size: 12px;
+        font-family: inherit;
+        color: var(--text);
+        background: #fff;
+      }
+
+      .switch {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #fcfbf7;
+      }
+
+      .switch input {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+      }
+
+      .switch strong {
+        font-size: 12px;
+      }
+
+      .switch span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .actions {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .actions.single {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .primary {
+        background: var(--accent);
+        border-color: transparent;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .primary:hover {
+        background: var(--accent-strong);
+      }
+
+      .brands-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .brands-header button {
+        width: auto;
+        padding: 6px 10px;
+      }
+
+      .brands-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .brand-row {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr auto;
+        gap: 8px;
+      }
+
+      .icon-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        padding: 0;
+      }
+
+      .error {
+        margin-top: 8px;
+        color: var(--danger);
+        font-size: 12px;
+      }
+
+      .status {
+        margin-top: 10px;
+        min-height: 16px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .status.ok {
+        color: var(--ok);
+      }
+
+      .status.err {
+        color: var(--danger);
+      }
+
+      .summary {
+        border: 1px dashed var(--line);
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 12px;
+        background: #fcfbf6;
+      }
+
+      .summary div {
+        margin-top: 5px;
+      }
+
+      .conflicts {
+        margin-top: 8px;
+        max-height: 150px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+        background: #fff;
+        font-size: 11px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Starter Tokens</h1>
+    <p class="subtitle">Genere un systeme variables complet (_Primitives + 1. Color modes) depuis des presets internes.</p>
+
+    <div class="stepper">
+      <div class="step active" data-step="1">1. Base</div>
+      <div class="step" data-step="2">2. Brand</div>
+      <div class="step" data-step="3">3. Generate</div>
+    </div>
+
+    <section class="panel" id="screen1">
+      <label for="presetSelect">Preset palette</label>
+      <select id="presetSelect"></select>
+
+      <div class="switch">
+        <input type="checkbox" id="toggleDark" checked />
+        <div>
+          <strong>Generer Light + Dark</strong>
+          <span>Collection 1. Color modes avec Light mode et Dark mode.</span>
+        </div>
+      </div>
+
+      <div class="switch">
+        <input type="checkbox" id="toggleComponents" checked />
+        <div>
+          <strong>Inclure Component colors</strong>
+          <span>Ajoute Component colors/Components, Alpha et Utility.</span>
+        </div>
+      </div>
+
+      <div class="actions single">
+        <button class="primary" id="toStep2">Continuer</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" id="screen2">
+      <div class="brands-header">
+        <strong>Brand colors (max 10)</strong>
+        <button id="addBrand" type="button">Ajouter</button>
+      </div>
+      <div class="brands-list" id="brandsList"></div>
+      <div class="error" id="brandError"></div>
+
+      <div class="actions">
+        <button id="backTo1">Retour</button>
+        <button class="primary" id="toStep3">Continuer</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" id="screen3">
+      <div class="summary" id="summary"></div>
+
+      <div class="actions">
+        <button id="backTo2">Retour</button>
+        <button class="primary" id="generateBtn">Generate variables</button>
+      </div>
+
+      <div class="status" id="status"></div>
+      <div class="conflicts hidden" id="conflicts"></div>
+    </section>
+
+    <script>
+      const state = {
+        step: 1,
+        presets: [],
+        presetId: "",
+        generateDark: true,
+        includeComponents: true,
+        brands: [{ name: "Brand", color: "#6941C6" }],
+      };
+
+      const stepNodes = Array.from(document.querySelectorAll(".step"));
+      const screens = {
+        1: document.getElementById("screen1"),
+        2: document.getElementById("screen2"),
+        3: document.getElementById("screen3"),
+      };
+
+      const presetSelect = document.getElementById("presetSelect");
+      const toggleDark = document.getElementById("toggleDark");
+      const toggleComponents = document.getElementById("toggleComponents");
+      const brandsList = document.getElementById("brandsList");
+      const brandError = document.getElementById("brandError");
+      const summary = document.getElementById("summary");
+      const status = document.getElementById("status");
+      const conflictsNode = document.getElementById("conflicts");
+
+      function isValidColor(input) {
+        const value = String(input || "").trim();
+        if (!value) return false;
+        if (/^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)) return true;
+        if (/^rgba?\(([^)]+)\)$/i.test(value)) return true;
+        return false;
+      }
+
+      function setStep(step) {
+        state.step = step;
+        stepNodes.forEach((node) => node.classList.toggle("active", Number(node.dataset.step) === step));
+        Object.entries(screens).forEach(([key, node]) => {
+          node.classList.toggle("hidden", Number(key) !== step);
+        });
+        if (step === 3) renderSummary();
+      }
+
+      function renderPresetOptions() {
+        presetSelect.innerHTML = "";
+        state.presets.forEach((preset) => {
+          const option = document.createElement("option");
+          option.value = preset.id;
+          option.textContent = `${preset.label}`;
+          presetSelect.appendChild(option);
+        });
+
+        if (!state.presetId && state.presets.length) {
+          state.presetId = state.presets[0].id;
+        }
+        presetSelect.value = state.presetId;
+      }
+
+      function renderBrands() {
+        brandsList.innerHTML = "";
+        state.brands.forEach((brand, index) => {
+          const row = document.createElement("div");
+          row.className = "brand-row";
+
+          const nameInput = document.createElement("input");
+          nameInput.placeholder = index === 0 ? "Brand" : `Brand-${index + 1}`;
+          nameInput.value = brand.name;
+          nameInput.addEventListener("input", () => {
+            state.brands[index].name = nameInput.value;
+          });
+
+          const colorInput = document.createElement("input");
+          colorInput.placeholder = "#6941C6 ou rgb(105,65,198)";
+          colorInput.value = brand.color;
+          colorInput.addEventListener("input", () => {
+            state.brands[index].color = colorInput.value;
+          });
+
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "icon-btn";
+          removeBtn.textContent = "x";
+          removeBtn.disabled = state.brands.length <= 1;
+          removeBtn.addEventListener("click", () => {
+            state.brands.splice(index, 1);
+            renderBrands();
+          });
+
+          row.appendChild(nameInput);
+          row.appendChild(colorInput);
+          row.appendChild(removeBtn);
+          brandsList.appendChild(row);
+        });
+      }
+
+      function validateBrands() {
+        const filled = state.brands.filter((entry) => String(entry.color || "").trim().length > 0);
+        if (filled.length > 10) return "Maximum 10 couleurs brand.";
+        const invalid = filled.find((entry) => !isValidColor(entry.color));
+        if (invalid) return `Couleur invalide: ${invalid.color}`;
+        return "";
+      }
+
+      function currentPreset() {
+        return state.presets.find((preset) => preset.id === state.presetId) || null;
+      }
+
+      function renderSummary() {
+        const preset = currentPreset();
+        if (!preset) {
+          summary.textContent = "Chargement presets...";
+          return;
+        }
+
+        const filledBrands = state.brands.filter((entry) => String(entry.color || "").trim().length > 0);
+        const estimated = preset.semanticCount + preset.primitiveCount + (state.includeComponents ? preset.componentCount : 0);
+
+        summary.innerHTML = "";
+        const lines = [
+          `Preset: ${preset.label}`,
+          `Collections: _Primitives, 1. Color modes`,
+          `Modes: ${state.generateDark ? "Light mode + Dark mode" : "Light mode"}`,
+          `Component colors: ${state.includeComponents ? "ON" : "OFF"}`,
+          `Brand colors custom: ${filledBrands.length}`,
+          `Shades Brand: ${preset.brandShades.join(", ")}`,
+          `Variables estimees (avant dedupe/idempotence): ${estimated}`,
+        ];
+
+        lines.forEach((line) => {
+          const div = document.createElement("div");
+          div.textContent = line;
+          summary.appendChild(div);
+        });
+      }
+
+      function setStatus(text, type = "") {
+        status.textContent = text;
+        status.className = `status ${type}`;
+      }
+
+      function clearConflicts() {
+        conflictsNode.textContent = "";
+        conflictsNode.classList.add("hidden");
+      }
+
+      function updateStateFromForm() {
+        state.presetId = presetSelect.value;
+        state.generateDark = toggleDark.checked;
+        state.includeComponents = toggleComponents.checked;
+      }
+
+      document.getElementById("toStep2").addEventListener("click", () => {
+        updateStateFromForm();
+        setStep(2);
+      });
+
+      document.getElementById("backTo1").addEventListener("click", () => {
+        setStep(1);
+      });
+
+      document.getElementById("toStep3").addEventListener("click", () => {
+        updateStateFromForm();
+        const error = validateBrands();
+        brandError.textContent = error;
+        if (error) return;
+        setStep(3);
+      });
+
+      document.getElementById("backTo2").addEventListener("click", () => {
+        setStep(2);
+      });
+
+      document.getElementById("addBrand").addEventListener("click", () => {
+        if (state.brands.length >= 10) {
+          brandError.textContent = "Maximum 10 couleurs.";
+          return;
+        }
+        state.brands.push({ name: `Brand-${state.brands.length + 1}`, color: "" });
+        brandError.textContent = "";
+        renderBrands();
+      });
+
+      presetSelect.addEventListener("change", () => {
+        updateStateFromForm();
+        if (state.step === 3) renderSummary();
+      });
+
+      toggleDark.addEventListener("change", updateStateFromForm);
+      toggleComponents.addEventListener("change", updateStateFromForm);
+
+      document.getElementById("generateBtn").addEventListener("click", () => {
+        clearConflicts();
+        const error = validateBrands();
+        if (error) {
+          setStatus(error, "err");
+          setStep(2);
+          brandError.textContent = error;
+          return;
+        }
+
+        setStatus("Generation en cours...");
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "generate-variables",
+              payload: {
+                presetId: state.presetId,
+                generateDark: state.generateDark,
+                includeComponents: state.includeComponents,
+                brands: state.brands,
+              },
+            },
+          },
+          "*"
+        );
+      });
+
+      window.onmessage = (event) => {
+        const msg = event.data.pluginMessage;
+        if (!msg) return;
+
+        if (msg.type === "preset-list") {
+          state.presets = Array.isArray(msg.presets) ? msg.presets : [];
+          renderPresetOptions();
+          renderSummary();
+          return;
+        }
+
+        if (msg.type === "generate-result") {
+          const report = msg.report || {};
+          const text = `OK: +${report.created || 0} / ~${report.updated || 0} / aliases ${report.aliasApplied || 0}` +
+            ((report.aliasMissing || 0) ? ` / alias manquants ${report.aliasMissing}` : "");
+          setStatus(text, "ok");
+
+          const conflicts = Array.isArray(report.conflicts) ? report.conflicts : [];
+          if (conflicts.length) {
+            conflictsNode.textContent = conflicts.slice(0, 80).join("\n");
+            conflictsNode.classList.remove("hidden");
+          } else {
+            clearConflicts();
+          }
+          return;
+        }
+
+        if (msg.type === "generate-error") {
+          setStatus(msg.message || "Erreur inconnue", "err");
+        }
+      };
+
+      renderBrands();
+      setStep(1);
+      parent.postMessage({ pluginMessage: { type: "ui-ready" } }, "*");
+    </script>
+  </body>
+</html>
