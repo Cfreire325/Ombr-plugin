@@ -13,6 +13,7 @@
     "test:palette-steps": "node src/presets/palette-steps.test.mjs",
     "test:semantic-color-modes": "node src/presets/semantic-color-modes.test.mjs",
     "test:typography-tokens": "node src/presets/typography-tokens.test.mjs",
+    "test:spacing-radius-tokens": "node src/presets/spacing-radius-tokens.test.mjs",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit"
   },
