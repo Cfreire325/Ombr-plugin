@@ -277,6 +277,7 @@ export {
 };
 
 export {
+  buildBrandScale,
   colorWithAlpha,
   parseColorInput,
   rgbaToHex,
