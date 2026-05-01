@@ -1,0 +1,142 @@
+{
+  "modes": {
+    "Value": {
+      "Font family": {
+        "font-family-display": {
+          "$type": "string",
+          "$value": "Roboto"
+        },
+        "font-family-body": {
+          "$type": "string",
+          "$value": "Inter"
+        }
+      },
+      "Font size": {
+        "text-xs": {
+          "$type": "float",
+          "$value": 12
+        },
+        "text-sm": {
+          "$type": "float",
+          "$value": 14
+        },
+        "text-md": {
+          "$type": "float",
+          "$value": 16
+        },
+        "text-lg": {
+          "$type": "float",
+          "$value": 18
+        },
+        "text-xl": {
+          "$type": "float",
+          "$value": 20
+        },
+        "display-xs": {
+          "$type": "float",
+          "$value": 24
+        },
+        "display-sm": {
+          "$type": "float",
+          "$value": 30
+        },
+        "display-md": {
+          "$type": "float",
+          "$value": 36
+        },
+        "display-lg": {
+          "$type": "float",
+          "$value": 48
+        },
+        "display-xl": {
+          "$type": "float",
+          "$value": 60
+        },
+        "display-2xl": {
+          "$type": "float",
+          "$value": 72
+        }
+      },
+      "Font weight": {
+        "regular": {
+          "$type": "string",
+          "$value": "Regular"
+        },
+        "regular-italic": {
+          "$type": "string",
+          "$value": "Regular italic"
+        },
+        "medium": {
+          "$type": "string",
+          "$value": "Medium"
+        },
+        "medium-italic": {
+          "$type": "string",
+          "$value": "Medium italic"
+        },
+        "semibold": {
+          "$type": "string",
+          "$value": "Semibold"
+        },
+        "semibold-italic": {
+          "$type": "string",
+          "$value": "Semibold italic"
+        },
+        "bold": {
+          "$type": "string",
+          "$value": "Bold"
+        },
+        "bold-italic": {
+          "$type": "string",
+          "$value": "Bold italic"
+        }
+      },
+      "Line height": {
+        "text-xs": {
+          "$type": "float",
+          "$value": 18
+        },
+        "text-sm": {
+          "$type": "float",
+          "$value": 20
+        },
+        "text-md": {
+          "$type": "float",
+          "$value": 24
+        },
+        "text-lg": {
+          "$type": "float",
+          "$value": 28
+        },
+        "text-xl": {
+          "$type": "float",
+          "$value": 30
+        },
+        "display-xs": {
+          "$type": "float",
+          "$value": 32
+        },
+        "display-sm": {
+          "$type": "float",
+          "$value": 38
+        },
+        "display-md": {
+          "$type": "float",
+          "$value": 44
+        },
+        "display-lg": {
+          "$type": "float",
+          "$value": 60
+        },
+        "display-xl": {
+          "$type": "float",
+          "$value": 72
+        },
+        "display-2xl": {
+          "$type": "float",
+          "$value": 90
+        }
+      }
+    }
+  }
+}

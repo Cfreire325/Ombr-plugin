@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": "figma",
+  "generatedAt": "2026-03-14T00:00:00.000Z",
+  "collections": {
+    "primitives": [
+      {
+        "name": "colors/base/white",
+        "type": "COLOR",
+        "values": {
+          "light": "#ffffff",
+          "dark": "#ffffff"
+        },
+        "scopes": ["ALL_SCOPES"]
+      },
+      {
+        "name": "colors/base/black",
+        "type": "COLOR",
+        "values": {
+          "light": "#000000",
+          "dark": "#000000"
+        },
+        "scopes": ["ALL_SCOPES"]
+      },
+      {
+        "name": "colors/brand/500",
+        "type": "COLOR",
+        "values": {
+          "light": "#4f46e5",
+          "dark": "#818cf8"
+        },
+        "scopes": ["ALL_SCOPES"]
+      }
+    ],
+    "semantic": [
+      {
+        "name": "text/primary",
+        "type": "COLOR",
+        "values": {
+          "light": { "alias": "primitives/colors/base/black" },
+          "dark": "#f5f6f7"
+        },
+        "scopes": ["TEXT_FILL"]
+      },
+      {
+        "name": "bg/canvas",
+        "type": "COLOR",
+        "values": {
+          "light": "#ffffff",
+          "dark": "#101114"
+        },
+        "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+      },
+      {
+        "name": "border/focus",
+        "type": "COLOR",
+        "values": {
+          "light": { "alias": "primitives/colors/brand/500" },
+          "dark": { "alias": "primitives/colors/brand/500" }
+        },
+        "scopes": ["STROKE_COLOR"]
+      }
+    ],
+    "components": [
+      {
+        "name": "input/border/focus",
+        "type": "COLOR",
+        "values": {
+          "light": { "alias": "semantic/border/focus" },
+          "dark": { "alias": "semantic/border/focus" }
+        },
+        "scopes": ["STROKE_COLOR"]
+      }
+    ]
+  }
+}

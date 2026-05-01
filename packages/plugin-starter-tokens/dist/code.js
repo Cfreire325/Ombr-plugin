@@ -1,3 +1,4 @@
+/* Generated from src/code.ts by packages/plugin-starter-tokens/scripts/build.mjs. Do not edit dist/code.js directly. */
 "use strict";
 (() => {
   var __defProp = Object.defineProperty;
@@ -4427,8 +4428,9 @@
   // src/code.ts
   var UI_WIDTH = 532;
   var UI_HEIGHT = 700;
+  var UI_TITLE = "ombrstudio - Build your design system foundation";
   var isGenerationRunning = false;
-  figma.showUI(__html__, { width: UI_WIDTH, height: UI_HEIGHT, themeColors: true });
+  figma.showUI(__html__, { width: UI_WIDTH, height: UI_HEIGHT, themeColors: true, title: UI_TITLE });
   var COLLECTIONS = {
     primitives: "primitives",
     colorModes: "1. color-modes",
@@ -4441,6 +4443,180 @@
   var DEFAULT_BRAND = "#82BE5C";
   var DEFAULT_DISPLAY_FAMILY = TYPOGRAPHY_REFERENCE.fontFamily.display || "Roboto";
   var DEFAULT_BODY_FAMILY = TYPOGRAPHY_REFERENCE.fontFamily.body || "Inter";
+  var DEFAULT_ICON_LIBRARY = "lucide";
+  var DEFAULT_ICON_PACKS = ["navigation", "actions"];
+  var LEGACY_ICONS_PAGE_NAME = "7. Icons";
+  var ICONS_PAGE_NAME = "Icons";
+  var ICON_COMPONENT_SET_NAME = "Icon";
+  var DEFAULT_ICON_SIZE = 24;
+  var DEFAULT_ICON_COLOR_ALIAS = "icon/primary";
+  var ICON_STROKE_WIDTHS = {
+    light: 1.5,
+    regular: 1.75,
+    medium: 2,
+    bold: 2.5
+  };
+  var ICON_LIBRARY_CONFIG = {
+    lucide: {
+      buildUrl: (iconName) => `https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/${iconName}.svg`
+    },
+    tabler: {
+      buildUrl: (iconName) => `https://raw.githubusercontent.com/tabler/tabler-icons/master/icons/outline/${iconName}.svg`
+    },
+    phosphor: {
+      buildUrl: (iconName) => `https://raw.githubusercontent.com/phosphor-icons/core/main/assets/regular/${iconName}.svg`
+    },
+    iconoir: {
+      buildUrl: (iconName) => `https://raw.githubusercontent.com/iconoir-icons/iconoir/main/icons/regular/${iconName}.svg`
+    }
+  };
+  var STARTER_ICON_PACK = [
+    "search",
+    "close",
+    "plus",
+    "minus",
+    "check",
+    "chevron-down",
+    "chevron-up",
+    "chevron-left",
+    "chevron-right",
+    "ellipsis",
+    "ellipsis-vertical",
+    "user",
+    "mail",
+    "calendar",
+    "logout",
+    "filter",
+    "trash",
+    "edit",
+    "loader",
+    "settings",
+    "home"
+  ];
+  var ICON_PACK_DEFINITIONS = {
+    navigation: ["home", "search", "chevron-left", "chevron-right", "chevron-up", "chevron-down", "ellipsis", "ellipsis-vertical"],
+    actions: ["plus", "minus", "check", "close", "edit", "trash", "filter", "settings"],
+    "status-feedback": ["check", "info", "warning", "loader"],
+    "files-folders": ["folder", "file", "upload", "download"]
+  };
+  var ICON_LIBRARY_NAME_MAP = {
+    lucide: {
+      search: "search",
+      close: "x",
+      plus: "plus",
+      minus: "minus",
+      check: "check",
+      "chevron-down": "chevron-down",
+      "chevron-up": "chevron-up",
+      "chevron-left": "chevron-left",
+      "chevron-right": "chevron-right",
+      ellipsis: "ellipsis",
+      "ellipsis-vertical": "ellipsis-vertical",
+      user: "user",
+      mail: "mail",
+      calendar: "calendar",
+      logout: "log-out",
+      filter: "list-filter",
+      trash: "trash",
+      edit: "pencil",
+      loader: "loader",
+      settings: "settings",
+      home: "house",
+      info: "circle-alert",
+      warning: "triangle-alert",
+      folder: "folder",
+      file: "file",
+      download: "download",
+      upload: "upload"
+    },
+    tabler: {
+      search: "search",
+      close: "x",
+      plus: "plus",
+      minus: "minus",
+      check: "check",
+      "chevron-down": "chevron-down",
+      "chevron-up": "chevron-up",
+      "chevron-left": "chevron-left",
+      "chevron-right": "chevron-right",
+      ellipsis: "dots",
+      "ellipsis-vertical": "dots-vertical",
+      user: "user",
+      mail: "mail",
+      calendar: "calendar",
+      logout: "logout",
+      filter: "filter",
+      trash: "trash",
+      edit: "pencil",
+      loader: "loader",
+      settings: "settings",
+      home: "home",
+      info: "info-circle",
+      warning: "alert-triangle",
+      folder: "folder",
+      file: "file",
+      download: "download",
+      upload: "upload"
+    },
+    phosphor: {
+      search: "magnifying-glass",
+      close: "x",
+      plus: "plus",
+      minus: "minus",
+      check: "check",
+      "chevron-down": "caret-down",
+      "chevron-up": "caret-up",
+      "chevron-left": "caret-left",
+      "chevron-right": "caret-right",
+      ellipsis: "dots-three",
+      "ellipsis-vertical": "dots-three-vertical",
+      user: "user",
+      mail: "envelope",
+      calendar: "calendar",
+      logout: "sign-out",
+      filter: "funnel",
+      trash: "trash",
+      edit: "pencil-simple",
+      loader: "spinner-gap",
+      settings: "gear",
+      home: "house",
+      info: "info",
+      warning: "warning",
+      folder: "folder",
+      file: "file",
+      download: "download",
+      upload: "upload"
+    },
+    iconoir: {
+      search: "search",
+      close: "xmark",
+      plus: "plus",
+      minus: "minus",
+      check: "check",
+      "chevron-down": "nav-arrow-down",
+      "chevron-up": "nav-arrow-up",
+      "chevron-left": "nav-arrow-left",
+      "chevron-right": "nav-arrow-right",
+      ellipsis: "more-horiz",
+      "ellipsis-vertical": "more-vert",
+      user: "user",
+      mail: "mail",
+      calendar: "calendar",
+      logout: "log-out",
+      filter: "filter",
+      trash: "trash",
+      edit: "edit-pencil",
+      loader: "refresh-double",
+      settings: "settings",
+      home: "home",
+      info: "info-circle",
+      warning: "warning-triangle",
+      folder: "folder",
+      file: "page",
+      download: "download",
+      upload: "upload"
+    }
+  };
   var PRESET_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
   var OPACITY_STEPS = [4, 6, 8, 9, 10, 15, 20, 28, 30, 36, 40, 48, 50, 60, 70, 75, 80, 90, 100];
   var PIXEL_VALUES = [
@@ -4507,8 +4683,9 @@
     ["radius-4xl", "24"],
     ["radius-full", "full"]
   ];
-  var DEFAULT_FONT_SIZES = __spreadValues({}, TYPOGRAPHY_REFERENCE.fontSize);
-  var DEFAULT_LINE_HEIGHTS = __spreadValues({}, TYPOGRAPHY_REFERENCE.lineHeight);
+  var DEFAULT_FONT_SIZES = __spreadValues({ label: 10 }, TYPOGRAPHY_REFERENCE.fontSize);
+  var DEFAULT_LINE_HEIGHTS = __spreadProps(__spreadValues({ label: 14 }, TYPOGRAPHY_REFERENCE.lineHeight), { "display-2xl": 88 });
+  var DEFAULT_LETTER_SPACINGS = Object.fromEntries(Object.keys(DEFAULT_FONT_SIZES).map((key) => [key, 0]));
   var DEFAULT_FONT_WEIGHT_STYLES = __spreadValues({}, TYPOGRAPHY_REFERENCE.fontWeight);
   var FONT_SIZE_ORDER = Object.keys(DEFAULT_FONT_SIZES);
   var COLLECTION_LEGACY_NAMES = {
@@ -4556,13 +4733,14 @@
     }
     const allowed = /* @__PURE__ */ new Set([
       "ALL_SCOPES",
+      "TEXT_CONTENT",
       "ALL_FILLS",
       "FRAME_FILL",
       "SHAPE_FILL",
       "TEXT_FILL",
       "STROKE_COLOR",
+      "EFFECT_FLOAT",
       "EFFECT_COLOR",
-      "GRID",
       "FONT_SIZE",
       "LINE_HEIGHT",
       "LETTER_SPACING",
@@ -4570,12 +4748,12 @@
       "PARAGRAPH_INDENT",
       "FONT_FAMILY",
       "FONT_STYLE",
+      "FONT_WEIGHT",
       "OPACITY",
       "WIDTH_HEIGHT",
       "GAP",
       "STROKE_FLOAT",
-      "CORNER_RADIUS",
-      "COUNT"
+      "CORNER_RADIUS"
     ]);
     const scoped = scopes.map((scope) => String(scope || "").trim()).filter((scope) => allowed.has(scope));
     return scoped.length ? scoped : semanticScopes(tokenName);
@@ -5250,16 +5428,29 @@
       border: {}
     };
   }
-  function generateColorModesTokens(uiMode, preset, neutralChoice, shadeSteps, useBrandForAccent) {
+  function normalizeSemanticOverridesInput(value) {
+    if (!value || typeof value !== "object") return {};
+    const normalized = {};
+    for (const [tokenName, rawReference] of Object.entries(value)) {
+      const cleanTokenName = String(tokenName || "").trim().toLowerCase();
+      const cleanReference = String(rawReference || "").trim();
+      if (!cleanTokenName || !cleanReference) continue;
+      if (!cleanReference.startsWith("{") || !cleanReference.endsWith("}")) continue;
+      normalized[cleanTokenName] = cleanReference;
+    }
+    return normalized;
+  }
+  function generateColorModesTokens(uiMode, preset, neutralChoice, shadeSteps, useBrandForAccent, semanticOverrides = {}) {
     const neutralPalette = preset.palettes[neutralChoice] ? neutralChoice : preset.defaultNeutral;
     const generated = createEmptyColorModes();
     for (const family of COLOR_MODE_FAMILIES) {
       const templateEntries = KIGEN_COLOR_MODES_TEMPLATE[family];
       for (const [key, kigenRef] of Object.entries(templateEntries)) {
         const tokenName = `${family}/${key}`;
+        const overrideReference = semanticOverrides[tokenName];
         generated[family][key] = convertKigenReferenceToPluginRef(
           tokenName,
-          kigenRef,
+          overrideReference || kigenRef,
           uiMode,
           preset,
           neutralPalette,
@@ -5282,10 +5473,10 @@
     }
     return missing;
   }
-  function buildColorModeTokens(uiMode, preset, neutralChoice, shadeSteps, useBrandForAccent) {
+  function buildColorModeTokens(uiMode, preset, neutralChoice, shadeSteps, useBrandForAccent, semanticOverrides = {}) {
     if (uiMode === "both") {
-      const generatedLight = generateColorModesTokens("light", preset, neutralChoice, shadeSteps, useBrandForAccent);
-      const generatedDark = generateColorModesTokens("dark", preset, neutralChoice, shadeSteps, useBrandForAccent);
+      const generatedLight = generateColorModesTokens("light", preset, neutralChoice, shadeSteps, useBrandForAccent, semanticOverrides);
+      const generatedDark = generateColorModesTokens("dark", preset, neutralChoice, shadeSteps, useBrandForAccent, semanticOverrides);
       const missing2 = Array.from(
         /* @__PURE__ */ new Set([...compareColorModesStructure(generatedLight), ...compareColorModesStructure(generatedDark)])
       );
@@ -5316,7 +5507,7 @@
       }
       return { tokens: tokens2, missing: missing2 };
     }
-    const generated = generateColorModesTokens(uiMode, preset, neutralChoice, shadeSteps, useBrandForAccent);
+    const generated = generateColorModesTokens(uiMode, preset, neutralChoice, shadeSteps, useBrandForAccent, semanticOverrides);
     const missing = compareColorModesStructure(generated);
     const tokens = [];
     for (const family of COLOR_MODE_FAMILIES) {
@@ -5379,7 +5570,7 @@
       scale: brand == null ? void 0 : brand.scale
     })).filter((brand, index) => index === 0 || brand.color.length > 0);
     if (!prepared.length) {
-      prepared.push({ name: "brand-primary", color: DEFAULT_BRAND });
+      prepared.push({ name: "brand-primary", color: DEFAULT_BRAND, scale: void 0 });
     }
     if (!prepared[0].color) {
       prepared[0].color = DEFAULT_BRAND;
@@ -5422,7 +5613,8 @@
   function buildTypographyTokens(options) {
     const tokens = [];
     const fontSizes = options.typography.fontSizes;
-    const lineHeights = resolveTypographyLineHeights(fontSizes);
+    const lineHeights = options.typography.lineHeights && typeof options.typography.lineHeights === "object" ? __spreadValues(__spreadValues({}, resolveTypographyLineHeights(fontSizes)), options.typography.lineHeights) : resolveTypographyLineHeights(fontSizes);
+    const letterSpacings = options.typography.letterSpacings && typeof options.typography.letterSpacings === "object" ? __spreadValues(__spreadValues({}, DEFAULT_LETTER_SPACINGS), options.typography.letterSpacings) : __spreadValues({}, DEFAULT_LETTER_SPACINGS);
     const sizeKeys = orderedTypographySizeKeys(fontSizes);
     tokens.push(createToken(COLLECTIONS.typography, TYPOGRAPHY_FAMILY_VARIABLES.display, "STRING", ["FONT_FAMILY"], raw(options.typography.displayFamily)));
     tokens.push(createToken(COLLECTIONS.typography, TYPOGRAPHY_FAMILY_VARIABLES.body, "STRING", ["FONT_FAMILY"], raw(options.typography.bodyFamily)));
@@ -5435,6 +5627,11 @@
       const value = Number(lineHeights[sizeKey]);
       if (!Number.isFinite(value) || value <= 0) continue;
       tokens.push(createToken(COLLECTIONS.typography, `line-height/${sizeKey}`, "FLOAT", ["FONT_SIZE"], raw(value)));
+    }
+    for (const sizeKey of orderedTypographySizeKeys(letterSpacings)) {
+      const value = Number(letterSpacings[sizeKey]);
+      if (!Number.isFinite(value)) continue;
+      tokens.push(createToken(COLLECTIONS.typography, `letter-spacing/${sizeKey}`, "FLOAT", ["FONT_SIZE"], raw(value)));
     }
     for (const [weightKey, weightLabel] of Object.entries(DEFAULT_FONT_WEIGHT_STYLES)) {
       tokens.push(createToken(COLLECTIONS.typography, `font-weight/${weightKey}`, "STRING", ["FONT_STYLE"], raw(weightLabel)));
@@ -5603,6 +5800,7 @@
         }
       }
     }
+    const semanticOverrides = normalizeSemanticOverridesInput(input.semanticOverrides);
     const hasCustomBrand = rawBrandsInput.some(
       (entry) => Boolean(entry) && typeof entry === "object" && String(entry.color || "").trim().length > 0
     );
@@ -5619,7 +5817,7 @@
       }, {}) : void 0
     }));
     if (!brands.length) {
-      brands.push({ name: "brand-primary", color: DEFAULT_BRAND });
+      brands.push({ name: "brand-primary", color: DEFAULT_BRAND, contrast: void 0, scale: void 0 });
     }
     if (!brands[0].color) {
       brands[0].color = DEFAULT_BRAND;
@@ -5633,13 +5831,52 @@
     const bodyFamily = inputTypography && typeof inputTypography.bodyFamily === "string" && inputTypography.bodyFamily.trim().length ? inputTypography.bodyFamily.trim() : DEFAULT_BODY_FAMILY;
     const fontSizes = __spreadValues({}, DEFAULT_FONT_SIZES);
     if (inputTypography && inputTypography.fontSizes && typeof inputTypography.fontSizes === "object") {
-      for (const key of FONT_SIZE_ORDER) {
+      for (const key of Object.keys(DEFAULT_FONT_SIZES)) {
         const candidate = Number(inputTypography.fontSizes[key]);
         if (Number.isFinite(candidate) && candidate > 0) {
           fontSizes[key] = candidate;
         }
       }
     }
+    const lineHeights = __spreadValues({}, DEFAULT_LINE_HEIGHTS);
+    if (inputTypography && inputTypography.lineHeights && typeof inputTypography.lineHeights === "object") {
+      for (const key of Object.keys(DEFAULT_LINE_HEIGHTS)) {
+        const candidate = Number(inputTypography.lineHeights[key]);
+        if (Number.isFinite(candidate) && candidate > 0) {
+          lineHeights[key] = candidate;
+        }
+      }
+    }
+    const letterSpacings = __spreadValues({}, DEFAULT_LETTER_SPACINGS);
+    if (inputTypography && inputTypography.letterSpacings && typeof inputTypography.letterSpacings === "object") {
+      for (const key of Object.keys(DEFAULT_LETTER_SPACINGS)) {
+        const candidate = Number(inputTypography.letterSpacings[key]);
+        if (Number.isFinite(candidate)) {
+          letterSpacings[key] = candidate;
+        }
+      }
+    }
+    const styleFamilies = inputTypography && inputTypography.styleFamilies && typeof inputTypography.styleFamilies === "object" ? Object.entries(inputTypography.styleFamilies).reduce((acc, [key, value]) => {
+      const cleanKey = String(key || "").trim();
+      const cleanValue = String(value || "").trim();
+      if (cleanKey && cleanValue) acc[cleanKey] = cleanValue;
+      return acc;
+    }, {}) : {};
+    const styleWeights = inputTypography && inputTypography.styleWeights && typeof inputTypography.styleWeights === "object" ? Object.entries(inputTypography.styleWeights).reduce((acc, [key, value]) => {
+      if (!Array.isArray(value)) return acc;
+      const cleanKey = String(key || "").trim();
+      const cleanValues = value.map((entry) => String(entry || "").trim()).filter(Boolean);
+      if (cleanKey && cleanValues.length) acc[cleanKey] = cleanValues;
+      return acc;
+    }, {}) : {};
+    const inputIcons = input.icons && typeof input.icons === "object" ? input.icons : void 0;
+    const iconLibrary = inputIcons && typeof inputIcons.library === "string" && inputIcons.library.trim().length ? inputIcons.library.trim() : DEFAULT_ICON_LIBRARY;
+    const includeStarterPack = !(inputIcons && inputIcons.includeStarterPack === false);
+    const iconPacks = Array.isArray(inputIcons == null ? void 0 : inputIcons.packs) ? inputIcons.packs.map((entry) => String(entry || "").trim()).filter(Boolean) : [...DEFAULT_ICON_PACKS];
+    const iconSizeCandidate = Number(inputIcons == null ? void 0 : inputIcons.size);
+    const iconSize = Number.isFinite(iconSizeCandidate) && iconSizeCandidate >= 12 && iconSizeCandidate <= 64 ? Math.round(iconSizeCandidate) : DEFAULT_ICON_SIZE;
+    const iconColorAlias = inputIcons && typeof inputIcons.colorAlias === "string" && inputIcons.colorAlias.trim().length ? inputIcons.colorAlias.trim().toLowerCase() : DEFAULT_ICON_COLOR_ALIAS;
+    const iconStroke = normalizeIconStrokeId(inputIcons == null ? void 0 : inputIcons.stroke);
     return {
       tokenLevel,
       uiMode,
@@ -5654,11 +5891,24 @@
       brands,
       selectedPalettes,
       paletteOverrides,
+      semanticOverrides,
       tokenBundle,
+      icons: {
+        library: iconLibrary,
+        includeStarterPack,
+        packs: iconPacks,
+        size: iconSize,
+        colorAlias: iconColorAlias,
+        stroke: iconStroke
+      },
       typography: {
         displayFamily,
         bodyFamily,
-        fontSizes
+        fontSizes,
+        lineHeights,
+        letterSpacings,
+        styleFamilies,
+        styleWeights
       }
     };
   }
@@ -5841,6 +6091,18 @@
     if (Number.isFinite(candidate) && candidate > 0) return candidate;
     return template.baseSize;
   }
+  function resolveTemplateLineHeight(template, options, fontSize) {
+    var _a;
+    const candidate = Number((_a = options.typography.lineHeights) == null ? void 0 : _a[template.sizeToken]);
+    if (Number.isFinite(candidate) && candidate > 0) return candidate;
+    return roundTo(fontSize * template.lineHeightRatio);
+  }
+  function resolveTemplateLetterSpacing(template, options) {
+    var _a;
+    const candidate = Number((_a = options.typography.letterSpacings) == null ? void 0 : _a[template.sizeToken]);
+    if (Number.isFinite(candidate)) return candidate;
+    return template.letterSpacingValue;
+  }
   function upsertTextStyleByName(name, index) {
     const existing = index.get(name);
     if (existing) return { style: existing, created: false };
@@ -5865,7 +6127,7 @@
     }
   }
   async function applyTypographyTextStyles(options, report, typographyCollection, variableIndex, progress) {
-    var _a;
+    var _a, _b;
     if (!TEXT_STYLE_TEMPLATES.length) {
       report.warnings.push("No typography style templates available.");
       return;
@@ -5895,8 +6157,8 @@
     let created = 0;
     let updated = 0;
     for (const template of TEXT_STYLE_TEMPLATES) {
-      const preferredFamily = template.familyKind === "display" ? options.typography.displayFamily : options.typography.bodyFamily;
-      const family = (_a = resolveFamilyName(catalog, preferredFamily)) != null ? _a : resolveFamilyName(catalog, template.familyKind === "display" ? "Roboto" : "Inter");
+      const preferredFamily = ((_a = options.typography.styleFamilies) == null ? void 0 : _a[template.sizeToken]) || (template.familyKind === "display" ? options.typography.displayFamily : options.typography.bodyFamily);
+      const family = (_b = resolveFamilyName(catalog, preferredFamily)) != null ? _b : resolveFamilyName(catalog, template.familyKind === "display" ? "Roboto" : "Inter");
       if (!family) {
         report.warnings.push(`Font family missing for text style: ${template.name}`);
         continue;
@@ -5919,8 +6181,8 @@
       style.fontName = fontName;
       const fontSize = resolveTemplateFontSize(template, options);
       style.fontSize = fontSize;
-      style.lineHeight = { unit: "PIXELS", value: roundTo(fontSize * template.lineHeightRatio) };
-      style.letterSpacing = template.letterSpacingUnit === "PERCENT" ? { unit: "PERCENT", value: template.letterSpacingValue } : { unit: "PIXELS", value: template.letterSpacingValue };
+      style.lineHeight = { unit: "PIXELS", value: resolveTemplateLineHeight(template, options, fontSize) };
+      style.letterSpacing = template.letterSpacingUnit === "PERCENT" ? { unit: "PERCENT", value: template.letterSpacingValue } : { unit: "PIXELS", value: resolveTemplateLetterSpacing(template, options) };
       style.paragraphSpacing = roundTo(fontSize * template.paragraphSpacingRatio);
       style.paragraphIndent = template.paragraphIndent;
       style.textCase = resolveTextCase(template.textCase);
@@ -5974,7 +6236,7 @@
     report.migrations.push(`Text styles: ${created} created, ${updated} updated (family/size/weight/line-height linked).`);
   }
   async function applyGeneration(options, progress) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const totalStart = Date.now();
     const preset = getPresetById(options.presetId);
     if (!preset) throw new Error(`Preset inconnu: ${options.presetId}`);
@@ -6000,7 +6262,8 @@
           preset,
           options.neutralChoice,
           shadeSteps,
-          options.hasCustomBrand
+          options.hasCustomBrand,
+          options.semanticOverrides
         );
         tokens.push(...colorModesResult.tokens);
       }
@@ -6027,10 +6290,10 @@
       for (const tokenName of colorModesResult.missing) {
         const message = `Color modes token missing from generated structure: ${tokenName}`;
         report.warnings.push(message);
-        console.warn(`[Starter Tokens] ${message}`);
+        console.warn(`[ombrstudio] ${message}`);
       }
     } else if (colorModesResult) {
-      console.log("[Starter Tokens] Color modes structure check: OK");
+      console.log("[ombrstudio] Color modes structure check: OK");
     }
     const localCollections = figma.variables.getLocalVariableCollections();
     const collectionsByName = /* @__PURE__ */ new Map();
@@ -6133,9 +6396,21 @@
       report.migrations.push("Text styles skipped by user option.");
     }
     const typographyPhaseMs = Date.now() - typographyPhaseStart;
+    const iconsPhaseStart = Date.now();
+    await importIconLibraryStarterPack(
+      options,
+      report,
+      preset,
+      brands,
+      shadeSteps,
+      (_h = (_g = collectionsByName.get(COLLECTIONS.colorModes)) != null ? _g : colorModesCleanupCollection) != null ? _h : null,
+      variableIndex,
+      progress
+    );
+    const iconsPhaseMs = Date.now() - iconsPhaseStart;
     const totalMs = Date.now() - totalStart;
     report.migrations.push(
-      `Timing(ms): tokens=${tokenPhaseMs}, write=${writePhaseMs}, alias=${aliasPhaseMs}, typography=${typographyPhaseMs}, total=${totalMs}`
+      `Timing(ms): tokens=${tokenPhaseMs}, write=${writePhaseMs}, alias=${aliasPhaseMs}, typography=${typographyPhaseMs}, icons=${iconsPhaseMs}, total=${totalMs}`
     );
     progress == null ? void 0 : progress("Finalisation...");
     return report;
@@ -6152,6 +6427,374 @@
       migrations: clampMessages(report.migrations, "migrations"),
       collections: Array.isArray(report.collections) ? report.collections.slice(0, 32) : []
     });
+  }
+  function normalizeIconLibraryId(input) {
+    const value = String(input || "").trim().toLowerCase();
+    if (value === "tabler" || value === "phosphor" || value === "iconoir") return value;
+    return "lucide";
+  }
+  function normalizeIconStrokeId(input) {
+    const value = String(input || "").trim().toLowerCase();
+    if (value === "light" || value === "regular" || value === "bold") return value;
+    return "medium";
+  }
+  function normalizeIconPackIds(input) {
+    if (!Array.isArray(input)) return [];
+    const valid = /* @__PURE__ */ new Set(["navigation", "actions", "status-feedback", "files-folders"]);
+    return Array.from(
+      new Set(
+        input.map((entry) => String(entry || "").trim()).filter((entry) => valid.has(entry))
+      )
+    );
+  }
+  function resolveRequestedIconIds(library, includeStarterPack, packs) {
+    const ordered = [];
+    ordered.push(...STARTER_ICON_PACK);
+    const requiredPacks = ["navigation", "actions", "status-feedback", "files-folders"];
+    for (const packId of requiredPacks) {
+      ordered.push(...ICON_PACK_DEFINITIONS[packId]);
+    }
+    const unique = Array.from(new Set(ordered));
+    return unique.map((id) => ({
+      id,
+      sourceName: ICON_LIBRARY_NAME_MAP[library][id]
+    })).filter((entry) => Boolean(entry.sourceName));
+  }
+  async function fetchIconSvg(library, sourceName) {
+    const url = ICON_LIBRARY_CONFIG[library].buildUrl(sourceName);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Impossible de charger ${sourceName} (${library}) [${response.status}]`);
+    }
+    return await response.text();
+  }
+  function ensureIconsPage(report) {
+    const existing = figma.root.children.find((node) => node.type === "PAGE" && node.name === ICONS_PAGE_NAME);
+    if (existing) {
+      return existing;
+    }
+    const legacy = figma.root.children.find((node) => node.type === "PAGE" && node.name === LEGACY_ICONS_PAGE_NAME);
+    if (legacy) {
+      legacy.name = ICONS_PAGE_NAME;
+      report.migrations.push(`Page renomm\xE9e: ${LEGACY_ICONS_PAGE_NAME} -> ${ICONS_PAGE_NAME}`);
+      return legacy;
+    }
+    const page = figma.createPage();
+    page.name = ICONS_PAGE_NAME;
+    report.migrations.push(`Page cr\xE9\xE9e: ${ICONS_PAGE_NAME}`);
+    return page;
+  }
+  function centerNodeInComponent(component, node) {
+    node.x = (component.width - node.width) / 2;
+    node.y = (component.height - node.height) / 2;
+  }
+  function normalizeSvgIconMarkup(svg, size, strokeWidth, color) {
+    const safeSize = Math.max(12, Math.min(64, Math.round(size || DEFAULT_ICON_SIZE)));
+    const safeStroke = Math.max(1, Math.min(4, Number(strokeWidth) || ICON_STROKE_WIDTHS.medium));
+    const safeColor = /^#[0-9a-f]{6}$/i.test(color) ? color : "#171717";
+    return String(svg || "").replace(/\bwidth="[^"]*"/i, `width="${safeSize}"`).replace(/\bheight="[^"]*"/i, `height="${safeSize}"`).replace(/\bstroke-width="[^"]*"/gi, `stroke-width="${safeStroke}"`).replace(/\bstroke="currentColor"/gi, `stroke="${safeColor}"`).replace(/\bfill="currentColor"/gi, `fill="${safeColor}"`);
+  }
+  function resolvePrimitiveColor(options, preset, brands, shadeSteps) {
+    var _a, _b;
+    const tokenName = resolveIconSemanticTokenName((_a = options.icons) == null ? void 0 : _a.colorAlias);
+    const key = tokenName.startsWith("icon/") ? tokenName.slice("icon/".length) : "primary";
+    const kigenRef = KIGEN_COLOR_MODES_TEMPLATE.icon[key] || KIGEN_COLOR_MODES_TEMPLATE.icon.primary;
+    const neutralPalette = preset.palettes[options.neutralChoice] ? options.neutralChoice : preset.defaultNeutral;
+    const primitiveRef = convertKigenReferenceToPluginRef(
+      `icon/${key}`,
+      ((_b = options.semanticOverrides) == null ? void 0 : _b[`icon/${key}`]) || kigenRef,
+      options.uiMode === "dark" ? "dark" : "light",
+      preset,
+      neutralPalette,
+      shadeSteps,
+      brands.length > 0
+    );
+    const segments = primitiveRef.split("/").filter(Boolean);
+    if (segments[0] !== "colors") return "#171717";
+    if (segments[1] === "base") {
+      if (segments[2] === "white") return options.baseWhite;
+      if (segments[2] === "black") return options.baseBlack;
+    }
+    if (segments[1] === "brand") {
+      const step = Number(segments[2] || 500);
+      const brand = brands[0];
+      return (brand == null ? void 0 : brand.scale[step]) || (brand == null ? void 0 : brand.baseColor) || DEFAULT_BASE_BLACK;
+    }
+    const palette = preset.palettes[segments[1]];
+    const value = palette == null ? void 0 : palette[segments[2]];
+    return value && /^#[0-9a-f]{6}$/i.test(value) ? value : DEFAULT_BASE_BLACK;
+  }
+  function resolveIconSemanticTokenName(input) {
+    const value = String(input || DEFAULT_ICON_COLOR_ALIAS).trim().toLowerCase().replace(/^\{/, "").replace(/\}$/, "").replace(/\./g, "/").replace(/\/+/g, "/").replace(/^\//, "").replace(/\/$/, "");
+    if (value.startsWith("semantic/icon/")) return value.slice("semantic/".length);
+    if (value.startsWith("icon/")) return value;
+    const key = value.split("/").filter(Boolean).pop() || "primary";
+    return `icon/${key}`;
+  }
+  function resolveIconSemanticVariable(colorModesCollection, variableIndex, colorAlias) {
+    const tokenName = resolveIconSemanticTokenName(colorAlias);
+    if (!colorModesCollection) return { tokenName, variable: null };
+    const direct = getVariableFromIndex(variableIndex, colorModesCollection.id, tokenName);
+    if ((direct == null ? void 0 : direct.resolvedType) === "COLOR") return { tokenName, variable: direct };
+    const lookup = normalizeLookup(tokenName);
+    for (const variable of variableIndex.values()) {
+      if (variable.variableCollectionId === colorModesCollection.id && variable.resolvedType === "COLOR" && normalizeLookup(variable.name) === lookup) {
+        return { tokenName, variable };
+      }
+    }
+    return { tokenName, variable: null };
+  }
+  function isSolidVisiblePaint(paint) {
+    return paint.type === "SOLID" && paint.visible !== false;
+  }
+  function hasVisibleStrokePaints(paints) {
+    return paints.some((paint) => paint.visible !== false);
+  }
+  function bindPaintsToIconVariable(paints, variable, fallbackColor) {
+    if (paints === figma.mixed || !Array.isArray(paints) || paints.length === 0) {
+      return { paints, bound: 0, failures: 0 };
+    }
+    let bound = 0;
+    let failures = 0;
+    const nextPaints = paints.map((paint) => {
+      if (!isSolidVisiblePaint(paint)) return paint;
+      const fallbackPaint = __spreadProps(__spreadValues({}, paint), {
+        color: { r: fallbackColor.r, g: fallbackColor.g, b: fallbackColor.b },
+        opacity: fallbackColor.a < 1 ? fallbackColor.a : paint.opacity
+      });
+      try {
+        const boundPaint = figma.variables.setBoundVariableForPaint(fallbackPaint, "color", variable);
+        bound += 1;
+        return boundPaint;
+      } catch (_error) {
+        failures += 1;
+        return fallbackPaint;
+      }
+    });
+    return { paints: nextPaints, bound, failures };
+  }
+  function applyIconVariableBinding(node, variable, fallbackHex) {
+    const fallbackColor = parseColorInput(fallbackHex);
+    const stats = {
+      nodesVisited: 0,
+      fillPaintsBound: 0,
+      strokePaintsBound: 0,
+      bindFailures: 0
+    };
+    const visit = (current) => {
+      stats.nodesVisited += 1;
+      if ("fills" in current) {
+        const result = bindPaintsToIconVariable(current.fills, variable, fallbackColor);
+        if (result.paints !== current.fills) {
+          current.fills = result.paints;
+        }
+        stats.fillPaintsBound += result.bound;
+        stats.bindFailures += result.failures;
+      }
+      if ("strokes" in current) {
+        const result = bindPaintsToIconVariable(current.strokes, variable, fallbackColor);
+        if (result.paints !== figma.mixed) {
+          current.strokes = result.paints;
+        }
+        stats.strokePaintsBound += result.bound;
+        stats.bindFailures += result.failures;
+      }
+      if ("children" in current) {
+        for (const child of current.children) {
+          visit(child);
+        }
+      }
+    };
+    visit(node);
+    return stats;
+  }
+  function applyIconStrokeWeight(node, strokeWidth) {
+    const safeStroke = Math.max(1, Math.min(4, Number(strokeWidth) || ICON_STROKE_WIDTHS.medium));
+    const stats = {
+      nodesVisited: 0,
+      nodesUpdated: 0,
+      updateFailures: 0
+    };
+    const visit = (current) => {
+      stats.nodesVisited += 1;
+      if ("strokes" in current && "strokeWeight" in current && Array.isArray(current.strokes) && hasVisibleStrokePaints(current.strokes)) {
+        try {
+          current.strokeWeight = safeStroke;
+          stats.nodesUpdated += 1;
+        } catch (_error) {
+          stats.updateFailures += 1;
+        }
+      }
+      if ("children" in current) {
+        for (const child of current.children) {
+          visit(child);
+        }
+      }
+    };
+    visit(node);
+    return stats;
+  }
+  function addIconBindingStats(total, current) {
+    total.nodesVisited += current.nodesVisited;
+    total.fillPaintsBound += current.fillPaintsBound;
+    total.strokePaintsBound += current.strokePaintsBound;
+    total.bindFailures += current.bindFailures;
+  }
+  function addIconStrokeWeightStats(total, current) {
+    total.nodesVisited += current.nodesVisited;
+    total.nodesUpdated += current.nodesUpdated;
+    total.updateFailures += current.updateFailures;
+  }
+  function createIconComponentFromSvg(svg, componentName, size, strokeWidth, color, colorVariable) {
+    const safeSize = Math.max(12, Math.min(64, Math.round(size || DEFAULT_ICON_SIZE)));
+    const imported = figma.createNodeFromSvg(normalizeSvgIconMarkup(svg, safeSize, strokeWidth, color));
+    const component = figma.createComponent();
+    component.name = componentName;
+    component.resizeWithoutConstraints(safeSize, safeSize);
+    component.fills = [];
+    component.strokes = [];
+    component.clipsContent = false;
+    if ("children" in imported && imported.type === "FRAME" && imported.children.length === 1) {
+      const child = imported.children[0];
+      component.appendChild(child);
+      centerNodeInComponent(component, child);
+      imported.remove();
+    } else {
+      component.appendChild(imported);
+      centerNodeInComponent(component, imported);
+    }
+    const strokeWeightStats = applyIconStrokeWeight(component, strokeWidth);
+    const bindingStats = colorVariable ? applyIconVariableBinding(component, colorVariable, color) : null;
+    return { component, bindingStats, strokeWeightStats };
+  }
+  function cleanupGeneratedIcons(page) {
+    const legacyFrame = page.children.find((node) => node.type === "FRAME" && node.name === "Imported icons");
+    if (legacyFrame) {
+      legacyFrame.remove();
+    }
+    const existingSet = page.children.find(
+      (node) => node.type === "COMPONENT_SET" && node.name === ICON_COMPONENT_SET_NAME
+    );
+    if (existingSet) {
+      existingSet.remove();
+    }
+    page.children.filter((node) => node.type === "COMPONENT" && /^Icon\s*\/\s*/.test(node.name)).forEach((component) => component.remove());
+  }
+  async function importIconLibraryStarterPack(options, report, preset, brands, shadeSteps, colorModesCollection, variableIndex, progress) {
+    const iconOptions = options.icons;
+    if (!iconOptions) return;
+    const library = normalizeIconLibraryId(iconOptions.library);
+    const packs = normalizeIconPackIds(iconOptions.packs);
+    const requestedIcons = resolveRequestedIconIds(library, iconOptions.includeStarterPack !== false, packs);
+    if (!requestedIcons.length) {
+      report.migrations.push("Import d'ic\xF4nes ignor\xE9: aucun starter pack ou pack s\xE9lectionn\xE9.");
+      return;
+    }
+    progress == null ? void 0 : progress(`Icons: import ${library}...`);
+    const page = ensureIconsPage(report);
+    cleanupGeneratedIcons(page);
+    let importedCount = 0;
+    const warningsBefore = report.warnings.length;
+    const components = [];
+    const columns = 8;
+    const cell = 56;
+    const originX = 64;
+    const originY = 64;
+    const iconSize = Number(iconOptions.size) || DEFAULT_ICON_SIZE;
+    const stroke = normalizeIconStrokeId(iconOptions.stroke);
+    const strokeWidth = ICON_STROKE_WIDTHS[stroke];
+    const color = resolvePrimitiveColor(options, preset, brands, shadeSteps);
+    const { tokenName: iconColorTokenName, variable: iconColorVariable } = resolveIconSemanticVariable(
+      colorModesCollection,
+      variableIndex,
+      iconOptions.colorAlias
+    );
+    const bindingTotals = {
+      nodesVisited: 0,
+      fillPaintsBound: 0,
+      strokePaintsBound: 0,
+      bindFailures: 0
+    };
+    const strokeWeightTotals = {
+      nodesVisited: 0,
+      nodesUpdated: 0,
+      updateFailures: 0
+    };
+    let iconsWithoutBindablePaints = 0;
+    if (!iconColorVariable) {
+      report.warnings.push(
+        `Icon variable binding skipped: ${COLLECTIONS.colorModes}/${iconColorTokenName} introuvable. Fallback hex applique (${color}).`
+      );
+    }
+    for (let index = 0; index < requestedIcons.length; index += 1) {
+      const iconEntry = requestedIcons[index];
+      try {
+        const svg = await fetchIconSvg(library, iconEntry.sourceName);
+        const { component, bindingStats, strokeWeightStats } = createIconComponentFromSvg(
+          svg,
+          `icon=${iconEntry.id}`,
+          iconSize,
+          strokeWidth,
+          color,
+          iconColorVariable
+        );
+        addIconStrokeWeightStats(strokeWeightTotals, strokeWeightStats);
+        if (bindingStats) {
+          addIconBindingStats(bindingTotals, bindingStats);
+          if (bindingStats.fillPaintsBound + bindingStats.strokePaintsBound === 0) {
+            iconsWithoutBindablePaints += 1;
+          }
+        }
+        page.appendChild(component);
+        const col = components.length % columns;
+        const row = Math.floor(components.length / columns);
+        component.x = originX + col * cell;
+        component.y = originY + row * cell;
+        components.push(component);
+        importedCount += 1;
+        if (progress && importedCount % 8 === 0) {
+          progress(`Icons: ${importedCount}/${requestedIcons.length}`);
+        }
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        report.warnings.push(`Icon import skipped (${iconEntry.id}/${library}): ${message}`);
+      }
+    }
+    if (!components.length) {
+      report.warnings.push(`Import d'ic\xF4nes ignor\xE9: aucune ic\xF4ne ${library} n'a pu \xEAtre import\xE9e.`);
+      return;
+    }
+    let generatedNode;
+    if (components.length === 1) {
+      generatedNode = components[0];
+      generatedNode.name = ICON_COMPONENT_SET_NAME;
+    } else {
+      const componentSet = figma.combineAsVariants(components, page);
+      componentSet.name = ICON_COMPONENT_SET_NAME;
+      generatedNode = componentSet;
+    }
+    generatedNode.x = originX;
+    generatedNode.y = originY;
+    report.migrations.push(`Ic\xF4nes import\xE9es (${library}): ${importedCount}/${requestedIcons.length}`);
+    report.migrations.push(`Composant g\xE9n\xE9r\xE9: ${ICON_COMPONENT_SET_NAME} (${importedCount} variante${importedCount > 1 ? "s" : ""})`);
+    report.migrations.push(`Icon strokeWeight applique (${stroke}=${strokeWidth}): ${strokeWeightTotals.nodesUpdated} node(s).`);
+    if (strokeWeightTotals.updateFailures > 0) {
+      report.warnings.push(`Icon strokeWeight: ${strokeWeightTotals.updateFailures} node(s) n'ont pas pu recevoir ${strokeWidth}.`);
+    }
+    if (iconColorVariable) {
+      report.migrations.push(
+        `Ic\xF4nes li\xE9es \xE0 ${COLLECTIONS.colorModes}/${iconColorTokenName}: ${bindingTotals.fillPaintsBound} fills, ${bindingTotals.strokePaintsBound} strokes.`
+      );
+      if (iconsWithoutBindablePaints > 0) {
+        report.warnings.push(`Icon binding: ${iconsWithoutBindablePaints} ic\xF4ne(s) sans fill/stroke SOLID bindable.`);
+      }
+      if (bindingTotals.bindFailures > 0) {
+        report.warnings.push(`Icon binding: ${bindingTotals.bindFailures} paint(s) n'ont pas pu \xEAtre li\xE9s \xE0 ${iconColorTokenName}.`);
+      }
+    }
+    if (report.warnings.length > warningsBefore) {
+      report.migrations.push(`Import d'ic\xF4nes avec warnings: ${report.warnings.length - warningsBefore}`);
+    }
   }
   function postPresetList() {
     figma.ui.postMessage({
@@ -6176,7 +6819,7 @@
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      console.warn(`[Starter Tokens] Unable to load font families list: ${message}`);
+      console.warn(`[ombrstudio] Unable to load font families list: ${message}`);
       figma.ui.postMessage({
         type: "font-families-list",
         families: []
@@ -6209,7 +6852,7 @@
           sendProgress("G\xE9n\xE9ration des variables...");
           const report = await applyGeneration(options, sendProgress);
           figma.notify(
-            `Starter Tokens V3: +${report.created} / ~${report.updated} / collisions ${report.collisionsReplaced}` + (report.aliasMissing ? ` / alias manquants ${report.aliasMissing}` : "")
+            `ombrstudio: +${report.created} / ~${report.updated} / collisions ${report.collisionsReplaced}` + (report.aliasMissing ? ` / alias manquants ${report.aliasMissing}` : "")
           );
           figma.ui.postMessage({
             type: "generate-result",

@@ -809,40 +809,68 @@
       }
 
       .contrast-range {
+        --contrast-position: 50%;
+        --contrast-accent: #f3ff8f;
+        --contrast-segment-light: #d9d9d9;
+        --contrast-segment-dark: rgba(217, 217, 217, 0.1);
         width: 100%;
-        height: 32px;
+        height: 36px;
         border-radius: 6px;
         border: 1px solid var(--zinc-400);
         background:
+          linear-gradient(
+            90deg,
+            transparent 0,
+            transparent calc(var(--contrast-position) - 6px),
+            var(--contrast-accent) calc(var(--contrast-position) - 6px),
+            var(--contrast-accent) calc(var(--contrast-position) + 6px),
+            transparent calc(var(--contrast-position) + 6px),
+            transparent 100%
+          ),
           repeating-linear-gradient(
             90deg,
-            #d9d9d9 0,
-            #d9d9d9 10px,
+            transparent 0,
             transparent 10px,
-            transparent 13px
+            rgba(16, 16, 16, 0.8) 10px,
+            rgba(16, 16, 16, 0.8) 13px
+          ),
+          linear-gradient(
+            90deg,
+            var(--contrast-segment-light) 0,
+            var(--contrast-segment-light) var(--contrast-position),
+            var(--contrast-segment-dark) var(--contrast-position),
+            var(--contrast-segment-dark) 100%
           );
         padding: 4px;
         -webkit-appearance: none;
         appearance: none;
+        cursor: ew-resize;
       }
 
       .contrast-range::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
-        width: 4px;
-        height: 20px;
-        border-radius: 999px;
-        background: #fff;
-        cursor: pointer;
+        width: 12px;
+        height: 24px;
+        border: 0;
+        border-radius: 2px;
+        background: transparent;
+        box-shadow: none;
+        cursor: ew-resize;
       }
 
       .contrast-range::-moz-range-thumb {
-        width: 4px;
-        height: 20px;
+        width: 12px;
+        height: 24px;
         border: 0;
-        border-radius: 999px;
-        background: #fff;
-        cursor: pointer;
+        border-radius: 2px;
+        background: transparent;
+        cursor: ew-resize;
+      }
+
+      .contrast-value {
+        color: #f3ff8f;
+        font-weight: 700;
       }
 
       .modal-shades {
@@ -850,10 +878,16 @@
         align-items: center;
         gap: 4px;
         height: 80px;
+        flex-wrap: nowrap;
+        min-width: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
       }
 
       .modal-shade {
-        flex: 1;
+        flex: 1 1 0;
+        min-width: 24px;
         width: auto;
         height: 80px;
         border: 0;
@@ -1155,9 +1189,9 @@
             <label class="field">
               <div class="contrast-head">
                 <span class="label">Contrast shift</span>
-                <span id="brandContrastValue" class="label">0.00 %</span>
+                <span id="brandContrastValue" class="label contrast-value">0.00 %</span>
               </div>
-              <input id="brandContrast" class="contrast-range" type="range" min="0" max="100" value="0" />
+              <input id="brandContrast" class="contrast-range" type="range" min="-100" max="100" step="1" value="0" />
             </label>
           </div>
 
@@ -1178,9 +1212,11 @@
 
     <script>
       const PATTERNS = [
-        { id: "tailwind", label: "50,100,200...900", steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
+        { id: "tailwind", label: "50,100,200...900,950", steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] },
         { id: "hundreds", label: "100,200,300...1000", steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
       ];
+      const MIN_SHADE_COUNT = 6;
+      const MAX_SHADE_COUNT = 14;
 
       const FONT_DEFAULTS = {
         "text-xs": 12,
@@ -1378,20 +1414,23 @@
           .map((i) => baseSteps[i]);
       }
 
-      function expandSteps(baseSteps, count) {
-        const min = baseSteps[0];
-        const max = baseSteps[baseSteps.length - 1];
-        const list = [];
-        for (let i = 0; i < count; i++) {
-          list.push(Math.round(min + ((max - min) * i) / Math.max(1, count - 1)));
+      function nextShadeStep(previous) {
+        return previous === 950 ? 1000 : previous + 100;
+      }
+
+      function extendSteps(baseSteps, count) {
+        const steps = Array.from(new Set(baseSteps)).sort((a, b) => a - b);
+        while (steps.length < count) {
+          const last = steps[steps.length - 1];
+          steps.push(nextShadeStep(last));
         }
-        return Array.from(new Set(list)).sort((a, b) => a - b);
+        return steps.slice(0, count);
       }
 
       function deriveShadeSteps(patternId, shadeCount) {
         const pattern = PATTERNS.find((entry) => entry.id === patternId) || PATTERNS[0];
-        const count = Math.max(3, Math.min(16, Number(shadeCount) || 11));
-        return count <= pattern.steps.length ? pickSubset(pattern.steps, count) : expandSteps(pattern.steps, count);
+        const count = Math.max(MIN_SHADE_COUNT, Math.min(MAX_SHADE_COUNT, Number(shadeCount) || 11));
+        return count <= pattern.steps.length ? pickSubset(pattern.steps, count) : extendSteps(pattern.steps, count);
       }
 
       function resolveBaseStep(steps) {
@@ -1431,7 +1470,10 @@
         const minStep = steps[0];
         const maxStep = steps[steps.length - 1];
         const scale = {};
-        const c = Math.max(0, Math.min(1, Number(contrast) / 100));
+        const shift = Math.max(-1, Math.min(1, Number(contrast) / 100));
+        const positive = Math.max(0, shift);
+        const negative = Math.max(0, -shift);
+        const flatten = 1 - negative * 0.75;
         for (const step of steps) {
           if (step === baseStep) {
             scale[step] = rgbToHex(parsed);
@@ -1443,14 +1485,31 @@
             ? (step - baseStep) / Math.max(1, maxStep - baseStep)
             : (baseStep - step) / Math.max(1, baseStep - minStep);
           const l = dark
-            ? base.l - (base.l - 0.08) * ratio * (0.7 + c * 0.4)
-            : base.l + (0.98 - base.l) * ratio * (0.8 + c * 0.2);
-          const s = dark
-            ? base.s * (1 - ratio * (0.12 + c * 0.15))
-            : base.s * (1 - ratio * (0.2 + c * 0.1));
-          scale[step] = rgbToHex(hslToRgb({ h: base.h, s, l }));
+            ? base.l - (base.l - 0.08) * ratio * (0.7 + positive * 0.4) * flatten
+            : base.l + (0.98 - base.l) * ratio * (0.8 + positive * 0.2) * flatten;
+          const saturationDrop = dark ? ratio * (0.12 + positive * 0.15) : ratio * (0.2 + positive * 0.1);
+          const s = base.s * (1 - saturationDrop * (1 - negative * 0.8));
+          scale[step] = rgbToHex(hslToRgb({ h: base.h, s: Math.max(0, Math.min(1, s)), l: Math.max(0.02, Math.min(0.98, l)) }));
         }
         return scale;
+      }
+
+      function clampContrastValue(value) {
+        const parsed = Number(value);
+        if (!Number.isFinite(parsed)) return 0;
+        return Math.max(-100, Math.min(100, Math.round(parsed)));
+      }
+
+      function formatContrastValue(value) {
+        return `${(value / 100).toFixed(2)} %`;
+      }
+
+      function updateContrastDisplay(value) {
+        const clamped = clampContrastValue(value);
+        const position = ((clamped + 100) / 200) * 100;
+        brandContrast.style.setProperty("--contrast-position", `${position}%`);
+        brandContrastValue.textContent = formatContrastValue(clamped);
+        return clamped;
       }
 
       function currentPreset() {
@@ -1524,7 +1583,7 @@
         patternSelect.value = state.namingPattern;
 
         shadeCountSelect.innerHTML = "";
-        for (let i = 3; i <= 16; i++) {
+        for (let i = MIN_SHADE_COUNT; i <= MAX_SHADE_COUNT; i++) {
           const option = document.createElement("option");
           option.value = String(i);
           option.textContent = String(i);
@@ -1821,14 +1880,17 @@
       }
 
       function renderBrandModalScale() {
-        const shadeCount = Number(shadeCountSelect.value || state.shadeCount || 11);
+        const shadeCount = Math.max(
+          MIN_SHADE_COUNT,
+          Math.min(MAX_SHADE_COUNT, Number(shadeCountSelect.value || state.shadeCount || 11)),
+        );
         state.shadeCount = shadeCount;
         const steps = deriveShadeSteps(patternSelect.value || state.namingPattern, shadeCount);
         const baseStep = resolveBaseStep(steps);
         const color = String(brandModalHex.value || "").trim();
-        const contrast = Number(brandContrast.value || 0);
+        const contrast = updateContrastDisplay(brandContrast.value || 0);
+        brandContrast.value = String(contrast);
         const scale = isValidColor(color) ? buildPreviewScale(color, steps, baseStep, contrast) : {};
-        brandContrastValue.textContent = `${contrast.toFixed(2)} %`;
         pendingBrandContrast = contrast;
         pendingBrandScale = {};
 

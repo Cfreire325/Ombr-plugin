@@ -1,8 +1,9 @@
 <!doctype html>
+<!-- Generated from src/ui.html by packages/plugin-starter-tokens/scripts/build.mjs. Do not edit dist/ui.html directly. Run npm run build after source changes. -->
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>Starter Tokens V3</title>
+    <title>ombrstudio - Build your design system foundation</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Fira+Code:wght@500;600;700&display=swap");
 
@@ -23,21 +24,61 @@
 
         /* DS - Spacing */
         --ds-spacing-none: 0px;
+        --ds-spacing-xxs: 2px;
         --ds-spacing-xs: 4px;
         --ds-spacing-sm: 6px;
         --ds-spacing-md: 8px;
-        --ds-spacing-lg: 10px;
-        --ds-spacing-xl: 12px;
-        --ds-spacing-2xl: 16px;
-        --ds-spacing-3xl: 20px;
-        --ds-spacing-4xl: 24px;
+        --ds-spacing-lg: 12px;
+        --ds-spacing-xl: 16px;
+        --ds-spacing-2xl: 20px;
+        --ds-spacing-3xl: 24px;
+        --ds-spacing-4xl: 32px;
+        --ds-spacing-5xl: 40px;
+        --ds-spacing-6xl: 48px;
+        --ds-spacing-7xl: 64px;
+        --ds-spacing-8xl: 80px;
+        --ds-spacing-9xl: 96px;
+        --ds-spacing-10xl: 128px;
+        --ds-spacing-11xl: 160px;
 
         /* DS - Radius */
+        --ds-radius-none: 0px;
+        --ds-radius-xxs: 2px;
+        --ds-radius-xs: 4px;
         --ds-radius-sm: 6px;
         --ds-radius-md: 8px;
         --ds-radius-lg: 10px;
-        --ds-radius-xl: 16px;
+        --ds-radius-xl: 12px;
+        --ds-radius-2xl: 16px;
+        --ds-radius-3xl: 20px;
+        --ds-radius-4xl: 24px;
         --ds-radius-full: 9999px;
+
+        /* DS - Controls */
+        --ds-control-height-sm: 28px;
+        --ds-control-height-md: 36px;
+        --ds-control-height-lg: 42px;
+        --ds-modal-color-block-size: 88px;
+
+        --spacing-none: var(--ds-spacing-none);
+        --spacing-xxs: var(--ds-spacing-xxs);
+        --spacing-xs: var(--ds-spacing-xs);
+        --spacing-sm: var(--ds-spacing-sm);
+        --spacing-md: var(--ds-spacing-md);
+        --spacing-lg: var(--ds-spacing-lg);
+        --spacing-xl: var(--ds-spacing-xl);
+        --spacing-2xl: var(--ds-spacing-2xl);
+        --spacing-3xl: var(--ds-spacing-3xl);
+        --spacing-4xl: var(--ds-spacing-4xl);
+        --radius-none: var(--ds-radius-none);
+        --radius-xxs: var(--ds-radius-xxs);
+        --radius-xs: var(--ds-radius-xs);
+        --radius-sm: var(--ds-radius-sm);
+        --radius-md: var(--ds-radius-md);
+        --radius-lg: var(--ds-radius-lg);
+        --radius-xl: var(--ds-radius-xl);
+        --radius-2xl: var(--ds-radius-2xl);
+        --radius-full: var(--ds-radius-full);
 
         /* DS - Typography */
         --ds-font-family-sans: Inter, "Segoe UI", sans-serif;
@@ -63,6 +104,20 @@
         --ds-color-border-danger: var(--danger);
         --ds-color-focus-ring-default: rgba(245, 246, 247, 0.3);
         --ds-color-focus-ring-danger: #f87171;
+        --ds-color-required: #f3ff8f;
+        --ds-color-scrollbar-thumb: #e4e7ec;
+        --ds-color-button-primary-bg: #f5f5f5;
+        --ds-color-button-primary-bg-hover: #e5e5e5;
+        --ds-color-button-primary-fg: #0e0f11;
+        --ds-color-button-secondary-bg: #404040;
+        --ds-color-button-secondary-bg-hover: #525252;
+        --ds-color-button-secondary-disabled-bg: #a3a3a3;
+        --ds-color-button-secondary-disabled-fg: #737373;
+        --ds-color-button-ghost-bg-hover: #f5f6f7;
+        --ds-color-button-ghost-icon-bg-hover: #dadce0;
+        --ds-color-button-destructive-bg: #dc2626;
+        --ds-color-button-destructive-bg-hover: #b91c1c;
+        --ds-color-button-destructive-fg: #f5f6f7;
 
         /* Backward-compatible aliases */
         --input-surface: var(--ds-color-bg-input);
@@ -70,6 +125,76 @@
         --input-text: var(--ds-color-text-primary);
         --input-text-placeholder: var(--ds-color-text-placeholder);
         --input-focus-ring: var(--ds-color-focus-ring-default);
+
+        /* Components - Input */
+        --component-input-stack-gap: var(--spacing-sm);
+        --component-input-label-gap: var(--spacing-xs);
+        --component-input-label-color: var(--ds-color-text-paragraph);
+        --component-input-required-color: var(--ds-color-required);
+        --component-input-hint-color: var(--ds-color-text-paragraph);
+        --component-input-height-md: var(--ds-control-height-md);
+        --component-input-radius-md: var(--radius-md);
+        --component-input-padding-top: var(--spacing-md);
+        --component-input-padding-right: var(--spacing-lg);
+        --component-input-padding-bottom: var(--spacing-md);
+        --component-input-padding-left: var(--spacing-lg);
+        --component-input-content-gap: var(--spacing-md);
+        --component-input-icon-size: var(--spacing-2xl);
+        --component-input-leading-padding-left: calc(var(--component-input-padding-left) + var(--component-input-icon-size) + var(--component-input-content-gap));
+        --component-input-trailing-padding-right: calc(var(--component-input-padding-right) + var(--component-input-icon-size));
+        --component-input-background: var(--input-surface);
+        --component-input-text-color: var(--input-text);
+        --component-input-placeholder-color: var(--input-text-placeholder);
+        --component-input-disabled-color: var(--ds-color-text-disabled);
+        --component-input-focus-ring: var(--input-focus-ring);
+        --component-input-error-border: var(--ds-color-border-danger);
+        --component-input-error-ring: var(--ds-color-focus-ring-danger);
+
+        /* Components - Button */
+        --component-button-gap: 10px;
+        --component-button-focus-ring: var(--ds-color-focus-ring-default);
+        --component-button-height-large: 52px;
+        --component-button-height-regular: 44px;
+        --component-button-height-small: 36px;
+        --component-button-height-mini: 26px;
+        --component-button-padding-large: 20px;
+        --component-button-padding-regular: 16px;
+        --component-button-padding-small: 12px;
+        --component-button-padding-mini: 8px;
+        --component-button-radius-large: 16px;
+        --component-button-radius-regular: 12px;
+        --component-button-radius-small: 12px;
+        --component-button-radius-mini: 8px;
+        --component-button-icon-size: 20px;
+        --component-button-icon-size-mini: 16px;
+        --component-icon-button-size-large: 52px;
+        --component-icon-button-size-regular: 44px;
+        --component-icon-button-size-small: 32px;
+        --component-icon-button-size-mini: 24px;
+
+        /* Components - Dropdown menu item */
+        --component-dropdown-item-shell-padding-inline: var(--spacing-sm);
+        --component-dropdown-item-shell-padding-block: 1px;
+        --component-dropdown-item-height: var(--spacing-5xl);
+        --component-dropdown-item-radius: var(--radius-sm);
+        --component-dropdown-item-padding-top: var(--spacing-lg);
+        --component-dropdown-item-padding-right: var(--spacing-lg);
+        --component-dropdown-item-padding-bottom: var(--spacing-lg);
+        --component-dropdown-item-padding-left: var(--spacing-md);
+        --component-dropdown-item-gap: var(--spacing-md);
+        --component-dropdown-item-background-hover: var(--neutral-700);
+
+        /* Components - Dropdown */
+        --component-dropdown-panel-offset: var(--spacing-lg);
+        --component-dropdown-panel-radius: var(--radius-md);
+        --component-dropdown-panel-padding-block: var(--spacing-xs);
+        --component-dropdown-panel-max-height: 302px;
+
+        /* Components - Scrollbar */
+        --component-scrollbar-width: var(--spacing-lg);
+        --component-scrollbar-padding: var(--spacing-xs);
+        --component-scrollbar-radius: var(--radius-full);
+        --component-scrollbar-thumb: var(--ds-color-scrollbar-thumb);
       }
 
       * {
@@ -103,7 +228,7 @@
         height: 100%;
         margin: 0 auto;
         background: var(--ds-color-bg-canvas);
-        border-radius: var(--ds-radius-xl);
+        border-radius: var(--ds-radius-2xl);
         overflow: hidden;
         display: flex;
         flex-direction: column;
@@ -112,19 +237,39 @@
       .screen {
         display: none;
         flex: 1;
-        padding: 24px;
-        overflow: auto;
+        min-height: 0;
+        padding: var(--ds-spacing-3xl);
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: auto;
+        scrollbar-color: var(--neutral-300) transparent;
+      }
+
+      .screen::-webkit-scrollbar {
+        width: var(--component-scrollbar-width);
+      }
+
+      .screen::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .screen::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        border: 4px solid transparent;
+        background-clip: padding-box;
+        background: var(--component-scrollbar-thumb);
       }
 
       .screen.active {
-        display: block;
+        display: flex;
+        flex-direction: column;
       }
 
       .screen-head {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .kicker {
@@ -147,7 +292,7 @@
       }
 
       .subtitle {
-        margin-top: 6px;
+        margin-top: var(--ds-spacing-sm);
         font-size: 12px;
         line-height: 16px;
         font-weight: 500;
@@ -155,21 +300,47 @@
       }
 
       .panel {
-        margin-top: 24px;
+        margin-top: var(--ds-spacing-3xl);
         background: transparent;
         padding: 0;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: auto;
+        scrollbar-color: var(--neutral-300) transparent;
+      }
+
+      .panel::-webkit-scrollbar {
+        width: var(--component-scrollbar-width);
+      }
+
+      .panel::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .panel::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        border: 4px solid transparent;
+        background-clip: padding-box;
+        background: var(--component-scrollbar-thumb);
+      }
+
+      #screen2 .panel {
+        display: grid;
+        gap: var(--ds-spacing-4xl);
       }
 
       .token-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .mode-card {
         min-height: 236px;
-        padding: 20px;
-        border-radius: 16px;
+        padding: var(--ds-spacing-2xl);
+        border-radius: var(--ds-radius-2xl);
         background: var(--neutral-800);
         border: 1px solid transparent;
         position: relative;
@@ -203,8 +374,8 @@
         align-items: center;
         justify-content: center;
         border: 1px solid var(--zinc-400);
-        border-radius: 6px;
-        padding: 4px 6px;
+        border-radius: var(--ds-radius-sm);
+        padding: var(--ds-spacing-xs) var(--ds-spacing-sm);
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
         font-size: 10px;
         font-weight: 600;
@@ -212,7 +383,7 @@
       }
 
       .mode-title {
-        margin-top: 16px;
+        margin-top: var(--ds-spacing-xl);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -223,8 +394,8 @@
       }
 
       .mode-title .dot {
-        width: 16px;
-        height: 16px;
+        width: var(--ds-spacing-xl);
+        height: var(--ds-spacing-xl);
         border-radius: 999px;
         border: 1px solid var(--zinc-400);
         background: transparent;
@@ -236,7 +407,7 @@
       }
 
       .mode-description {
-        margin-top: 8px;
+        margin-top: var(--ds-spacing-md);
         font-size: 12px;
         line-height: 16px;
         color: var(--neutral-400);
@@ -244,20 +415,20 @@
       }
 
       .mode-separator {
-        margin: 12px 0 16px;
+        margin: var(--ds-spacing-lg) 0 var(--ds-spacing-xl);
         border-top: 1px solid var(--neutral-400);
       }
 
       .chips {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: var(--ds-spacing-md);
       }
 
       .chips .chip {
         background: var(--neutral-700);
-        border-radius: 6px;
-        padding: 6px;
+        border-radius: var(--ds-radius-sm);
+        padding: var(--ds-spacing-sm);
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
         font-size: 10px;
         color: var(--zinc-300);
@@ -274,9 +445,9 @@
 
       .coming-soon-tag {
         border: 1px solid var(--zinc-400);
-        border-radius: 6px;
+        border-radius: var(--ds-radius-sm);
         background: rgba(23, 23, 23, 0.8);
-        padding: 6px 8px;
+        padding: var(--ds-spacing-sm) var(--ds-spacing-md);
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
         font-size: 10px;
         color: var(--zinc-300);
@@ -288,24 +459,68 @@
 
       .brand-list {
         display: grid;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .brand-list:empty,
+      .palette-cards:empty,
+      .error:empty {
+        display: none;
       }
 
       .brand-setup-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-bottom: 16px;
+        gap: var(--ds-spacing-2xl);
+        margin-bottom: 0;
+      }
+
+      .brand-setup-grid.compact {
+        margin-bottom: 0;
       }
 
       .brand-setup-note {
-        margin-bottom: 12px;
+        margin-top: var(--ds-spacing-sm);
+        margin-bottom: 0;
+      }
+
+      .setup-block {
+        display: grid;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .setup-block-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .section-title {
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+        font-size: 18px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+        color: var(--zinc-50);
+      }
+
+      .block-note,
+      .preset-info,
+      .semantic-note {
+        margin-top: var(--ds-spacing-sm);
+      }
+
+      .panel-divider {
+        height: 1px;
+        margin: 0;
+        background: linear-gradient(90deg, rgba(163, 163, 163, 0.16) 0%, rgba(163, 163, 163, 0.5) 48%, rgba(163, 163, 163, 0.16) 100%);
       }
 
       .brand-card {
-        border-radius: 16px;
+        border-radius: var(--ds-radius-2xl);
         background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
-        padding: 20px;
+        padding: var(--ds-spacing-2xl);
       }
 
       .brand-title {
@@ -320,113 +535,53 @@
         color: var(--zinc-300);
       }
 
-      .brand-edit {
-        width: auto;
-        min-width: 0;
-        height: auto;
-        min-height: 0;
-        border: 1px solid var(--blue-500);
-        border-radius: 6px;
-        background: rgba(23, 37, 84, 0.4);
-        color: var(--blue-500);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
-        font-size: 10px;
-        font-weight: 600;
-        line-height: normal;
-        padding: 6px;
-        cursor: pointer;
-      }
-
       .brand-card-actions {
         display: flex;
         align-items: center;
-        gap: 8px;
-      }
-
-      .brand-delete {
-        width: auto;
-        min-width: 0;
-        height: auto;
-        min-height: 0;
-        border: 1px solid var(--danger);
-        border-radius: 6px;
-        background: rgba(127, 29, 29, 0.35);
-        color: #fecaca;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
-        font-size: 10px;
-        font-weight: 600;
-        line-height: normal;
-        padding: 6px;
-        cursor: pointer;
-      }
-
-      .brand-delete:disabled {
-        cursor: not-allowed;
+        gap: var(--ds-spacing-md);
       }
 
       .brand-swatch-row {
-        margin-top: 16px;
+        margin-top: var(--ds-spacing-xl);
         display: flex;
         align-items: center;
-        gap: 4px;
-        height: 40px;
+        gap: var(--ds-spacing-xs);
+        height: var(--ds-spacing-5xl);
       }
 
       .brand-swatch {
         flex: 1;
-        height: 40px;
+        height: var(--ds-spacing-5xl);
         border-radius: 5.491px;
         box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
       }
 
       .brand-actions {
-        margin-top: 16px;
-        border-radius: 16px;
-        background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
-        padding: 20px;
+        margin-top: 0;
         display: flex;
-        justify-content: center;
-      }
-
-      .inline-btn {
-        width: auto;
-        min-height: auto;
-        border: 0;
-        border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 12px;
-        line-height: 16px;
-        font-weight: 600;
-        font-family: Inter, "Segoe UI", sans-serif;
-      }
-
-      .inline-btn.primary {
-        background: #f5f5f5;
-        color: #262626;
+        justify-content: flex-start;
       }
 
       .preset-top-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .palette-config-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .field,
       .ds-field {
         display: grid;
-        gap: var(--ds-spacing-sm);
+        gap: var(--component-input-label-gap);
+      }
+
+      .field-margin-top-lg {
+        margin-top: var(--ds-spacing-lg);
       }
 
       .label-row {
@@ -436,22 +591,31 @@
       }
 
       .label-required {
-        color: #f3ff8f;
+        color: var(--component-input-required-color);
         font-size: 14px;
         line-height: 1.4;
         font-weight: 700;
         letter-spacing: 0.07px;
-        margin-left: 2px;
+        margin-left: var(--spacing-xxs);
       }
 
       .label,
       .ds-label {
-        color: var(--ds-color-text-paragraph);
+        color: var(--component-input-label-color);
         font-size: var(--ds-font-size-paragraph-sm);
         line-height: var(--ds-line-height-paragraph-sm);
         letter-spacing: var(--ds-letter-spacing-paragraph-sm);
         font-family: var(--ds-font-family-sans);
         font-weight: var(--ds-font-weight-semibold);
+      }
+
+      .field-caption-label {
+        color: var(--component-input-hint-color);
+        font-size: var(--ds-font-size-paragraph-mini);
+        line-height: var(--ds-line-height-paragraph-mini);
+        letter-spacing: var(--ds-letter-spacing-paragraph-mini);
+        font-family: var(--ds-font-family-sans);
+        font-weight: var(--ds-font-weight-medium);
       }
 
       .ui-input,
@@ -461,12 +625,16 @@
       .ds-select,
       .ds-number {
         width: 100%;
-        min-height: 36px;
+        min-height: var(--component-input-height-md);
         border: 1px solid var(--input-border);
-        border-radius: var(--ds-radius-md);
-        background: var(--input-surface);
-        color: var(--input-text);
-        padding: var(--ds-spacing-md) var(--ds-spacing-lg);
+        border-radius: var(--component-input-radius-md);
+        background: var(--component-input-background);
+        color: var(--component-input-text-color);
+        padding:
+          var(--component-input-padding-top)
+          var(--component-input-padding-right)
+          var(--component-input-padding-bottom)
+          var(--component-input-padding-left);
         font-family: var(--ds-font-family-sans);
         font-size: var(--ds-font-size-paragraph-sm);
         line-height: 19.6px;
@@ -480,14 +648,14 @@
       .ui-number::placeholder,
       .ds-input::placeholder,
       .ds-number::placeholder {
-        color: var(--input-text-placeholder);
+        color: var(--component-input-placeholder-color);
       }
 
       .ui-input:disabled,
       .ui-number:disabled,
       .ds-input:disabled,
       .ds-number:disabled {
-        color: var(--ds-color-text-disabled);
+        color: var(--component-input-disabled-color);
         cursor: not-allowed;
       }
 
@@ -498,7 +666,7 @@
       .ds-select:focus,
       .ds-number:focus {
         border-color: transparent;
-        box-shadow: 0 0 0 3px var(--input-focus-ring);
+        box-shadow: 0 0 0 3px var(--component-input-focus-ring);
       }
 
       .ui-input.is-error,
@@ -507,7 +675,7 @@
       .ds-input.is-error,
       .ds-select.is-error,
       .ds-number.is-error {
-        border-color: var(--ds-color-border-danger);
+        border-color: var(--component-input-error-border);
         box-shadow: none;
       }
 
@@ -517,7 +685,7 @@
       .ds-input.is-error:focus,
       .ds-select.is-error:focus,
       .ds-number.is-error:focus {
-        box-shadow: 0 0 0 3px var(--ds-color-focus-ring-danger);
+        box-shadow: 0 0 0 3px var(--component-input-error-ring);
       }
 
       .ui-number::-webkit-outer-spin-button,
@@ -527,7 +695,7 @@
       }
 
       .ui-number {
-        padding-right: 10px;
+        padding-right: var(--component-input-padding-right);
       }
 
       .ui-select {
@@ -547,13 +715,17 @@
       .custom-select-trigger,
       .ds-select-trigger {
         width: 100%;
-        height: 36px;
-        min-height: 36px;
+        height: var(--component-input-height-md);
+        min-height: var(--component-input-height-md);
         border: 1px solid transparent;
-        border-radius: var(--ds-radius-md);
-        background: var(--input-surface);
-        color: var(--input-text);
-        padding: var(--ds-spacing-md) 36px var(--ds-spacing-md) var(--ds-spacing-lg);
+        border-radius: var(--component-input-radius-md);
+        background: var(--component-input-background);
+        color: var(--component-input-text-color);
+        padding:
+          var(--component-input-padding-top)
+          var(--component-input-trailing-padding-right)
+          var(--component-input-padding-bottom)
+          var(--component-input-padding-left);
         font-family: var(--ds-font-family-sans);
         font-size: var(--ds-font-size-paragraph-sm);
         line-height: 19.6px;
@@ -572,18 +744,18 @@
 
       .custom-select-trigger:focus-visible {
         border-color: transparent;
-        box-shadow: 0 0 0 3px var(--input-focus-ring);
+        box-shadow: 0 0 0 3px var(--component-input-focus-ring);
         outline: 0;
       }
 
       .custom-select.is-open .custom-select-trigger {
         border-color: transparent;
-        box-shadow: 0 0 0 3px var(--input-focus-ring);
+        box-shadow: 0 0 0 3px var(--component-input-focus-ring);
       }
 
       .custom-select.is-open-up .custom-select-panel {
         top: auto;
-        bottom: calc(100% + 10px);
+        bottom: calc(100% + var(--component-dropdown-panel-offset));
       }
 
       .custom-select.is-error .custom-select-trigger {
@@ -603,7 +775,13 @@
       }
 
       .custom-select--searchable .custom-select-trigger {
-        padding-left: 36px;
+        padding-left: var(--component-input-leading-padding-left);
+      }
+
+      .custom-select--colors .custom-select-trigger {
+        gap: var(--component-input-content-gap);
+        padding-right: var(--component-input-padding-right);
+        min-width: 0;
       }
 
       .custom-select-value,
@@ -614,6 +792,41 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      .custom-select--colors .custom-select-value {
+        flex: 1 1 auto;
+        width: 100%;
+        min-width: 0;
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+      }
+
+      .custom-select-trigger-swatch {
+        display: none;
+        width: var(--component-input-icon-size);
+        min-width: var(--component-input-icon-size);
+        height: var(--component-input-icon-size);
+        border-radius: var(--ds-radius-xs);
+        background: var(--neutral-900);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        flex: 0 0 auto;
+      }
+
+      .custom-select--colors .custom-select-trigger-swatch {
+        display: block;
+      }
+
+      .custom-select-trigger-support {
+        display: none;
+        color: var(--neutral-400);
+        font-weight: 400;
+        line-height: 19.6px;
+        white-space: nowrap;
+      }
+
+      .custom-select--colors .custom-select-trigger-support {
+        display: none;
       }
 
       .custom-select-value.is-placeholder {
@@ -628,9 +841,9 @@
       .custom-select-leading-icon,
       .custom-select-option-leading,
       .custom-select-option-check {
-        width: 20px;
-        min-width: 20px;
-        height: 20px;
+        width: var(--component-input-icon-size);
+        min-width: var(--component-input-icon-size);
+        height: var(--component-input-icon-size);
         position: relative;
         color: #f5f6f7;
         flex: 0 0 auto;
@@ -693,9 +906,9 @@
 
       .custom-select-chevron {
         position: absolute;
-        right: 10px;
-        width: 20px;
-        height: 20px;
+        right: var(--component-input-padding-right);
+        width: var(--component-input-icon-size);
+        height: var(--component-input-icon-size);
         color: #f5f6f7;
         transform: none;
         transition: transform 0.15s ease;
@@ -728,28 +941,29 @@
 
       .custom-select-panel {
         position: absolute;
-        top: calc(100% + 10px);
+        top: calc(100% + var(--component-dropdown-panel-offset));
         left: 0;
         width: 100%;
         border: 0;
-        border-radius: var(--ds-radius-md);
-        background: var(--input-surface);
+        border-radius: var(--component-dropdown-panel-radius);
+        background: var(--component-input-background);
         z-index: 60;
-        padding: var(--ds-spacing-xs) 0;
-        box-shadow: 0 0 0 3px var(--input-focus-ring);
+        padding: var(--component-dropdown-panel-padding-block) 0;
+        box-shadow: 0 0 0 3px var(--component-input-focus-ring);
         overflow: hidden;
+        min-width: 0;
       }
 
       .custom-select-search {
-        width: calc(100% - 16px);
-        margin: 0 8px;
-        min-height: 36px;
+        width: calc(100% - calc(var(--ds-spacing-md) * 2));
+        margin: 0 var(--ds-spacing-md);
+        min-height: var(--ds-control-height-md);
         border: 0;
         border-bottom: 1px solid var(--neutral-700);
         border-radius: 0;
         background: transparent;
         color: var(--input-text);
-        padding: 8px 2px;
+        padding: var(--ds-spacing-md) var(--ds-spacing-xxs);
         font-family: "Inter", "Segoe UI", sans-serif;
         font-size: 14px;
         font-weight: 500;
@@ -759,35 +973,38 @@
       }
 
       .custom-select-search::placeholder {
-        color: var(--input-text-placeholder);
+        color: var(--component-input-placeholder-color);
       }
 
       .custom-select-options {
         margin-top: 0;
-        max-height: 302px;
-        overflow: auto;
+        max-height: var(--component-dropdown-panel-max-height);
+        overflow-y: auto;
+        overflow-x: hidden;
         display: grid;
         grid-auto-flow: row;
         grid-auto-rows: minmax(0, auto);
         align-content: start;
-        padding: 4px 0;
+        padding: var(--component-dropdown-panel-padding-block) 0;
         scrollbar-width: auto;
         scrollbar-color: var(--neutral-300) transparent;
+        min-width: 0;
       }
 
       .custom-select-options::-webkit-scrollbar {
-        width: 16px;
+        width: var(--component-scrollbar-width);
       }
 
       .custom-select-options::-webkit-scrollbar-track {
         background: transparent;
+        border-radius: var(--component-scrollbar-radius);
       }
 
       .custom-select-options::-webkit-scrollbar-thumb {
         border-radius: 999px;
         border: 4px solid transparent;
         background-clip: padding-box;
-        background: var(--neutral-300);
+        background: var(--component-scrollbar-thumb);
       }
 
       .custom-select-option {
@@ -800,7 +1017,7 @@
         height: auto;
         background: transparent;
         color: #f9fafb;
-        padding: 1px 6px;
+        padding: var(--component-dropdown-item-shell-padding-block) var(--component-dropdown-item-shell-padding-inline);
         display: block;
         flex: 0 0 auto;
         font-family: "Inter", "Segoe UI", sans-serif;
@@ -816,12 +1033,17 @@
 
       .custom-select-option-content {
         width: 100%;
-        min-height: 40px;
-        border-radius: 6px;
-        padding: 10px 10px 10px 8px;
+        min-width: 0;
+        min-height: var(--component-dropdown-item-height);
+        border-radius: var(--component-dropdown-item-radius);
+        padding:
+          var(--component-dropdown-item-padding-top)
+          var(--component-dropdown-item-padding-right)
+          var(--component-dropdown-item-padding-bottom)
+          var(--component-dropdown-item-padding-left);
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--component-dropdown-item-gap);
       }
 
       .custom-select-option-text {
@@ -829,7 +1051,18 @@
         flex: 1 1 auto;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--component-dropdown-item-gap);
+        overflow: hidden;
+      }
+
+      .custom-select-option-swatch {
+        width: var(--component-input-icon-size);
+        min-width: var(--component-input-icon-size);
+        height: var(--component-input-icon-size);
+        border-radius: var(--ds-radius-xs);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+        flex: 0 0 auto;
       }
 
       .custom-select-option-label,
@@ -837,15 +1070,25 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        min-width: 0;
       }
 
       .custom-select-option-label {
         color: #f9fafb;
+        flex: 1 1 auto;
       }
 
       .custom-select-option-support {
-        color: #e5e7eb;
+        color: var(--neutral-400);
+        font-size: 12px;
         font-weight: 400;
+        flex: 0 1 38%;
+      }
+
+      .custom-select--colors .custom-select-option-label {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+        letter-spacing: 0;
       }
 
       .custom-select-option-check {
@@ -874,7 +1117,7 @@
       .custom-select-option:hover .custom-select-option-content,
       .custom-select-option.is-active .custom-select-option-content,
       .custom-select-option.is-selected .custom-select-option-content {
-        background: var(--neutral-700);
+        background: var(--component-dropdown-item-background-hover);
       }
 
       .custom-select-option.is-selected .custom-select-option-check {
@@ -894,7 +1137,7 @@
 
       .custom-select-option.is-selected:disabled .custom-select-option-content,
       .custom-select-option.is-active:disabled .custom-select-option-content {
-        background: var(--neutral-700);
+        background: var(--component-dropdown-item-background-hover);
       }
 
       .custom-select-empty {
@@ -904,7 +1147,7 @@
         line-height: 1.5;
         letter-spacing: 0.18px;
         font-weight: 500;
-        padding: 8px 14px;
+        padding: var(--ds-spacing-md) 14px;
       }
 
       .custom-select-note {
@@ -914,12 +1157,12 @@
         line-height: 1.4;
         letter-spacing: 0.12px;
         font-weight: 500;
-        padding: 8px 14px 6px;
+        padding: var(--ds-spacing-md) 14px var(--ds-spacing-sm);
         display: block;
       }
 
       .custom-select--compact .custom-select-panel {
-        padding: 4px 0;
+        padding: var(--ds-spacing-xs) 0;
       }
 
       .custom-select--compact .custom-select-options {
@@ -958,12 +1201,12 @@
       .total-box {
         min-height: 48px;
         border: 1px solid var(--zinc-400);
-        border-radius: 6px;
+        border-radius: var(--ds-radius-sm);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 8px;
-        padding: 0 12px;
+        gap: var(--ds-spacing-md);
+        padding: 0 var(--ds-spacing-lg);
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
         color: var(--zinc-300);
         font-size: 16px;
@@ -974,30 +1217,632 @@
       }
 
       .palette-total-wrap {
-        margin-top: 16px;
+        margin-top: var(--ds-spacing-xl);
       }
 
       .hidden-fields {
         display: none;
       }
 
+      .is-hidden {
+        display: none !important;
+      }
+
       .muted {
-        margin-top: 12px;
+        margin-top: var(--ds-spacing-lg);
         color: var(--neutral-400);
         font-size: 12px;
         line-height: 16px;
       }
 
       .palette-cards {
-        margin-top: 16px;
+        margin-top: var(--ds-spacing-xl);
         display: grid;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .semantic-top-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 160px;
+        gap: var(--ds-spacing-xl);
+        align-items: end;
+      }
+
+      .semantic-summary-card {
+        min-height: var(--ds-control-height-md);
+        border: 1px solid var(--zinc-400);
+        border-radius: var(--ds-radius-md);
+        padding: var(--ds-spacing-md) 10px;
+        background: rgba(38, 38, 38, 0.7);
+        display: grid;
+        gap: 2px;
+      }
+
+      .semantic-summary-label {
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        line-height: 1.2;
+        color: var(--neutral-400);
+      }
+
+      .semantic-summary-card strong {
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--zinc-50);
+      }
+
+      .section-block {
+        display: grid;
+        gap: var(--ds-spacing-lg);
+      }
+
+      .section-head {
+        display: grid;
+        gap: var(--ds-spacing-xs);
+      }
+
+      #screen4 .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        max-width: 492px;
+        margin: 20px auto 0;
+        padding: 0;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      #screen4 .section-block {
+        width: 100%;
+        max-width: 468px;
+        margin-inline: auto;
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      #screen4 .section-block--typography {
         gap: 16px;
       }
 
-      .palette-card {
-        border-radius: 16px;
+      #screen4 .section-head {
+        gap: 6px;
+      }
+
+      #screen4 .section-head > .muted {
+        margin-top: 0;
+        color: var(--neutral-400);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+      }
+
+      #screen4 .panel-divider {
+        width: 100%;
+        max-width: 468px;
+        margin: 0 auto;
+      }
+
+      #screen4 {
+        padding: var(--ds-spacing-2xl);
+      }
+
+      #screen4 .screen-head {
+        width: 100%;
+        max-width: 492px;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .screen-header-card,
+      #screen4 .screen4-header-card {
+        width: 100%;
+        min-height: 109px;
+        padding: 20px 16px;
+        border-radius: 12px;
+        background: #262626;
+        display: grid;
+        align-content: start;
+        gap: 4px;
+        box-sizing: border-box;
+      }
+
+      .screen-header-card .kicker,
+      #screen4 .kicker {
+        color: var(--neutral-400);
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 13px;
+        margin: 0;
+      }
+
+      .screen-header-card .title,
+      #screen4 .title {
+        margin-top: 0;
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: 0;
+      }
+
+      .screen-header-card .subtitle,
+      #screen4 .subtitle {
+        color: var(--neutral-400);
+        font-size: 12px;
+        line-height: 16px;
+        margin-top: 0;
+      }
+
+      #screen4 .screen4-icons-section > .section-head {
+        gap: 4px;
+      }
+
+      #screen4 .screen4-icons-section > .section-head > .muted {
+        margin-top: 0;
+      }
+
+      .screen4-section-title {
+        color: var(--zinc-50);
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+        font-size: 20px;
+        line-height: 27px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .screen4-subsection-title {
+        color: var(--zinc-50);
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .section-description {
+        margin: 0;
+        color: var(--neutral-400);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+      }
+
+      .typography-setup-block,
+      .typography-list-block {
+        display: grid;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .typography-checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: var(--ds-spacing-md);
+      }
+
+      #screen4 .section-block--typography > .field {
+        display: flex;
+        align-items: center;
+        gap: var(--ds-spacing-md);
+      }
+
+      #screen4 .section-block--typography > .field > .label {
+        color: var(--neutral-400);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+        order: 2;
+      }
+
+      #screen4 .section-block--typography > .field > .ui-checkbox {
+        order: 1;
+      }
+
+      #screen4 .section-block--typography > .section-head + .preset-top-grid + .field + .section-head {
+        margin-top: 4px;
+      }
+
+      .section-title {
+        color: var(--zinc-50);
+        font-size: 16px;
+        line-height: 1.3;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .icon-settings-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 126px;
+        gap: 16px;
+        align-items: stretch;
+        min-width: 0;
+      }
+
+      .icon-settings-fields {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .icon-settings-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .icon-settings-row .field {
+        margin: 0;
+        min-width: 0;
+      }
+
+      .icon-preview-card {
+        position: relative;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
+        min-height: 126px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .icon-preview-select {
+        width: 100%;
+        min-width: 0;
+        min-height: 32px;
+        border-radius: 6px;
+        background: var(--neutral-800);
+        color: var(--neutral-100);
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px;
+        font-weight: 600;
+        border: 0;
+        padding: 6px 8px;
+      }
+
+      .icon-preview-stage {
+        flex: 1;
+        display: grid;
+        place-items: center;
+      }
+
+      .library-preview-icon {
+        width: 24px;
+        height: 24px;
+        flex: 0 0 auto;
+        display: block;
+        object-fit: contain;
+      }
+
+      .ui-icon {
+        --icon-size: 24px;
+        --icon-stroke: 2px;
+        width: var(--icon-size);
+        height: var(--icon-size);
+        color: currentColor;
+        position: relative;
+        display: inline-block;
+        flex: 0 0 auto;
+      }
+
+      .ui-icon.is-search::before {
+        content: "";
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        left: 12.5%;
+        top: 12.5%;
+        border: var(--icon-stroke) solid currentColor;
+        border-radius: var(--ds-radius-full);
+      }
+
+      .ui-icon.is-search::after {
+        content: "";
+        position: absolute;
+        width: 38%;
+        height: var(--icon-stroke);
+        left: 58%;
+        top: 67%;
+        border-radius: var(--ds-radius-full);
+        background: currentColor;
+        transform: rotate(45deg);
+        transform-origin: left center;
+      }
+
+      .ui-icon.is-x::before,
+      .ui-icon.is-x::after,
+      .ui-icon.is-plus::before,
+      .ui-icon.is-plus::after,
+      .ui-icon.is-minus::before,
+      .ui-icon.is-check::before,
+      .ui-icon.is-check::after,
+      .ui-icon.is-chevron-down::before,
+      .ui-icon.is-chevron-down::after {
+        content: "";
+        position: absolute;
+        height: var(--icon-stroke);
+        border-radius: var(--ds-radius-full);
+        background: currentColor;
+      }
+
+      .ui-icon.is-x::before,
+      .ui-icon.is-x::after {
+        width: 78%;
+        left: 11%;
+        top: 50%;
+      }
+
+      .ui-icon.is-x::before {
+        transform: rotate(45deg);
+      }
+
+      .ui-icon.is-x::after {
+        transform: rotate(-45deg);
+      }
+
+      .ui-icon.is-plus::before,
+      .ui-icon.is-minus::before {
+        width: 82%;
+        left: 9%;
+        top: 50%;
+      }
+
+      .ui-icon.is-plus::after {
+        width: 82%;
+        left: 9%;
+        top: 50%;
+        transform: rotate(90deg);
+      }
+
+      .ui-icon.is-check::before {
+        width: 35%;
+        left: 15%;
+        top: 58%;
+        transform: rotate(45deg);
+      }
+
+      .ui-icon.is-check::after {
+        width: 62%;
+        left: 36%;
+        top: 48%;
+        transform: rotate(-45deg);
+      }
+
+      .ui-icon.is-chevron-down::before,
+      .ui-icon.is-chevron-down::after {
+        width: 42%;
+        top: 50%;
+      }
+
+      .ui-icon.is-chevron-down::before {
+        left: 16%;
+        transform: rotate(45deg);
+      }
+
+      .ui-icon.is-chevron-down::after {
+        right: 16%;
+        transform: rotate(-45deg);
+      }
+
+      .icon-settings-value {
+        display: none;
+      }
+
+      .text-style-list {
+        display: grid;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .text-style-row {
+        display: flex;
+        align-items: end;
+        gap: var(--ds-spacing-lg);
+        min-height: 60px;
+        min-width: 0;
+      }
+
+      .text-style-row > * {
+        min-width: 0;
+      }
+
+      .text-style-row .text-style-field {
+        flex: 1 1 auto;
+      }
+
+      .text-style-row .text-style-action {
+        flex: 0 0 var(--component-icon-button-size-small);
+        align-items: end;
+      }
+
+      .text-style-field {
+        display: grid;
+        gap: var(--component-input-label-gap);
+        min-width: 0;
+      }
+
+      .text-style-label {
+        color: var(--neutral-200);
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+        letter-spacing: 0.07px;
+      }
+
+      .text-style-summary {
+        min-height: 36px;
+        border-radius: var(--ds-radius-md);
+        background: var(--neutral-800);
+        color: var(--ds-color-text-primary);
+        padding: var(--ds-spacing-md) 10px;
+        display: flex;
+        align-items: center;
+        gap: var(--ds-spacing-md);
+        overflow: hidden;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .text-style-primary {
+        flex: 1 1 auto;
+        max-width: 156px;
+        color: var(--ds-color-text-primary);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: 0.06px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .text-style-tags {
+        display: flex;
+        align-items: center;
+        gap: var(--ds-spacing-xs);
+        min-width: 0;
+        overflow: hidden;
+        flex-wrap: nowrap;
+        flex: 0 1 auto;
+      }
+
+      .text-style-tags-label {
+        color: var(--neutral-500);
+        font-family: "Inter", "Segoe UI", sans-serif;
+        font-size: 10px;
+        line-height: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+
+      .text-style-tag,
+      .weight-chip {
+        border: 0;
+        border-radius: 6px;
+        color: var(--neutral-300, #d4d4d4);
+        background: rgba(255, 255, 255, 0.08);
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 9px;
+        font-weight: 600;
+        line-height: 12px;
+        padding: 4px 6px;
+        white-space: nowrap;
+        max-width: 72px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .text-style-action {
+        flex-shrink: 0;
+      }
+
+      .text-style-action-icon {
+        width: 100%;
+        height: 100%;
+        display: block;
+        color: currentColor;
+      }
+
+      .semantic-groups {
+        margin-top: var(--ds-spacing-xl);
+        display: grid;
+        gap: var(--ds-spacing-xl);
+      }
+
+      .semantic-group {
+        border-radius: var(--ds-radius-2xl);
         background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
-        padding: 20px;
+        padding: var(--ds-spacing-xl);
+        display: grid;
+        gap: var(--ds-spacing-lg);
+      }
+
+      .semantic-group-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--ds-spacing-lg);
+      }
+
+      .semantic-group-title {
+        font-family: "Satoshi Variable", "Satoshi", Inter, sans-serif;
+        font-size: 18px;
+        line-height: 1.1;
+        font-weight: 700;
+        color: var(--zinc-50);
+      }
+
+      .semantic-group-count {
+        border-radius: 999px;
+        border: 1px solid var(--zinc-400);
+        padding: var(--ds-spacing-xs) var(--ds-spacing-md);
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10px;
+        color: var(--zinc-300);
+      }
+
+      .semantic-item-list {
+        display: grid;
+        gap: var(--ds-spacing-md);
+      }
+
+      .semantic-item {
+        display: grid;
+        grid-template-columns: minmax(0, 110px) minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .semantic-token-label {
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 700;
+        color: var(--zinc-50);
+      }
+
+      .semantic-select-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .semantic-color-chip {
+        width: var(--ds-spacing-2xl);
+        min-width: var(--ds-spacing-2xl);
+        height: var(--ds-spacing-2xl);
+        border-radius: var(--ds-radius-sm);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+      }
+
+      .semantic-select-row .field {
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 0;
+      }
+
+      .semantic-item .custom-select-trigger {
+        height: var(--ds-control-height-md);
+        min-height: var(--ds-control-height-md);
+      }
+
+      .semantic-reset {
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .semantic-reset.is-active {
+        color: var(--zinc-50);
+      }
+
+      .palette-card {
+        border-radius: var(--ds-radius-2xl);
+        background: linear-gradient(90deg, rgba(38, 38, 38, 1) 0%, rgba(45, 45, 45, 1) 100%);
+        padding: var(--ds-spacing-2xl);
       }
 
       .palette-card.is-disabled {
@@ -1013,13 +1858,13 @@
       .palette-left {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--ds-spacing-md);
       }
 
       .palette-check {
-        width: 20px;
-        height: 20px;
-        border-radius: 6px;
+        width: var(--ds-spacing-2xl);
+        height: var(--ds-spacing-2xl);
+        border-radius: var(--ds-radius-sm);
         background: var(--blue-500);
         color: #f8fafc;
         font-size: 12px;
@@ -1043,30 +1888,30 @@
       }
 
       .palette-neutral-badge {
-        border-radius: 6px;
+        border-radius: var(--ds-radius-sm);
         border: 1px solid var(--blue-500);
         background: rgba(23, 37, 84, 0.4);
         color: var(--blue-500);
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
         font-size: 10px;
         font-weight: 600;
-        padding: 6px;
+        padding: var(--ds-spacing-sm);
       }
 
       .palette-controls {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--ds-spacing-md);
       }
 
       .palette-count-badge {
-        border-radius: 6px;
+        border-radius: var(--ds-radius-sm);
         border: 1px solid var(--blue-500);
         background: rgba(23, 37, 84, 0.4);
         color: var(--blue-500);
         min-width: 28px;
         min-height: auto;
-        padding: 6px;
+        padding: var(--ds-spacing-sm);
         display: grid;
         place-items: center;
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
@@ -1074,55 +1919,30 @@
         font-weight: 600;
       }
 
-      .palette-edit {
-        width: auto;
-        min-width: 0;
-        height: auto;
-        min-height: 0;
-        border: 1px solid var(--blue-500);
-        border-radius: 6px;
-        background: rgba(23, 37, 84, 0.4);
-        color: var(--blue-500);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
-        font-size: 10px;
-        font-weight: 600;
-        line-height: normal;
-        padding: 6px;
-        cursor: pointer;
-      }
-
-      .palette-edit:disabled {
-        cursor: not-allowed;
-        opacity: 0.55;
-      }
-
       .palette-swatch-row {
-        margin-top: 16px;
+        margin-top: var(--ds-spacing-xl);
         display: flex;
         align-items: center;
-        gap: 4px;
-        height: 40px;
+        gap: var(--ds-spacing-xs);
+        height: var(--ds-spacing-5xl);
       }
 
       .palette-swatch {
         flex: 1;
-        height: 40px;
+        height: var(--ds-spacing-5xl);
         border-radius: 5.491px;
         box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
       }
 
       .font-grid {
-        margin-top: 12px;
+        margin-top: var(--ds-spacing-lg);
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: var(--ds-spacing-md);
       }
 
       .status {
-        margin-top: 12px;
+        margin-top: var(--ds-spacing-lg);
         min-height: 18px;
         color: var(--neutral-400);
         font-size: 12px;
@@ -1141,27 +1961,27 @@
         max-height: 180px;
         overflow: auto;
         border: 1px solid var(--neutral-700);
-        border-radius: 8px;
+        border-radius: var(--ds-radius-md);
         background: #101010;
         color: var(--zinc-300);
         font-size: 11px;
-        padding: 8px;
+        padding: var(--ds-spacing-md);
         white-space: pre-wrap;
       }
 
       .error {
-        margin-top: 8px;
+        margin-top: 0;
         color: var(--danger);
         font-size: 12px;
       }
 
       .footer {
         border-top: 1px solid var(--neutral-700);
-        padding: 24px;
+        padding: var(--ds-spacing-3xl);
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-        gap: 20px;
+        gap: var(--ds-spacing-2xl);
         background: var(--neutral-900);
       }
 
@@ -1169,7 +1989,7 @@
         width: 138px;
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: var(--ds-spacing-xs);
       }
 
       .footer-label {
@@ -1184,14 +2004,14 @@
       .stepper {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--ds-spacing-md);
       }
 
       .stepper-btn {
-        width: 20px;
-        height: 24px;
+        width: var(--ds-spacing-2xl);
+        height: var(--ds-spacing-3xl);
         border: 1px solid var(--zinc-400);
-        border-radius: 4px;
+        border-radius: var(--ds-radius-xs);
         background: transparent;
         color: var(--zinc-300);
         font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
@@ -1202,7 +2022,7 @@
       }
 
       .stepper-btn.active {
-        width: 24px;
+        width: var(--ds-spacing-3xl);
         border: 0;
         background: #f5f5f5;
         color: var(--zinc-800);
@@ -1212,36 +2032,266 @@
       .footer-actions {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: var(--ds-spacing-xl);
       }
 
-      button,
-      .ds-button {
-        width: 110px;
-        height: 42px;
-        border-radius: var(--ds-radius-lg);
+      .ds-button,
+      .ds-icon-button {
+        appearance: none;
         border: 0;
-        font-size: var(--ds-font-size-paragraph-mini);
-        line-height: 16px;
-        font-weight: var(--ds-font-weight-semibold);
+        box-shadow: none;
         font-family: var(--ds-font-family-sans);
+        cursor: pointer;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease,
+          box-shadow 0.15s ease,
+          opacity 0.15s ease,
+          transform 0.05s ease;
       }
 
-      .secondary,
-      .ds-button.ds-button--secondary {
-        background: var(--ds-color-bg-interactive-secondary);
+      .ds-button {
+        width: auto;
+        min-width: max-content;
+        height: var(--component-button-height-regular);
+        min-height: var(--component-button-height-regular);
+        border-radius: var(--component-button-radius-regular);
+        padding: 0 var(--component-button-padding-regular);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--component-button-gap);
+        font-size: 14px;
+        line-height: 1.4;
+        letter-spacing: var(--ds-letter-spacing-paragraph-sm);
+        font-weight: var(--ds-font-weight-bold);
+        white-space: nowrap;
+      }
+
+      .ds-button--large {
+        height: var(--component-button-height-large);
+        min-height: var(--component-button-height-large);
+        border-radius: var(--component-button-radius-large);
+        padding-inline: var(--component-button-padding-large);
+      }
+
+      .ds-button--regular {
+        height: var(--component-button-height-regular);
+        min-height: var(--component-button-height-regular);
+        border-radius: var(--component-button-radius-regular);
+        padding-inline: var(--component-button-padding-regular);
+      }
+
+      .ds-button--small {
+        height: var(--component-button-height-small);
+        min-height: var(--component-button-height-small);
+        border-radius: var(--component-button-radius-small);
+        padding-inline: var(--component-button-padding-small);
+      }
+
+      .ds-button--mini {
+        height: var(--component-button-height-mini);
+        min-height: var(--component-button-height-mini);
+        border-radius: var(--component-button-radius-mini);
+        padding-inline: var(--component-button-padding-mini);
+        font-size: 12px;
+        line-height: 1.5;
+        letter-spacing: var(--ds-letter-spacing-paragraph-mini);
+        font-weight: var(--ds-font-weight-medium);
+      }
+
+      .ds-button--full-width {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .ds-button--primary,
+      .primary.ds-button {
+        background: var(--ds-color-button-primary-bg);
+        color: var(--ds-color-button-primary-fg);
+      }
+
+      .ds-button--primary:hover,
+      .primary.ds-button:hover {
+        background: var(--ds-color-button-primary-bg-hover);
+      }
+
+      .ds-button--secondary,
+      .secondary.ds-button {
+        background: var(--ds-color-button-secondary-bg);
         color: #f5f5f5;
       }
 
-      .primary,
-      .ds-button.ds-button--primary {
-        background: #f5f5f5;
-        color: var(--ds-color-text-on-light);
+      .ds-button--secondary:hover,
+      .secondary.ds-button:hover {
+        background: var(--ds-color-button-secondary-bg-hover);
       }
 
-      button:disabled,
-      .ds-button:disabled {
-        opacity: 0.55;
+      .ds-button--ghost {
+        background: transparent;
+        color: #f5f6f7;
+      }
+
+      .ds-button--ghost:hover {
+        background: rgba(245, 246, 247, 0.08);
+      }
+
+      .ds-button--destructive,
+      .ds-button--danger,
+      .danger.ds-button {
+        background: var(--ds-color-button-destructive-bg);
+        color: var(--ds-color-button-destructive-fg);
+      }
+
+      .ds-button--destructive:hover,
+      .ds-button--danger:hover,
+      .danger.ds-button:hover {
+        background: var(--ds-color-button-destructive-bg-hover);
+      }
+
+      .ds-button:focus-visible,
+      .ds-icon-button:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px var(--component-button-focus-ring);
+      }
+
+      .ds-button:disabled,
+      .ds-icon-button:disabled,
+      .ds-button.is-disabled,
+      .ds-icon-button.is-disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      .ds-button--primary:disabled,
+      .ds-button--ghost:disabled,
+      .ds-button--destructive:disabled,
+      .ds-button--danger:disabled {
+        opacity: 0.5;
+      }
+
+      .ds-button--secondary:disabled {
+        background: var(--ds-color-button-secondary-disabled-bg);
+        color: var(--ds-color-button-secondary-disabled-fg);
+      }
+
+      .ds-button__icon,
+      .ds-icon-button__icon {
+        width: var(--component-button-icon-size);
+        height: var(--component-button-icon-size);
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: currentColor;
+        pointer-events: none;
+      }
+
+      .ds-button--mini .ds-button__icon,
+      .ds-icon-button--mini .ds-icon-button__icon {
+        width: var(--component-button-icon-size-mini);
+        height: var(--component-button-icon-size-mini);
+      }
+
+      .ds-button__icon svg,
+      .ds-icon-button__icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
+      }
+
+      .ds-icon-button {
+        width: var(--component-icon-button-size-regular);
+        min-width: var(--component-icon-button-size-regular);
+        height: var(--component-icon-button-size-regular);
+        min-height: var(--component-icon-button-size-regular);
+        border-radius: var(--component-button-radius-regular);
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #f5f6f7;
+      }
+
+      .ds-icon-button--large {
+        width: var(--component-icon-button-size-large);
+        min-width: var(--component-icon-button-size-large);
+        height: var(--component-icon-button-size-large);
+        min-height: var(--component-icon-button-size-large);
+        border-radius: var(--component-button-radius-large);
+      }
+
+      .ds-icon-button--regular {
+        width: var(--component-icon-button-size-regular);
+        min-width: var(--component-icon-button-size-regular);
+        height: var(--component-icon-button-size-regular);
+        min-height: var(--component-icon-button-size-regular);
+        border-radius: var(--component-button-radius-regular);
+      }
+
+      .ds-icon-button--small {
+        width: var(--component-icon-button-size-small);
+        min-width: var(--component-icon-button-size-small);
+        height: var(--component-icon-button-size-small);
+        min-height: var(--component-icon-button-size-small);
+        border-radius: var(--component-button-radius-small);
+      }
+
+      .ds-icon-button--mini {
+        width: var(--component-icon-button-size-mini);
+        min-width: var(--component-icon-button-size-mini);
+        height: var(--component-icon-button-size-mini);
+        min-height: var(--component-icon-button-size-mini);
+        border-radius: var(--component-button-radius-mini);
+      }
+
+      .ds-icon-button--primary {
+        background: var(--ds-color-button-primary-bg);
+        color: var(--ds-color-button-primary-fg);
+      }
+
+      .ds-icon-button--primary:hover {
+        background: var(--ds-color-button-primary-bg-hover);
+      }
+
+      .ds-icon-button--secondary {
+        background: var(--ds-color-button-secondary-bg);
+      }
+
+      .ds-icon-button--secondary:hover {
+        background: var(--ds-color-button-secondary-bg-hover);
+      }
+
+      .ds-icon-button--ghost {
+        background: transparent;
+      }
+
+      .ds-icon-button--ghost:hover {
+        background: var(--ds-color-button-ghost-icon-bg-hover);
+        color: var(--ds-color-button-primary-fg);
+      }
+
+      .ds-icon-button--destructive,
+      .ds-icon-button--danger {
+        background: var(--ds-color-button-destructive-bg);
+      }
+
+      .ds-icon-button--destructive:hover,
+      .ds-icon-button--danger:hover {
+        background: var(--ds-color-button-destructive-bg-hover);
+      }
+
+      .ds-icon-button--primary:disabled,
+      .ds-icon-button--ghost:disabled,
+      .ds-icon-button--destructive:disabled,
+      .ds-icon-button--danger:disabled {
+        opacity: 0.5;
+      }
+
+      .ds-icon-button--secondary:disabled {
+        background: var(--ds-color-button-secondary-disabled-bg);
+        color: var(--ds-color-button-secondary-disabled-fg);
+        opacity: 0.5;
       }
 
       .modal {
@@ -1251,7 +2301,7 @@
         place-items: center;
         background: rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(2px);
-        padding: 16px;
+        padding: var(--ds-spacing-xl);
       }
 
       .modal.is-hidden {
@@ -1260,13 +2310,13 @@
 
       .modal-panel {
         width: min(452px, 100%);
-        border-radius: 16px;
+        border-radius: var(--ds-radius-2xl);
         overflow: hidden;
         background: var(--neutral-900);
       }
 
       .modal-head {
-        padding: 24px 24px 12px;
+        padding: var(--ds-spacing-3xl) var(--ds-spacing-3xl) var(--ds-spacing-lg);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -1278,28 +2328,16 @@
         line-height: 1.2;
       }
 
-      .close {
-        width: 28px;
-        height: 28px;
-        border: 0;
-        border-radius: 10px;
-        background: transparent;
-        color: var(--zinc-50);
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 1;
-      }
-
       .modal-body {
-        padding: 12px 24px 24px;
+        padding: var(--ds-spacing-lg) var(--ds-spacing-3xl) var(--ds-spacing-3xl);
         display: grid;
-        gap: 20px;
+        gap: var(--ds-spacing-2xl);
       }
 
       .modal-edit-layout {
         display: flex;
         align-items: stretch;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .modal-color-block {
@@ -1309,9 +2347,9 @@
       .modal-color-control {
         position: relative;
         display: block;
-        width: 88px;
-        height: 88px;
-        border-radius: 8px;
+        width: var(--ds-modal-color-block-size);
+        height: var(--ds-modal-color-block-size);
+        border-radius: var(--ds-radius-md);
         overflow: hidden;
         box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
         cursor: pointer;
@@ -1340,22 +2378,22 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .modal-edit-row {
         display: grid;
         grid-template-columns: minmax(0, 1fr) 80px;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .modal-field-compact {
-        gap: 0;
+        gap: var(--component-input-label-gap);
       }
 
       .modal-grid {
         display: grid;
-        gap: 16px;
+        gap: var(--ds-spacing-xl);
       }
 
       .modal-grid.two {
@@ -1368,18 +2406,27 @@
         align-items: end;
       }
 
+      .modal-grid.three {
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: end;
+      }
+
       .modal-field-compact .ui-input,
       .modal-field-compact .custom-select-trigger {
-        min-height: 36px;
-        border-radius: 8px;
+        min-height: var(--ds-control-height-md);
+        border-radius: var(--ds-radius-md);
         border: 1px solid transparent;
         background: var(--input-surface);
         color: #e8eaec;
-        padding: 8px 10px;
+        padding: var(--ds-spacing-md) 10px;
         font-size: 14px;
         line-height: 1.4;
         letter-spacing: 0.07px;
         font-weight: 500;
+      }
+
+      .modal-field-compact .custom-select--searchable .custom-select-trigger {
+        padding-left: var(--component-input-leading-padding-left);
       }
 
       .modal-field-compact .ui-input::placeholder {
@@ -1395,8 +2442,8 @@
 
       .modal-field-count .custom-select-trigger {
         padding-right: 30px;
-        height: 36px;
-        min-height: 36px;
+        height: var(--ds-control-height-md);
+        min-height: var(--ds-control-height-md);
       }
 
       .modal-field-count .custom-select {
@@ -1404,12 +2451,35 @@
       }
 
       .modal-field-count .custom-select-panel {
-        top: calc(100% + 10px);
+        top: calc(100% + var(--ds-spacing-lg));
         z-index: 90;
       }
 
       .modal-field-count .custom-select-options {
         max-height: 260px;
+      }
+
+      .weight-chip {
+        width: auto;
+        min-height: 28px;
+        cursor: pointer;
+      }
+
+      .weight-chip.is-muted {
+        background: transparent;
+        color: var(--neutral-400);
+      }
+
+      .weight-chip:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px var(--component-input-focus-ring);
+      }
+
+      .weight-chip-list {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--ds-spacing-md);
+        flex-wrap: wrap;
       }
 
       .contrast-head {
@@ -1425,8 +2495,8 @@
         --contrast-segment-dark: rgba(217, 217, 217, 0.1);
         box-sizing: border-box;
         width: 100%;
-        height: 36px;
-        border-radius: 6px;
+        height: var(--ds-control-height-md);
+        border-radius: var(--ds-radius-sm);
         border: 1px solid var(--zinc-400);
         background:
           linear-gradient(
@@ -1452,7 +2522,7 @@
             var(--contrast-segment-dark) var(--contrast-position),
             var(--contrast-segment-dark) 100%
           );
-        padding: 4px;
+        padding: var(--ds-spacing-xs);
         background-clip: content-box;
         -webkit-appearance: none;
         appearance: none;
@@ -1488,8 +2558,8 @@
       .modal-shades {
         display: flex;
         align-items: center;
-        gap: 4px;
-        height: 80px;
+        gap: var(--ds-spacing-xs);
+        height: var(--ds-spacing-8xl);
         flex-wrap: nowrap;
         min-width: 0;
         overflow-x: auto;
@@ -1499,9 +2569,9 @@
 
       .modal-shade {
         flex: 1 1 0;
-        min-width: 24px;
+        min-width: var(--ds-spacing-3xl);
         width: auto;
-        height: 80px;
+        height: var(--ds-spacing-8xl);
         border: 0;
         border-radius: 5.491px;
         box-shadow: 0.686px 0.686px 3.432px 0 rgba(0, 0, 0, 0.1);
@@ -1529,25 +2599,64 @@
 
       .modal-actions {
         border-top: 1px solid var(--neutral-700);
-        padding: 24px;
+        padding: var(--ds-spacing-3xl);
         display: flex;
-        align-items: flex-end;
-        gap: 20px;
+        align-items: center;
+        gap: var(--ds-spacing-xl);
       }
 
-      .modal-actions button {
-        height: 32px;
-        border-radius: 8px;
-      }
-
-      .modal-actions button:first-child {
+      .modal-actions .ds-button:first-child {
         width: auto;
-        padding: 0 12px;
+        padding: 0 var(--ds-spacing-lg);
       }
 
-      .modal-actions button:last-child {
+      .modal-actions .ds-button:last-child {
         width: auto;
         flex: 1;
+      }
+
+      .modal-actions .ds-button--destructive:first-child {
+        min-width: 85px;
+      }
+
+      .text-style-modal-actions {
+        justify-content: space-between;
+      }
+
+      .text-style-modal-actions #textStyleDelete {
+        flex: 0 0 auto;
+      }
+
+      .text-style-modal-secondary-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--ds-spacing-xl);
+        margin-left: auto;
+        min-width: 0;
+      }
+
+      .text-style-modal-actions #textStyleCancel,
+      .text-style-modal-actions #textStyleSave {
+        flex: 0 0 auto;
+      }
+
+      .text-style-modal-actions #textStyleSave {
+        min-width: 178px;
+      }
+
+      .footer-actions #backBtn,
+      .footer-actions #nextBtn {
+        width: auto;
+      }
+
+      .footer-actions #backBtn {
+        min-width: 73px;
+        padding-inline: var(--ds-spacing-lg);
+      }
+
+      .footer-actions #nextBtn {
+        min-width: 110px;
+        padding-inline: var(--ds-spacing-lg);
       }
 
       @media (max-width: 520px) {
@@ -1562,14 +2671,35 @@
         .preset-top-grid,
         .palette-config-grid,
         .brand-setup-grid,
+        .semantic-top-grid,
         .modal-grid.two,
+        .modal-grid.three,
         .modal-grid.split,
-        .modal-edit-row {
+        .modal-edit-row,
+        .icon-settings-row {
+          grid-template-columns: 1fr;
+        }
+
+        .setup-block-head,
+        .semantic-item {
           grid-template-columns: 1fr;
         }
 
         .modal-edit-layout {
           flex-direction: column;
+        }
+
+        .icon-settings-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .text-style-modal-actions,
+        .text-style-modal-secondary-actions {
+          align-items: stretch;
+        }
+
+        .text-style-modal-secondary-actions {
+          flex: 1 1 auto;
         }
 
         .footer {
@@ -1582,9 +2712,6 @@
           width: 100%;
         }
 
-        button {
-          width: 100%;
-        }
       }
     </style>
   </head>
@@ -1592,7 +2719,7 @@
     <main class="app">
       <section class="screen active" id="screen1">
         <div class="screen-head">
-          <div>
+          <div class="screen-header-card">
             <p class="kicker">1/4 - Niveau de tokens</p>
             <h1 class="title">Choisis ton niveau de génération</h1>
             <p class="subtitle">
@@ -1654,17 +2781,64 @@
 
       <section class="screen" id="screen2">
         <div class="screen-head">
-          <div>
-            <p class="kicker">2/4 - Brand colors</p>
-            <h1 class="title">Brand colors</h1>
-            <p class="subtitle">Ajoute une primary brand, puis complète noir/blanc et UI mode.</p>
+          <div class="screen-header-card">
+            <p class="kicker" id="screen2Kicker">2/4 - Couleurs</p>
+            <h1 class="title">Couleurs de marque &amp; palettes</h1>
+            <p class="subtitle" id="screen2Subtitle">Définis tes couleurs de marque.</p>
           </div>
         </div>
 
         <div class="panel">
-          <p class="muted brand-setup-note">Commence par ta couleur primaire, puis ajoute des variantes si besoin.</p>
-          <div class="brand-setup-grid">
-            <label class="field">
+          <div class="setup-block">
+            <div class="brand-setup-grid compact">
+              <label class="field">
+                <span class="label">Base white</span>
+                <input id="baseWhiteInput" class="ui-input ds-input" type="text" value="#ffffff" />
+              </label>
+              <label class="field">
+                <span class="label">Base black</span>
+                <input id="baseBlackInput" class="ui-input ds-input" type="text" value="#000000" />
+              </label>
+            </div>
+            <div class="brand-list" id="brandsContainer"></div>
+            <div class="brand-actions">
+              <button class="ds-button ds-button--primary ds-button--regular" id="addBrandBtn" type="button">Ajouter la couleur principale</button>
+            </div>
+            <div class="error" id="brandError"></div>
+          </div>
+
+          <div class="panel-divider" aria-hidden="true"></div>
+
+          <div class="setup-block">
+            <div class="palette-config-grid">
+              <label class="field">
+                <span class="label">Bibliothèque de base</span>
+                <select class="ui-select ds-select" id="presetSelect"></select>
+              </label>
+              <label class="field">
+                <span class="label">Neutre de base</span>
+                <select class="ui-select ds-select" id="neutralSelect"></select>
+              </label>
+            </div>
+            <div id="presetInfo" class="muted preset-info is-hidden"></div>
+            <div class="palette-cards" id="paletteCards"></div>
+            <div class="error" id="presetError"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen3">
+        <div class="screen-head">
+          <div class="screen-header-card">
+            <p class="kicker" id="screen3Kicker">3/4 - Sémantics</p>
+            <h1 class="title">Semantic colors</h1>
+            <p class="subtitle">Ajuste les aliases du thème avant génération.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="semantic-top-grid">
+            <label class="field" id="uiModeField">
               <span class="label">UI mode</span>
               <select class="ui-select ds-select" id="uiModeSelect">
                 <option value="light">Light</option>
@@ -1672,82 +2846,95 @@
                 <option value="both">Light + Dark</option>
               </select>
             </label>
-            <label class="field">
-              <span class="label">Base white</span>
-              <input id="baseWhiteInput" class="ui-input ds-input" type="text" value="#ffffff" />
-            </label>
-            <label class="field">
-              <span class="label">Base black</span>
-              <input id="baseBlackInput" class="ui-input ds-input" type="text" value="#000000" />
-            </label>
-          </div>
-          <div class="brand-list" id="brandsContainer"></div>
-          <div class="brand-actions">
-            <button class="inline-btn primary ds-button ds-button--primary" id="addBrandBtn" type="button">Ajouter votre primary brand</button>
-          </div>
-          <div class="error" id="brandError"></div>
-        </div>
-      </section>
-
-      <section class="screen" id="screen3">
-        <div class="screen-head">
-          <div>
-            <p class="kicker">3/4 - Preset palette</p>
-            <h1 class="title">Preset palette</h1>
-            <p class="subtitle">Choisis ton preset interne et la palette.</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="palette-config-grid">
-            <label class="field">
-              <span class="label">Base Librari</span>
-              <select class="ui-select ds-select" id="presetSelect"></select>
-            </label>
-            <label class="field">
-              <span class="label">Base Neutral</span>
-              <select class="ui-select ds-select" id="neutralSelect"></select>
-            </label>
-          </div>
-          <div class="palette-total-wrap">
-            <div class="total-box">
-              <span>Total:</span>
-              <strong id="presetShadeInfo">0 Shades</strong>
+            <div class="semantic-summary-card">
+              <span class="semantic-summary-label">Preview</span>
+              <strong id="semanticSummaryValue">Light mode only</strong>
             </div>
           </div>
-
-          <div id="presetInfo" class="muted"></div>
-          <div class="palette-cards" id="paletteCards"></div>
-          <div class="error" id="presetError"></div>
+          <p class="muted semantic-note">Chaque alias pointe vers une couleur disponible dans la palette choisie. Change seulement ce que tu veux surcharger.</p>
+          <div class="semantic-groups" id="semanticGroups"></div>
+          <div class="error" id="semanticError"></div>
         </div>
       </section>
 
       <section class="screen" id="screen4">
         <div class="screen-head">
-          <div>
-            <p class="kicker">4/4 - Typography</p>
-            <h1 class="title">Styles de texte</h1>
-            <p class="subtitle">Ajuste tes familles et ta taille de fonte.</p>
+          <div class="screen4-header-card">
+            <p class="kicker" id="screen4Kicker">4/4 - icon &amp; typo</p>
+            <h1 class="title">Icônes &amp; styles de texte</h1>
+            <p class="subtitle">Prépare la base typographique et iconographique du projet.</p>
           </div>
         </div>
 
         <div class="panel">
-          <div class="preset-top-grid">
-            <label class="field">
-              <span class="label">Font family display</span>
-              <select class="ui-select ds-select" id="displayFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="302"></select>
-            </label>
-            <label class="field">
-              <span class="label">Font family body</span>
-              <select class="ui-select ds-select" id="bodyFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="302"></select>
-            </label>
-          </div>
-          <label class="field" style="margin-top: 12px;">
-            <span class="label">Créer et lier les styles de texte</span>
-            <input id="createTextStylesCheckbox" class="ui-checkbox" type="checkbox" checked />
-          </label>
+          <div class="section-block screen4-icons-section">
+            <div class="section-head">
+              <h2 class="section-title screen4-section-title">Icônes</h2>
+              <p class="muted">Sélectionne la bibliothèque qui servira de base à ton starter pack d’icônes.</p>
+            </div>
 
-          <div id="fontGrid" class="font-grid"></div>
+            <div class="icon-settings-layout">
+              <div class="icon-settings-fields">
+                <div class="icon-settings-row">
+                  <label class="field">
+                    <span class="label">Bibliothèque d’icônes</span>
+                    <select class="ui-select ds-select" id="iconLibrarySelect" data-menu-max-height="220"></select>
+                  </label>
+                  <label class="field">
+                    <span class="label">Contour</span>
+                    <select class="ui-select ds-select" id="iconStrokeSelect" data-menu-max-height="220"></select>
+                  </label>
+                </div>
+                <div class="icon-settings-row">
+                  <label class="field">
+                    <span class="label">Couleur</span>
+                    <select class="ui-select ds-select" id="iconColorSelect" data-variant="colors" data-menu-max-height="260"></select>
+                  </label>
+                  <label class="field">
+                    <span class="label">Taille</span>
+                    <select class="ui-select ds-select" id="iconSizeSelect" data-menu-max-height="220"></select>
+                  </label>
+                </div>
+              </div>
+              <div class="icon-preview-card">
+                <select class="icon-preview-select" id="iconPreviewSelect"></select>
+                <div id="iconPreviewStage" class="icon-preview-stage"></div>
+              </div>
+            </div>
+
+            <div id="iconSettingsSummary" class="icon-settings-value">Lucide · 24 px · Neutral/900 · Medium</div>
+          </div>
+
+          <div class="panel-divider screen4-panel-divider" aria-hidden="true"></div>
+
+          <div class="section-block section-block--typography">
+            <div class="section-head">
+              <h2 class="section-title screen4-section-title">Typographie</h2>
+              <p class="muted">Choisis les familles et ajuste les tailles utilisées par défaut.</p>
+            </div>
+
+            <div class="preset-top-grid">
+              <label class="field">
+                <span class="label">Police display</span>
+                <select class="ui-select ds-select" id="displayFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="302"></select>
+              </label>
+              <label class="field">
+                <span class="label">Police body</span>
+                <select class="ui-select ds-select" id="bodyFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="302"></select>
+              </label>
+            </div>
+
+            <label class="field">
+              <span class="label">Créer et lier les styles de texte</span>
+              <input id="createTextStylesCheckbox" class="ui-checkbox" type="checkbox" checked />
+            </label>
+
+            <div class="section-head">
+              <h3 class="section-title screen4-subsection-title">Styles de texte</h3>
+            </div>
+            <div id="fontGrid" class="text-style-list"></div>
+          </div>
+
           <div id="status" class="status"></div>
           <pre id="reportBox" class="report" style="display: none"></pre>
         </div>
@@ -1764,8 +2951,8 @@
           </div>
         </div>
         <div class="footer-actions">
-          <button id="backBtn" class="secondary ds-button ds-button--secondary" type="button">Annuler</button>
-          <button id="nextBtn" class="primary ds-button ds-button--primary" type="button">Continuer</button>
+          <button id="backBtn" class="ds-button ds-button--secondary ds-button--regular" type="button">Annuler</button>
+          <button id="nextBtn" class="ds-button ds-button--primary ds-button--regular" type="button">Continuer</button>
         </div>
       </footer>
     </main>
@@ -1773,14 +2960,14 @@
     <div id="brandModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="brandModalTitle">
       <div class="modal-panel">
         <div class="modal-head">
-          <h3 id="brandModalTitle">Ajouter Brand Primary</h3>
-          <button id="brandModalClose" class="close" type="button">×</button>
+          <h3 id="brandModalTitle">Ajouter la couleur principale</h3>
+          <button id="brandModalClose" class="close ds-icon-button ds-icon-button--ghost ds-icon-button--small" type="button" aria-label="Fermer">×</button>
         </div>
 
         <div class="modal-body">
           <div class="modal-edit-layout">
             <div class="modal-color-block">
-              <label class="modal-color-control" aria-label="Select color">
+              <label class="modal-color-control" aria-label="Choisir une couleur">
                 <span id="modalBrandSwatch" class="modal-color-swatch"></span>
                 <input id="modalBrandPicker" type="color" value="#9CA3AF" />
               </label>
@@ -1819,8 +3006,59 @@
         </div>
 
         <div class="modal-actions">
-          <button id="brandModalCancel" class="secondary ds-button ds-button--secondary" type="button">Annuler</button>
-          <button id="brandModalSave" class="primary ds-button ds-button--primary" type="button">Ajouter votre primary brand</button>
+          <button id="brandModalCancel" class="ds-button ds-button--secondary ds-button--small" type="button">Annuler</button>
+          <button id="brandModalSave" class="ds-button ds-button--primary ds-button--small" type="button">Ajouter la couleur principale</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="textStyleModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="textStyleModalTitle">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h3 id="textStyleModalTitle">Modifier le style de texte</h3>
+          <button id="textStyleModalClose" class="close ds-icon-button ds-icon-button--ghost ds-icon-button--small" type="button" aria-label="Fermer">×</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-grid two">
+            <label class="field modal-field-compact">
+              <span class="label">Nom du style</span>
+              <input id="textStyleNameInput" class="ui-input ds-input" type="text" />
+            </label>
+            <label class="field modal-field-compact">
+              <span class="label">Police</span>
+              <select class="ui-select ds-select" id="textStyleFamilySelect" data-searchable="true" data-search-placeholder="Rechercher une police..." data-render-limit="80" data-menu-max-height="260"></select>
+            </label>
+          </div>
+
+          <div class="modal-grid three">
+            <label class="field modal-field-compact">
+              <span class="label">Taille</span>
+              <input id="textStyleSizeInput" class="ui-input ds-input" type="number" min="1" step="1" />
+            </label>
+            <label class="field modal-field-compact">
+              <span class="label">Interligne</span>
+              <input id="textStyleLineHeightInput" class="ui-input ds-input" type="number" min="1" step="1" />
+            </label>
+            <label class="field modal-field-compact">
+              <span class="label">Espacement</span>
+              <input id="textStyleLetterSpacingInput" class="ui-input ds-input" type="number" step="0.1" />
+            </label>
+          </div>
+
+          <div class="field">
+            <span class="label">Styles inclus</span>
+            <div id="textStyleWeightList" class="weight-chip-list"></div>
+          </div>
+          <div id="textStyleModalError" class="error"></div>
+        </div>
+
+        <div class="modal-actions text-style-modal-actions">
+          <button id="textStyleDelete" class="ds-button ds-button--destructive ds-button--small" type="button">Supprimer</button>
+          <div class="text-style-modal-secondary-actions">
+            <button id="textStyleCancel" class="ds-button ds-button--secondary ds-button--small" type="button">Annuler</button>
+            <button id="textStyleSave" class="ds-button ds-button--primary ds-button--small" type="button">Enregistrer les changements</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1834,6 +3072,7 @@
       const MAX_SHADE_COUNT = 14;
 
       const FONT_DEFAULTS = {
+        label: 10,
         "text-xs": 12,
         "text-sm": 14,
         "text-md": 16,
@@ -1847,20 +3086,400 @@
         "display-2xl": 72,
       };
 
+      const LINE_HEIGHT_DEFAULTS = {
+        label: 14,
+        "text-xs": 16,
+        "text-sm": 20,
+        "text-md": 24,
+        "text-lg": 28,
+        "text-xl": 30,
+        "display-xs": 32,
+        "display-sm": 38,
+        "display-md": 44,
+        "display-lg": 60,
+        "display-xl": 72,
+        "display-2xl": 88,
+      };
+
+      const LETTER_SPACING_DEFAULTS = {
+        label: 0,
+        "text-xs": 0,
+        "text-sm": 0,
+        "text-md": 0,
+        "text-lg": 0,
+        "text-xl": 0,
+        "display-xs": 0,
+        "display-sm": 0,
+        "display-md": 0,
+        "display-lg": 0,
+        "display-xl": 0,
+        "display-2xl": 0,
+      };
+
       const FONT_ORDER = [
-        "text-xs",
-        "text-sm",
-        "text-md",
-        "text-lg",
-        "text-xl",
-        "display-xs",
-        "display-sm",
-        "display-md",
-        "display-lg",
-        "display-xl",
         "display-2xl",
+        "display-xl",
+        "display-lg",
+        "display-md",
+        "display-sm",
+        "display-xs",
+        "text-xl",
+        "text-lg",
+        "text-md",
+        "text-sm",
+        "text-xs",
+        "label",
       ];
+
+      const FONT_WEIGHT_OPTIONS = ["Thin", "ExtraLight", "Light", "Regular", "Medium", "SemiBold", "Bold", "ExtraBold", "Black"];
+      const DEFAULT_STYLE_WEIGHTS = ["Regular", "Medium", "SemiBold", "Bold"];
+      const ICON_SIZE_OPTIONS = [16, 20, 24, 28, 32, 40];
+      const ICON_STROKE_OPTIONS = [
+        { id: "light", label: "Light", width: 1.5 },
+        { id: "regular", label: "Regular", width: 1.75 },
+        { id: "medium", label: "Medium", width: 2 },
+        { id: "bold", label: "Bold", width: 2.5 },
+      ];
+      const ICON_LIBRARY_OPTIONS = [
+        {
+          id: "lucide",
+          label: "Lucide",
+          description: "Base moderne et très polyvalente pour les interfaces produit.",
+          meta: "Outlined • SVG-first • Open source",
+          badge: "Default",
+        },
+        {
+          id: "tabler",
+          label: "Tabler",
+          description: "Très adaptée aux dashboards, outils SaaS et interfaces denses.",
+          meta: "Outlined • Dashboard-friendly • Open source",
+          badge: "",
+        },
+        {
+          id: "phosphor",
+          label: "Phosphor",
+          description: "Plus expressive, avec une logique de styles et de weights variés.",
+          meta: "Multi-weight • Expressive • Open source",
+          badge: "",
+        },
+        {
+          id: "iconoir",
+          label: "Iconoir",
+          description: "Plus singulière visuellement, avec un rendu très orienté design system.",
+          meta: "Outlined • Distinctive • Open source",
+          badge: "",
+        },
+      ];
+      const ICON_PREVIEW_SET = ["search", "x", "plus", "minus", "check", "chevron-down"];
+      const ICON_PREVIEW_ASSETS = {
+        lucide: {
+          search: "https://www.figma.com/api/mcp/asset/23992d42-6583-4a9a-9037-0e004a1f31d3",
+          x: "https://www.figma.com/api/mcp/asset/abffb5e9-890c-4298-9bf2-235c32684047",
+          plus: "https://www.figma.com/api/mcp/asset/dc637638-172f-4c4e-83b4-ababf6076397",
+          minus: "https://www.figma.com/api/mcp/asset/2ba751f7-e3c3-47d7-84ba-b8e1f1df3053",
+          check: "https://www.figma.com/api/mcp/asset/8703696b-1a84-40cb-8f09-a0a2ff507011",
+          "chevron-down": "https://www.figma.com/api/mcp/asset/50d2d678-f842-4639-80ce-fdb62be096c6",
+        },
+        tabler: {
+          search: "https://www.figma.com/api/mcp/asset/40733a76-2529-4719-ba4e-38ce0c2bf1c4",
+          x: "https://www.figma.com/api/mcp/asset/abffb5e9-890c-4298-9bf2-235c32684047",
+          plus: "https://www.figma.com/api/mcp/asset/1d1be5f2-a6f0-41ca-b790-d3a1e902b501",
+          minus: "https://www.figma.com/api/mcp/asset/2ba751f7-e3c3-47d7-84ba-b8e1f1df3053",
+          check: "https://www.figma.com/api/mcp/asset/c61bb690-ae7e-4854-84da-8103b6a66239",
+          "chevron-down": "https://www.figma.com/api/mcp/asset/50d2d678-f842-4639-80ce-fdb62be096c6",
+        },
+        phosphor: {
+          search: "https://www.figma.com/api/mcp/asset/23992d42-6583-4a9a-9037-0e004a1f31d3",
+          x: "https://www.figma.com/api/mcp/asset/abffb5e9-890c-4298-9bf2-235c32684047",
+          plus: "https://www.figma.com/api/mcp/asset/dc637638-172f-4c4e-83b4-ababf6076397",
+          minus: "https://www.figma.com/api/mcp/asset/2ba751f7-e3c3-47d7-84ba-b8e1f1df3053",
+          check: "https://www.figma.com/api/mcp/asset/8703696b-1a84-40cb-8f09-a0a2ff507011",
+          "chevron-down": "https://www.figma.com/api/mcp/asset/50d2d678-f842-4639-80ce-fdb62be096c6",
+        },
+        iconoir: {
+          search: "https://www.figma.com/api/mcp/asset/40733a76-2529-4719-ba4e-38ce0c2bf1c4",
+          x: "https://www.figma.com/api/mcp/asset/abffb5e9-890c-4298-9bf2-235c32684047",
+          plus: "https://www.figma.com/api/mcp/asset/1d1be5f2-a6f0-41ca-b790-d3a1e902b501",
+          minus: "https://www.figma.com/api/mcp/asset/2ba751f7-e3c3-47d7-84ba-b8e1f1df3053",
+          check: "https://www.figma.com/api/mcp/asset/c61bb690-ae7e-4854-84da-8103b6a66239",
+          "chevron-down": "https://www.figma.com/api/mcp/asset/50d2d678-f842-4639-80ce-fdb62be096c6",
+        },
+      };
       const DEFAULT_MODAL_BRAND_COLOR = "#9CA3AF";
+      const SEMANTIC_UI_TEMPLATE = {
+        bg: [
+          "primary",
+          "secondary",
+          "tertiary",
+          "quartiary",
+          "primary-hover",
+          "secondary-hover",
+          "tertiary-hover",
+          "quartiary-hover",
+          "black-solid",
+          "black-solid-hover",
+          "disabled",
+          "disabled-alt",
+          "accent-primary",
+          "accent-primary-hover",
+          "accent-solid",
+          "accent-solid-hover",
+          "error-primary",
+          "error-primary-hover",
+          "error-secondary",
+          "error-secondary-hover",
+          "success-primary",
+          "success-primary-hover",
+          "success-secondary",
+          "success-secondary-hover",
+          "warning-primary",
+          "warning-primary-hover",
+          "warning-secondary",
+          "warning-secondary-hover",
+          "info-primary",
+          "info-primary-hover",
+          "info-secondary",
+          "info-secondary-hover",
+          "offer-primary",
+          "offer-primary-hover",
+          "offer-secondary",
+          "offer-secondary-hover",
+          "overlay-alpha-primary",
+          "overlay-alpha-secondary",
+          "overlay-alpha-white-primary",
+          "overlay-alpha-white-secondary",
+        ],
+        text: [
+          "primary",
+          "secondary",
+          "tertiary",
+          "primary-hover",
+          "secondary-hover",
+          "tertiary-hover",
+          "disabled",
+          "disabled-alt",
+          "placeholder",
+          "white",
+          "on-dark-color",
+          "accent-primary",
+          "accent-secondary",
+          "accent-primary-hover",
+          "accent-secondary-hover",
+          "error-primary",
+          "error-secondary",
+          "error-primary-hover",
+          "error-secondary-hover",
+          "success-primary",
+          "success-secondary",
+          "success-primary-hover",
+          "success-secondary-hover",
+          "warning-primary",
+          "warning-secondary",
+          "warning-primary-hover",
+          "warning-secondary-hover",
+          "info-primary",
+          "info-secondary",
+          "info-primary-hover",
+          "info-secondary-hover",
+          "offer-primary",
+          "offer-secondary",
+          "offer-primary-hover",
+          "offer-secondary-hover",
+        ],
+        icon: [
+          "primary",
+          "secondary",
+          "tertiary",
+          "primary-hover",
+          "secondary-hover",
+          "tertiary-hover",
+          "disabled",
+          "disabled-alt",
+          "placeholder",
+          "white",
+          "on-dark-color",
+          "accent-primary",
+          "accent-secondary",
+          "accent-primary-hover",
+          "accent-secondary-hover",
+          "error-primary",
+          "error-secondary",
+          "error-primary-hover",
+          "error-secondary-hover",
+          "success-primary",
+          "success-secondary",
+          "success-primary-hover",
+          "success-secondary-hover",
+          "warning-primary",
+          "warning-secondary",
+          "warning-primary-hover",
+          "warning-secondary-hover",
+          "info-primary",
+          "info-secondary",
+          "info-primary-hover",
+          "info-secondary-hover",
+          "offer-primary",
+          "offer-secondary",
+          "offer-primary-hover",
+          "offer-secondary-hover",
+        ],
+        border: [
+          "primary",
+          "secondary",
+          "tertiary",
+          "primary-solid",
+          "disabled",
+          "disabled-alt",
+          "accent-primary",
+          "accent-secondary",
+          "error-primary",
+          "error-secondary",
+          "success-primary",
+          "success-secondary",
+          "warning-primary",
+          "warning-secondary",
+          "info-primary",
+          "info-secondary",
+          "offer-primary",
+          "offer-secondary",
+        ],
+      };
+      const SEMANTIC_GROUP_LABELS = {
+        bg: "Bg",
+        text: "Text",
+        icon: "Icons",
+        border: "Border",
+      };
+      const SEMANTIC_TEMPLATE_REFERENCES = {
+        "bg/primary": "{b&w/white}",
+        "bg/secondary": "{slate/50}",
+        "bg/tertiary": "{slate/100}",
+        "bg/quartiary": "{slate/300}",
+        "bg/primary-hover": "{slate/50}",
+        "bg/secondary-hover": "{slate/100}",
+        "bg/tertiary-hover": "{slate/200}",
+        "bg/quartiary-hover": "{slate/400}",
+        "bg/black-solid": "{slate/900}",
+        "bg/black-solid-hover": "{slate/800}",
+        "bg/disabled": "{slate/300}",
+        "bg/disabled-alt": "{slate/100}",
+        "bg/accent-primary": "{purple/50}",
+        "bg/accent-primary-hover": "{purple/100}",
+        "bg/accent-solid": "{purple/500}",
+        "bg/accent-solid-hover": "{purple/600}",
+        "bg/error-primary": "{red/50}",
+        "bg/error-primary-hover": "{red/100}",
+        "bg/error-secondary": "{red/600}",
+        "bg/error-secondary-hover": "{red/700}",
+        "bg/success-primary": "{green/100}",
+        "bg/success-primary-hover": "{green/200}",
+        "bg/success-secondary": "{green/600}",
+        "bg/success-secondary-hover": "{green/700}",
+        "bg/warning-primary": "{orange/100}",
+        "bg/warning-primary-hover": "{orange/200}",
+        "bg/warning-secondary": "{orange/600}",
+        "bg/warning-secondary-hover": "{orange/700}",
+        "bg/info-primary": "{blue/50}",
+        "bg/info-primary-hover": "{blue/100}",
+        "bg/info-secondary": "{blue/600}",
+        "bg/info-secondary-hover": "{blue/700}",
+        "bg/offer-primary": "{green/100}",
+        "bg/offer-primary-hover": "{green/200}",
+        "bg/offer-secondary": "{green/600}",
+        "bg/offer-secondary-hover": "{green/700}",
+        "bg/overlay-alpha-primary": "{alpha/light/200}",
+        "bg/overlay-alpha-secondary": "{alpha/light/500}",
+        "bg/overlay-alpha-white-primary": "{alpha/dark/300}",
+        "bg/overlay-alpha-white-secondary": "{alpha/dark/500}",
+        "text/primary": "{slate/900}",
+        "text/secondary": "{slate/600}",
+        "text/tertiary": "{slate/500}",
+        "text/primary-hover": "{slate/800}",
+        "text/secondary-hover": "{slate/700}",
+        "text/tertiary-hover": "{slate/600}",
+        "text/disabled": "{slate/400}",
+        "text/disabled-alt": "{slate/300}",
+        "text/placeholder": "{slate/400}",
+        "text/white": "{b&w/white}",
+        "text/on-dark-color": "{b&w/white}",
+        "text/accent-primary": "{purple/500}",
+        "text/accent-secondary": "{purple/300}",
+        "text/accent-primary-hover": "{purple/600}",
+        "text/accent-secondary-hover": "{purple/400}",
+        "text/error-primary": "{red/600}",
+        "text/error-secondary": "{red/400}",
+        "text/error-primary-hover": "{red/700}",
+        "text/error-secondary-hover": "{red/500}",
+        "text/success-primary": "{green/600}",
+        "text/success-secondary": "{green/400}",
+        "text/success-primary-hover": "{green/700}",
+        "text/success-secondary-hover": "{green/700}",
+        "text/warning-primary": "{orange/600}",
+        "text/warning-secondary": "{orange/400}",
+        "text/warning-primary-hover": "{orange/700}",
+        "text/warning-secondary-hover": "{orange/500}",
+        "text/info-primary": "{blue/600}",
+        "text/info-secondary": "{blue/400}",
+        "text/info-primary-hover": "{blue/700}",
+        "text/info-secondary-hover": "{blue/500}",
+        "text/offer-primary": "{green/600}",
+        "text/offer-secondary": "{green/500}",
+        "text/offer-primary-hover": "{green/700}",
+        "text/offer-secondary-hover": "{green/600}",
+        "icon/primary": "{slate/900}",
+        "icon/secondary": "{slate/600}",
+        "icon/tertiary": "{slate/400}",
+        "icon/primary-hover": "{slate/800}",
+        "icon/secondary-hover": "{slate/700}",
+        "icon/tertiary-hover": "{slate/600}",
+        "icon/disabled": "{slate/400}",
+        "icon/disabled-alt": "{slate/300}",
+        "icon/placeholder": "{slate/400}",
+        "icon/white": "{b&w/white}",
+        "icon/on-dark-color": "{b&w/white}",
+        "icon/accent-primary": "{purple/500}",
+        "icon/accent-secondary": "{purple/300}",
+        "icon/accent-primary-hover": "{purple/600}",
+        "icon/accent-secondary-hover": "{purple/400}",
+        "icon/error-primary": "{red/600}",
+        "icon/error-secondary": "{red/300}",
+        "icon/error-primary-hover": "{red/600}",
+        "icon/error-secondary-hover": "{red/500}",
+        "icon/success-primary": "{green/600}",
+        "icon/success-secondary": "{green/200}",
+        "icon/success-primary-hover": "{green/700}",
+        "icon/success-secondary-hover": "{green/300}",
+        "icon/warning-primary": "{orange/600}",
+        "icon/warning-secondary": "{orange/400}",
+        "icon/warning-primary-hover": "{orange/700}",
+        "icon/warning-secondary-hover": "{orange/500}",
+        "icon/info-primary": "{blue/600}",
+        "icon/info-secondary": "{blue/400}",
+        "icon/info-primary-hover": "{blue/700}",
+        "icon/info-secondary-hover": "{blue/500}",
+        "icon/offer-primary": "{green/600}",
+        "icon/offer-secondary": "{green/400}",
+        "icon/offer-primary-hover": "{green/700}",
+        "icon/offer-secondary-hover": "{green/500}",
+        "border/primary": "{slate/300}",
+        "border/secondary": "{slate/200}",
+        "border/tertiary": "{slate/100}",
+        "border/primary-solid": "{slate/900}",
+        "border/disabled": "{slate/300}",
+        "border/disabled-alt": "{slate/200}",
+        "border/accent-primary": "{purple/500}",
+        "border/accent-secondary": "{purple/100}",
+        "border/error-primary": "{red/500}",
+        "border/error-secondary": "{red/300}",
+        "border/success-primary": "{green/500}",
+        "border/success-secondary": "{green/300}",
+        "border/warning-primary": "{orange/500}",
+        "border/warning-secondary": "{orange/300}",
+        "border/info-primary": "{blue/500}",
+        "border/info-secondary": "{blue/300}",
+        "border/offer-primary": "{green/500}",
+        "border/offer-secondary": "{green/300}",
+      };
 
       function normalizeUiModeValue(value) {
         if (value === "dark") return "dark";
@@ -1880,14 +3499,26 @@
         neutralChoice: "",
         selectedPaletteKeys: [],
         paletteOverrides: {},
+        semanticOverrides: {},
         baseWhite: "#ffffff",
         baseBlack: "#000000",
         createTextStyles: true,
         fontFamilies: [],
+        icons: {
+          library: "lucide",
+          size: 24,
+          colorAlias: "icon/primary",
+          stroke: "medium",
+          previewIcon: "search",
+        },
         typography: {
           displayFamily: "Roboto",
           bodyFamily: "Inter",
           fontSizes: { ...FONT_DEFAULTS },
+          lineHeights: { ...LINE_HEIGHT_DEFAULTS },
+          letterSpacings: { ...LETTER_SPACING_DEFAULTS },
+          styleFamilies: {},
+          styleWeights: {},
         },
       };
 
@@ -1905,6 +3536,11 @@
       const backBtn = document.getElementById("backBtn");
       const nextBtn = document.getElementById("nextBtn");
       const uiModeSelect = document.getElementById("uiModeSelect");
+      const uiModeField = document.getElementById("uiModeField");
+      const screen2Kicker = document.getElementById("screen2Kicker");
+      const screen2Subtitle = document.getElementById("screen2Subtitle");
+      const screen3Kicker = document.getElementById("screen3Kicker");
+      const screen4Kicker = document.getElementById("screen4Kicker");
 
       const brandsContainer = document.getElementById("brandsContainer");
       const addBrandBtn = document.getElementById("addBrandBtn");
@@ -1917,11 +3553,21 @@
       const presetInfo = document.getElementById("presetInfo");
       const presetError = document.getElementById("presetError");
       const paletteCards = document.getElementById("paletteCards");
+      const semanticSummaryValue = document.getElementById("semanticSummaryValue");
+      const semanticGroups = document.getElementById("semanticGroups");
+      const semanticError = document.getElementById("semanticError");
 
       const displayFamilySelect = document.getElementById("displayFamilySelect");
       const bodyFamilySelect = document.getElementById("bodyFamilySelect");
       const fontGrid = document.getElementById("fontGrid");
       const createTextStylesCheckbox = document.getElementById("createTextStylesCheckbox");
+      const iconLibrarySelect = document.getElementById("iconLibrarySelect");
+      const iconStrokeSelect = document.getElementById("iconStrokeSelect");
+      const iconColorSelect = document.getElementById("iconColorSelect");
+      const iconSizeSelect = document.getElementById("iconSizeSelect");
+      const iconPreviewSelect = document.getElementById("iconPreviewSelect");
+      const iconPreviewStage = document.getElementById("iconPreviewStage");
+      const iconSettingsSummary = document.getElementById("iconSettingsSummary");
       const status = document.getElementById("status");
       const reportBox = document.getElementById("reportBox");
 
@@ -1941,17 +3587,34 @@
       const brandModalShades = document.getElementById("modalBrandShades");
       const brandModalError = document.getElementById("brandModalError");
 
+      const textStyleModal = document.getElementById("textStyleModal");
+      const textStyleModalClose = document.getElementById("textStyleModalClose");
+      const textStyleDelete = document.getElementById("textStyleDelete");
+      const textStyleCancel = document.getElementById("textStyleCancel");
+      const textStyleSave = document.getElementById("textStyleSave");
+      const textStyleNameInput = document.getElementById("textStyleNameInput");
+      const textStyleFamilySelect = document.getElementById("textStyleFamilySelect");
+      const textStyleSizeInput = document.getElementById("textStyleSizeInput");
+      const textStyleLineHeightInput = document.getElementById("textStyleLineHeightInput");
+      const textStyleLetterSpacingInput = document.getElementById("textStyleLetterSpacingInput");
+      const textStyleWeightList = document.getElementById("textStyleWeightList");
+      const textStyleModalError = document.getElementById("textStyleModalError");
+
       let editingBrandIndex = null;
       let editingMode = "add";
+      let editingTextStyleKey = "";
       let pendingBrandScale = {};
       let pendingBrandContrast = 0;
       let editingPaletteKey = "";
+      let pendingDeleteBrandIndex = null;
       let generationInFlight = false;
       let generationSlowTimer = null;
       let generationVerySlowTimer = null;
       let generationFailSafeTimer = null;
       const customSelectRegistry = new Map();
       let openCustomSelectId = "";
+
+      normalizeStaticFieldPrimitives();
 
       function hexToRgb(input) {
         const value = String(input || "").trim().replace("#", "");
@@ -2207,6 +3870,7 @@
           value: String(option.value || ""),
           label: String(option.textContent || option.label || option.value || "").trim(),
           supportingText: String(option.dataset.supportingText || "").trim(),
+          colorPreview: String(option.dataset.colorPreview || "").trim(),
           icon: String(option.dataset.icon || "")
             .trim()
             .toLowerCase(),
@@ -2220,6 +3884,372 @@
         icon.className = `${className} is-${variant}`;
         icon.setAttribute("aria-hidden", "true");
         return icon;
+      }
+
+      function createFieldHint(text = "") {
+        const hint = document.createElement("div");
+        hint.className = "muted ds-field-hint";
+        hint.textContent = text;
+        return hint;
+      }
+
+      function truncateWithThreeDots(text = "", maxChars = 999) {
+        const value = String(text || "").trim();
+        if (!value || value.length <= maxChars) return value;
+        return `${value.slice(0, Math.max(0, maxChars - 3)).trimEnd()}...`;
+      }
+
+      function createFieldPrimitive({
+        labelText = "",
+        className = "",
+        labelClassName = "label",
+        labelHidden = false,
+        control = null,
+        hintText = "",
+        wrapperTag = "label",
+      } = {}) {
+        const field = document.createElement(wrapperTag);
+        field.className = ["field", className].filter(Boolean).join(" ");
+
+        let label = null;
+        if (labelText) {
+          label = document.createElement("span");
+          label.className = [labelClassName, labelHidden ? "field-hidden" : ""].filter(Boolean).join(" ");
+          label.textContent = labelText;
+          field.appendChild(label);
+        }
+
+        if (control) {
+          field.appendChild(control);
+        }
+
+        let hint = null;
+        if (hintText) {
+          hint = createFieldHint(hintText);
+          field.appendChild(hint);
+        }
+
+        return { field, label, control, hint };
+      }
+
+      function mountFieldPrimitive(field, {
+        labelText = "",
+        className = "",
+        labelClassName = "label",
+        labelHidden = false,
+        control = null,
+        hintText = "",
+      } = {}) {
+        if (!(field instanceof HTMLElement)) return { field: null, label: null, control: null, hint: null };
+        const fieldId = field.id || "";
+        const primitive = createFieldPrimitive({
+          labelText,
+          className,
+          labelClassName,
+          labelHidden,
+          control,
+          hintText,
+          wrapperTag: field.tagName.toLowerCase(),
+        });
+        field.className = primitive.field.className;
+        if (fieldId) {
+          field.id = fieldId;
+        }
+        field.replaceChildren(...Array.from(primitive.field.childNodes));
+        return { field, label: field.firstElementChild || null, control, hint: field.lastElementChild || null };
+      }
+
+      function createInputPrimitive({
+        id = "",
+        type = "text",
+        value = "",
+        placeholder = "",
+        className = "",
+        inputMode = "",
+        min = "",
+      } = {}) {
+        const input = document.createElement("input");
+        input.className = ["ui-input", "ds-input", className].filter(Boolean).join(" ");
+        input.type = type;
+        if (id) input.id = id;
+        if (value !== "") input.value = String(value);
+        if (placeholder) input.placeholder = placeholder;
+        if (inputMode) input.inputMode = inputMode;
+        if (min !== "") input.min = String(min);
+        return input;
+      }
+
+      function createNumberInputPrimitive(options = {}) {
+        return createInputPrimitive({
+          ...options,
+          type: "number",
+          className: ["ui-number", "ds-number", options.className || ""].filter(Boolean).join(" "),
+        });
+      }
+
+      function createSelectPrimitive({
+        id = "",
+        className = "",
+        searchable = false,
+        searchPlaceholder = "",
+        menuMaxHeight = "",
+        renderLimit = "",
+      } = {}) {
+        const select = document.createElement("select");
+        select.className = ["ui-select", "ds-select", className].filter(Boolean).join(" ");
+        if (id) select.id = id;
+        if (searchable) select.dataset.searchable = "true";
+        if (searchPlaceholder) select.dataset.searchPlaceholder = searchPlaceholder;
+        if (menuMaxHeight !== "") select.dataset.menuMaxHeight = String(menuMaxHeight);
+        if (renderLimit !== "") select.dataset.renderLimit = String(renderLimit);
+        return select;
+      }
+
+      function normalizeStaticFieldPrimitives() {
+        const entries = [
+          { control: baseWhiteInput, labelText: "Base white" },
+          { control: baseBlackInput, labelText: "Base black" },
+          { control: presetSelect, labelText: "Bibliothèque de base" },
+          { control: neutralSelect, labelText: "Neutre de base" },
+          { control: uiModeSelect, labelText: "UI mode" },
+          { control: displayFamilySelect, labelText: "Police display" },
+          { control: bodyFamilySelect, labelText: "Police body" },
+          { control: iconLibrarySelect, labelText: "Bibliothèque d’icônes" },
+          { control: iconStrokeSelect, labelText: "Contour" },
+          { control: iconColorSelect, labelText: "Couleur" },
+          { control: iconSizeSelect, labelText: "Taille" },
+          {
+            control: createTextStylesCheckbox,
+            labelText: "Créer et lier les styles de texte",
+          },
+          {
+            control: brandModalName,
+            labelText: "Nom",
+            className: "modal-field-compact",
+            labelHidden: true,
+          },
+          {
+            control: brandModalHex,
+            labelText: "Couleur",
+            className: "modal-field-compact modal-field-hex",
+            labelHidden: true,
+          },
+          {
+            control: shadeCountSelect,
+            labelText: "Nombre de shades",
+            className: "modal-field-compact modal-field-count",
+            labelHidden: true,
+          },
+          {
+            control: textStyleNameInput,
+            labelText: "Nom du style",
+            className: "modal-field-compact",
+          },
+          {
+            control: textStyleFamilySelect,
+            labelText: "Police",
+            className: "modal-field-compact",
+          },
+          {
+            control: textStyleSizeInput,
+            labelText: "Taille",
+            className: "modal-field-compact",
+          },
+          {
+            control: textStyleLineHeightInput,
+            labelText: "Interligne",
+            className: "modal-field-compact",
+          },
+          {
+            control: textStyleLetterSpacingInput,
+            labelText: "Espacement",
+            className: "modal-field-compact",
+          },
+        ];
+
+        entries.forEach(({ control, ...options }) => {
+          if (!(control instanceof HTMLElement)) return;
+          const field = control.closest(".field");
+          if (!(field instanceof HTMLElement)) return;
+          mountFieldPrimitive(field, {
+            ...options,
+            className: options.className || Array.from(field.classList).filter((name) => name !== "field").join(" "),
+            control,
+          });
+        });
+      }
+
+      function createDropdownEmptyState(text = "Aucun résultat") {
+        const empty = document.createElement("div");
+        empty.className = "custom-select-empty ds-dropdown-empty";
+        empty.textContent = text;
+        return empty;
+      }
+
+      function createDropdownHelperNote(text = "") {
+        const note = document.createElement("div");
+        note.className = "custom-select-note ds-dropdown-note";
+        note.textContent = text;
+        return note;
+      }
+
+      function createDropdownMenuItem(entry, custom) {
+        const option = document.createElement("button");
+        option.type = "button";
+        option.className = "custom-select-option ds-select-option ds-dropdown-menu-item";
+        option.dataset.value = entry.value;
+        option.disabled = entry.disabled;
+        option.setAttribute("role", "option");
+        option.setAttribute("aria-selected", entry.value === custom.select.value ? "true" : "false");
+
+        const content = document.createElement("span");
+        content.className = "custom-select-option-content ds-select-option-content ds-dropdown-menu-item-content";
+
+        const leading = createCustomSelectIcon("custom-select-option-leading", entry.icon);
+        if (leading) {
+          content.appendChild(leading);
+        }
+
+        if (entry.colorPreview) {
+          const swatch = document.createElement("span");
+          swatch.className = "custom-select-option-swatch ds-dropdown-menu-item-swatch";
+          swatch.style.background = entry.colorPreview;
+          content.appendChild(swatch);
+        }
+
+        const text = document.createElement("span");
+        text.className = "custom-select-option-text ds-select-option-text ds-dropdown-menu-item-text";
+
+        const label = document.createElement("span");
+        label.className = "custom-select-option-label ds-select-option-label ds-dropdown-menu-item-label";
+        label.textContent = truncateWithThreeDots(entry.label || entry.value, 28);
+        label.title = entry.label || entry.value;
+        text.appendChild(label);
+
+        if (entry.supportingText) {
+          const support = document.createElement("span");
+          support.className = "custom-select-option-support ds-select-option-support ds-dropdown-menu-item-support";
+          support.textContent = truncateWithThreeDots(entry.supportingText, 24);
+          support.title = entry.supportingText;
+          text.appendChild(support);
+        }
+
+        content.appendChild(text);
+
+        const check = document.createElement("span");
+        check.className = "custom-select-option-check ds-select-option-check ds-dropdown-menu-item-check";
+        check.setAttribute("aria-hidden", "true");
+        content.appendChild(check);
+
+        option.appendChild(content);
+
+        option.addEventListener("mouseenter", () => {
+          if (entry.disabled) return;
+          custom.activeValue = entry.value;
+          updateCustomSelectOptionStates(custom);
+        });
+        option.addEventListener("click", () => {
+          if (entry.disabled) return;
+          if (custom.select.value !== entry.value) {
+            custom.select.value = entry.value;
+            custom.select.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          closeCustomSelect(custom.id, true);
+          refreshCustomSelect(custom.select);
+        });
+
+        return option;
+      }
+
+      function createCustomSelectPrimitive(select, { searchable, compact, menuMaxHeight, variant = "" }) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "custom-select ds-select-root ds-input-dropdown";
+        if (compact) {
+          wrapper.classList.add("custom-select--compact");
+        }
+        if (searchable) {
+          wrapper.classList.add("custom-select--searchable");
+        }
+        if (variant === "colors") {
+          wrapper.classList.add("custom-select--colors");
+        }
+
+        const trigger = document.createElement("button");
+        trigger.type = "button";
+        trigger.className = "custom-select-trigger ds-select-trigger ds-input-dropdown-trigger";
+        trigger.setAttribute("aria-haspopup", "listbox");
+        trigger.setAttribute("aria-expanded", "false");
+        trigger.setAttribute("aria-controls", `custom-select-panel-${select.id}`);
+
+        if (searchable) {
+          const searchIcon = createCustomSelectIcon("custom-select-leading-icon", "search");
+          if (searchIcon) {
+            trigger.appendChild(searchIcon);
+          }
+        }
+
+        const selectedSwatch = document.createElement("span");
+        selectedSwatch.className = "custom-select-trigger-swatch";
+
+        const value = document.createElement("span");
+        value.className = "custom-select-value ds-select-value ds-input-dropdown-value";
+
+        const selectedSupport = document.createElement("span");
+        selectedSupport.className = "custom-select-trigger-support";
+
+        const chevron = document.createElement("span");
+        chevron.className = "custom-select-chevron ds-select-chevron ds-input-dropdown-chevron";
+
+        trigger.appendChild(selectedSwatch);
+        trigger.appendChild(value);
+        trigger.appendChild(selectedSupport);
+        trigger.appendChild(chevron);
+
+        const panel = document.createElement("div");
+        panel.className = "custom-select-panel ds-select-panel ds-input-dropdown-panel";
+        panel.id = `custom-select-panel-${select.id}`;
+        panel.hidden = true;
+        panel.setAttribute("role", "listbox");
+
+        let searchInput = null;
+        if (searchable) {
+          searchInput = document.createElement("input");
+          searchInput.type = "text";
+          searchInput.className = "custom-select-search ds-select-search ds-input-dropdown-search";
+          searchInput.placeholder = String(select.dataset.searchPlaceholder || "Rechercher...");
+          panel.appendChild(searchInput);
+        }
+
+        const options = document.createElement("div");
+        options.className = "custom-select-options ds-select-options ds-scrollbar ds-input-dropdown-options";
+        options.style.maxHeight = `${menuMaxHeight}px`;
+        panel.appendChild(options);
+
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(panel);
+
+        return {
+          wrapper,
+          trigger,
+          selectedSwatch,
+          value,
+          selectedSupport,
+          chevron,
+          panel,
+          searchInput,
+          options,
+        };
+      }
+
+      function applyControlErrorState(input, hasError) {
+        if (!input) return;
+        input.classList.toggle("is-error", Boolean(hasError));
+        if (input.tagName === "SELECT" && input.id) {
+          const custom = customSelectRegistry.get(input.id);
+          if (custom) {
+            custom.root.classList.toggle("is-error", Boolean(hasError));
+          }
+        }
       }
 
       function updateCustomSelectOptionStates(custom) {
@@ -2318,76 +4348,16 @@
 
         custom.optionsEl.innerHTML = "";
         if (!renderEntries.length) {
-          const empty = document.createElement("div");
-          empty.className = "custom-select-empty";
-          empty.textContent = "Aucun résultat";
-          custom.optionsEl.appendChild(empty);
+          custom.optionsEl.appendChild(createDropdownEmptyState("Aucun résultat"));
           return;
         }
 
         renderEntries.forEach((entry) => {
-          const option = document.createElement("button");
-          option.type = "button";
-          option.className = "custom-select-option ds-select-option";
-          option.dataset.value = entry.value;
-          option.disabled = entry.disabled;
-          option.setAttribute("role", "option");
-          option.setAttribute("aria-selected", entry.value === custom.select.value ? "true" : "false");
-
-          const content = document.createElement("span");
-          content.className = "custom-select-option-content ds-select-option-content";
-
-          const leading = createCustomSelectIcon("custom-select-option-leading", entry.icon);
-          if (leading) {
-            content.appendChild(leading);
-          }
-
-          const text = document.createElement("span");
-          text.className = "custom-select-option-text ds-select-option-text";
-
-          const label = document.createElement("span");
-          label.className = "custom-select-option-label ds-select-option-label";
-          label.textContent = entry.label || entry.value;
-          text.appendChild(label);
-
-          if (entry.supportingText) {
-            const support = document.createElement("span");
-            support.className = "custom-select-option-support ds-select-option-support";
-            support.textContent = entry.supportingText;
-            text.appendChild(support);
-          }
-
-          content.appendChild(text);
-
-          const check = document.createElement("span");
-          check.className = "custom-select-option-check ds-select-option-check";
-          check.setAttribute("aria-hidden", "true");
-          content.appendChild(check);
-
-          option.appendChild(content);
-
-          option.addEventListener("mouseenter", () => {
-            if (entry.disabled) return;
-            custom.activeValue = entry.value;
-            updateCustomSelectOptionStates(custom);
-          });
-          option.addEventListener("click", () => {
-            if (entry.disabled) return;
-            if (custom.select.value !== entry.value) {
-              custom.select.value = entry.value;
-              custom.select.dispatchEvent(new Event("change", { bubbles: true }));
-            }
-            closeCustomSelect(custom.id, true);
-            refreshCustomSelect(custom.select);
-          });
-          custom.optionsEl.appendChild(option);
+          custom.optionsEl.appendChild(createDropdownMenuItem(entry, custom));
         });
 
         if (renderEntries.length < filtered.length) {
-          const note = document.createElement("div");
-          note.className = "custom-select-note";
-          note.textContent = `${renderEntries.length}/${filtered.length} polices affichées. Tape pour filtrer.`;
-          custom.optionsEl.appendChild(note);
+          custom.optionsEl.appendChild(createDropdownHelperNote(`${renderEntries.length}/${filtered.length} polices affichées. Tape pour filtrer.`));
         }
 
         updateCustomSelectOptionStates(custom);
@@ -2440,7 +4410,13 @@
         if (current && select.value !== current.value) {
           select.value = current.value;
         }
-        custom.valueEl.textContent = current ? current.label : "";
+        custom.valueEl.textContent = current ? truncateWithThreeDots(current.label, 30) : "";
+        if (custom.selectedSwatchEl) {
+          custom.selectedSwatchEl.style.background = current?.colorPreview || "transparent";
+        }
+        if (custom.selectedSupportEl) {
+          custom.selectedSupportEl.textContent = current?.supportingText || "";
+        }
         const showPlaceholder = !current || current.value === "";
         custom.valueEl.classList.toggle("is-placeholder", showPlaceholder);
         custom.trigger.setAttribute("title", current ? current.label : "");
@@ -2478,58 +4454,10 @@
             ? Math.round(renderLimitCandidate)
             : 250;
 
-          const wrapper = document.createElement("div");
-          wrapper.className = "custom-select ds-select-root";
-          if (select.closest(".modal-field-count")) {
-            wrapper.classList.add("custom-select--compact");
-          }
-          if (searchable) {
-            wrapper.classList.add("custom-select--searchable");
-          }
-
-          const trigger = document.createElement("button");
-          trigger.type = "button";
-          trigger.className = "custom-select-trigger ds-select-trigger";
-          trigger.setAttribute("aria-haspopup", "listbox");
-          trigger.setAttribute("aria-expanded", "false");
-          trigger.setAttribute("aria-controls", `custom-select-panel-${select.id}`);
-
-          if (searchable) {
-            const searchIcon = createCustomSelectIcon("custom-select-leading-icon", "search");
-            if (searchIcon) {
-              trigger.appendChild(searchIcon);
-            }
-          }
-
-          const value = document.createElement("span");
-          value.className = "custom-select-value ds-select-value";
-          const chevron = document.createElement("span");
-          chevron.className = "custom-select-chevron ds-select-chevron";
-          trigger.appendChild(value);
-          trigger.appendChild(chevron);
-
-          const panel = document.createElement("div");
-          panel.className = "custom-select-panel ds-select-panel";
-          panel.id = `custom-select-panel-${select.id}`;
-          panel.hidden = true;
-          panel.setAttribute("role", "listbox");
-
-          let searchInput = null;
-          if (searchable) {
-            searchInput = document.createElement("input");
-            searchInput.type = "text";
-            searchInput.className = "custom-select-search ds-select-search";
-            searchInput.placeholder = String(select.dataset.searchPlaceholder || "Rechercher...");
-            panel.appendChild(searchInput);
-          }
-
-          const options = document.createElement("div");
-          options.className = "custom-select-options ds-select-options";
-          options.style.maxHeight = `${menuMaxHeight}px`;
-          panel.appendChild(options);
-
-          wrapper.appendChild(trigger);
-          wrapper.appendChild(panel);
+          const compact = Boolean(select.closest(".modal-field-count"));
+          const variant = String(select.dataset.variant || "").trim();
+          const primitive = createCustomSelectPrimitive(select, { searchable, compact, menuMaxHeight, variant });
+          const { wrapper, trigger, selectedSwatch, value, selectedSupport, panel, searchInput, options } = primitive;
           select.insertAdjacentElement("afterend", wrapper);
 
           const custom = {
@@ -2537,7 +4465,9 @@
             select,
             root: wrapper,
             trigger,
+            selectedSwatchEl: selectedSwatch,
             valueEl: value,
+            selectedSupportEl: selectedSupport,
             panel,
             optionsEl: options,
             searchInput,
@@ -2661,14 +4591,7 @@
       }
 
       function setInputError(input, hasError) {
-        if (!input) return;
-        input.classList.toggle("is-error", Boolean(hasError));
-        if (input.tagName === "SELECT" && input.id) {
-          const custom = customSelectRegistry.get(input.id);
-          if (custom) {
-            custom.root.classList.toggle("is-error", Boolean(hasError));
-          }
-        }
+        applyControlErrorState(input, hasError);
       }
 
       function applyStep2FieldErrors() {
@@ -2703,6 +4626,11 @@
           value = `#${short[0]}${short[0]}${short[1]}${short[1]}${short[2]}${short[2]}`;
         }
         return isHexColor(value) ? value.toUpperCase() : "";
+      }
+
+      function hasInvalidManualHexInput() {
+        const raw = String(brandModalHex?.value || "").trim();
+        return Boolean(raw) && !normalizeHexColor(raw);
       }
 
       function resolveModalBrandColor() {
@@ -2812,7 +4740,7 @@
 
       function reportUiRuntimeError(prefix, detail) {
         const message = `${prefix}: ${detail || "Erreur inconnue"}`;
-        console.error(`[Starter Tokens][UI] ${message}`);
+        console.error(`[ombrstudio][UI] ${message}`);
         clearGenerationWatchdog();
         setStatus(message, "err");
         reportBox.style.display = "block";
@@ -2844,32 +4772,73 @@
         refreshCustomSelect(shadeCountSelect);
       }
 
+      function getFlowConfig() {
+        if (state.tokenLevel === "color-modes") {
+          return [
+            { screen: 1, hint: "Niveau de tokens", kicker: "1/4 - Choix du mode" },
+            { screen: 2, hint: "Couleur", kicker: "2/4 - Couleurs" },
+            { screen: 3, hint: "Sémantics", kicker: "3/4 - Sémantics" },
+            { screen: 4, hint: "Typographie", kicker: "4/4 - icônes & typo" },
+          ];
+        }
+        return [
+          { screen: 1, hint: "Niveau de tokens", kicker: "1/3 - Choix du mode" },
+          { screen: 2, hint: "Couleur", kicker: "2/3 - Couleurs" },
+          { screen: 4, hint: "Typographie", kicker: "3/3 - icônes & typo" },
+        ];
+      }
+
+      function getFlowLength() {
+        return getFlowConfig().length;
+      }
+
+      function getPhysicalScreenForStep(step = state.step) {
+        const flow = getFlowConfig();
+        const index = Math.max(0, Math.min(flow.length - 1, Number(step || 1) - 1));
+        return flow[index]?.screen || 1;
+      }
+
+      function getStepIndexForScreen(screenId) {
+        const index = getFlowConfig().findIndex((entry) => entry.screen === screenId);
+        return index >= 0 ? index + 1 : 1;
+      }
+
+      function syncStepWithinFlow() {
+        state.step = Math.max(1, Math.min(getFlowLength(), Number(state.step || 1)));
+      }
+
+      function previewUiModeLabel() {
+        if (state.uiMode === "both") return "Light + Dark";
+        if (state.uiMode === "dark") return "Dark mode only";
+        return "Light mode only";
+      }
+
       function updateStepper() {
-        const hints = {
-          1: "Niveau de tokens",
-          2: "Brand colors",
-          3: "Palette colors",
-          4: "Typography",
-        };
+        syncStepWithinFlow();
+        const flow = getFlowConfig();
+        const current = flow[state.step - 1] || flow[0];
 
         stepButtons.forEach((node, index) => {
-          const step = Number(node.dataset.step);
+          const visible = index < flow.length;
+          const step = index + 1;
+          node.textContent = String(step);
+          node.dataset.step = String(step);
           node.classList.toggle("active", step === state.step);
-          node.disabled = step > 4;
+          node.classList.toggle("is-hidden", !visible);
+          node.disabled = !visible;
         });
 
         Object.entries(screens).forEach(([key, node]) => {
-          node.classList.toggle("active", Number(key) === state.step);
+          node.classList.toggle("active", Number(key) === current.screen);
         });
 
-        backBtn.disabled = state.step === 1;
-        if (state.step === 4) {
-          nextBtn.textContent = "Générer";
-        } else {
-          nextBtn.textContent = "Continuer";
-        }
+        if (screen2Kicker) screen2Kicker.textContent = flow.find((entry) => entry.screen === 2)?.kicker || "2/3 - Couleurs";
+        if (screen3Kicker) screen3Kicker.textContent = flow.find((entry) => entry.screen === 3)?.kicker || "3/4 - Sémantics";
+        if (screen4Kicker) screen4Kicker.textContent = flow.find((entry) => entry.screen === 4)?.kicker || "3/3 - Typography";
 
-        stepHint.textContent = hints[state.step] || "";
+        backBtn.disabled = state.step === 1;
+        nextBtn.textContent = state.step === flow.length ? "Générer" : "Continuer";
+        stepHint.textContent = current.hint || "";
       }
 
       function renderModeCards() {
@@ -2881,12 +4850,35 @@
             dot.style.background = selected ? "#ffffff" : "transparent";
           }
         });
+        renderStep2Setup();
+        renderSemanticSummary();
+      }
+
+      function renderStep2Setup() {
+        if (screen2Subtitle) {
+          screen2Subtitle.textContent = "Définis tes couleurs de marque.";
+        }
+        uiModeField?.classList.toggle("is-hidden", state.tokenLevel !== "color-modes");
+      }
+
+      function renderSemanticSummary() {
+        if (semanticSummaryValue) {
+          semanticSummaryValue.textContent = previewUiModeLabel();
+        }
       }
 
       function renderBrands() {
         brandsContainer.innerHTML = "";
         const steps = deriveShadeSteps(state.namingPattern, state.shadeCount);
         const baseStep = resolveBaseStep(steps);
+
+        if (!state.brands.length) {
+          const empty = document.createElement("p");
+          empty.className = "muted";
+          empty.style.padding = "4px 0";
+          empty.textContent = "Ajoute une couleur de marque pour commencer.";
+          brandsContainer.appendChild(empty);
+        }
 
         state.brands.forEach((brand, index) => {
           const card = document.createElement("article");
@@ -2902,14 +4894,15 @@
 
           const editBtn = document.createElement("button");
           editBtn.type = "button";
-          editBtn.className = "brand-edit";
-          editBtn.textContent = "Edit";
+          editBtn.className = "brand-edit ds-button ds-button--ghost ds-button--mini";
+          editBtn.textContent = "Modifier";
           editBtn.addEventListener("click", () => openBrandModal("edit", index));
 
           const deleteBtn = document.createElement("button");
           deleteBtn.type = "button";
-          deleteBtn.className = "brand-delete";
-          deleteBtn.textContent = "Supprimer";
+          deleteBtn.className = "brand-delete ds-button ds-button--destructive ds-button--mini";
+          const isPendingDelete = pendingDeleteBrandIndex === index;
+          deleteBtn.textContent = isPendingDelete ? "Confirmer" : "Supprimer";
           deleteBtn.disabled = state.brands.length <= 1;
           deleteBtn.addEventListener("click", () => removeBrand(index));
 
@@ -2936,16 +4929,24 @@
           brandsContainer.appendChild(card);
         });
 
-        addBrandBtn.textContent = state.brands.length ? "Ajouter une couleur" : "Ajouter votre primary brand";
+        addBrandBtn.textContent = state.brands.length ? "Ajouter une couleur" : "Ajouter la couleur principale";
+        renderSemanticScreen();
       }
 
       function removeBrand(index) {
         if (!Number.isInteger(index) || index < 0 || index >= state.brands.length) return;
         if (state.brands.length <= 1) {
-          brandError.textContent = "Il faut garder au moins une primary brand.";
+          brandError.textContent = "Il faut garder au moins une couleur principale.";
+          return;
+        }
+        if (pendingDeleteBrandIndex !== index) {
+          pendingDeleteBrandIndex = index;
+          brandError.textContent = "Clique à nouveau sur Confirmer pour supprimer cette couleur.";
+          renderBrands();
           return;
         }
         state.brands.splice(index, 1);
+        pendingDeleteBrandIndex = null;
         brandError.textContent = "";
         renderBrands();
       }
@@ -2954,7 +4955,7 @@
         presetSelect.innerHTML = "";
         const placeholder = document.createElement("option");
         placeholder.value = "";
-        placeholder.textContent = "Select Base Librari";
+        placeholder.textContent = "Choisir une bibliothèque de base";
         presetSelect.appendChild(placeholder);
 
         state.presets.forEach((preset) => {
@@ -2980,16 +4981,16 @@
           neutralSelect.innerHTML = "";
           const neutralPlaceholder = document.createElement("option");
           neutralPlaceholder.value = "";
-          neutralPlaceholder.textContent = "Select Base Neutral";
+          neutralPlaceholder.textContent = "Choisir un neutre de base";
           neutralSelect.appendChild(neutralPlaceholder);
           neutralSelect.value = "";
           neutralSelect.disabled = true;
           refreshCustomSelect(neutralSelect);
           state.neutralChoice = "";
           state.selectedPaletteKeys = [];
-          document.getElementById("presetShadeInfo").textContent = "0 Shades";
-          presetInfo.textContent = "Choisis une base librari pour charger les palettes.";
+          presetInfo.textContent = "";
           renderPresetCards([]);
+          renderSemanticScreen();
           return;
         }
 
@@ -2999,7 +5000,7 @@
         neutralSelect.innerHTML = "";
         const neutralPlaceholder = document.createElement("option");
         neutralPlaceholder.value = "";
-        neutralPlaceholder.textContent = "Select Base Neutral";
+        neutralPlaceholder.textContent = "Choisir un neutre de base";
         neutralSelect.appendChild(neutralPlaceholder);
         preset.neutralOptions.forEach((optionValue) => {
           const option = document.createElement("option");
@@ -3020,12 +5021,10 @@
         syncPaletteSetupValues();
 
         const selectedPalettes = palettes.filter((palette) => state.selectedPaletteKeys.includes(buildPaletteKey(palette)));
-        const totalShades = computePaletteShadeCount(selectedPalettes);
-        document.getElementById("presetShadeInfo").textContent = `${totalShades} Shades`;
-        const neutralLabel = state.neutralChoice || "not selected";
-        presetInfo.textContent = `Preset: ${preset.label} | palettes sélectionnées: ${selectedPalettes.length}/${preset.paletteCount} | steps: ${preset.steps.join(", ")}. colors/gray/* alias vers ${neutralLabel}.`;
+        presetInfo.textContent = "";
 
         renderPresetCards(palettes);
+        renderSemanticScreen();
       }
 
       function renderPresetCards(palettes) {
@@ -3034,7 +5033,7 @@
           const empty = document.createElement("p");
           empty.className = "muted";
           empty.style.padding = "4px 0";
-          empty.textContent = "Prévisualisation indisponible.";
+          empty.textContent = "Choisis une bibliothèque de base pour afficher les palettes disponibles.";
           paletteCards.appendChild(empty);
           return;
         }
@@ -3067,7 +5066,7 @@
           if (isNeutralPalette) {
             const neutralBadge = document.createElement("span");
             neutralBadge.className = "palette-neutral-badge";
-            neutralBadge.textContent = "Base neutral";
+            neutralBadge.textContent = "Neutre de base";
             left.appendChild(neutralBadge);
           }
 
@@ -3081,8 +5080,8 @@
 
           const editBtn = document.createElement("button");
           editBtn.type = "button";
-          editBtn.className = "palette-edit";
-          editBtn.textContent = "Edit";
+          editBtn.className = "palette-edit ds-button ds-button--ghost ds-button--mini";
+          editBtn.textContent = "Modifier";
           editBtn.addEventListener("click", () => openPaletteInBrandModal(palette, index));
 
           row.appendChild(left);
@@ -3108,13 +5107,376 @@
         });
       }
 
+      function normalizeSemanticTokenKey(tokenName) {
+        return String(tokenName || "").trim().toLowerCase();
+      }
+
+      function semanticReferenceSegments(reference) {
+        return String(reference || "")
+          .trim()
+          .replace(/^\{/, "")
+          .replace(/\}$/, "")
+          .split("/")
+          .map((segment) => segment.trim().toLowerCase())
+          .filter(Boolean);
+      }
+
+      function semanticReferenceLabel(reference) {
+        return semanticReferenceSegments(reference).join("/");
+      }
+
+      function semanticDefaultReference(tokenName) {
+        return SEMANTIC_TEMPLATE_REFERENCES[normalizeSemanticTokenKey(tokenName)] || "{b&w/white}";
+      }
+
+      function semanticCandidatePaletteKeys() {
+        return semanticPreviewPalettes().map((palette, index) => buildPaletteKey(palette, index));
+      }
+
+      function semanticResolvePaletteFromCandidates(candidates, fallback = "") {
+        const available = new Set(semanticCandidatePaletteKeys());
+        for (const candidate of candidates) {
+          const normalized = normalizePaletteKey(candidate);
+          if (available.has(normalized)) return normalized;
+        }
+        return normalizePaletteKey(fallback);
+      }
+
+      function semanticIntentPalette(tokenName) {
+        const match = String(tokenName || "").match(/\/(error|success|warning|info|offer)-/);
+        const intent = match ? match[1] : "";
+        const candidates = {
+          error: ["red", "rose"],
+          success: ["green", "emerald"],
+          warning: ["orange", "amber", "yellow"],
+          info: ["blue", "sky", "cyan"],
+          offer: ["green", "emerald", "lime"],
+        };
+        return semanticResolvePaletteFromCandidates(candidates[intent] || [], "");
+      }
+
+      function semanticAccentPalette() {
+        if (state.brands[0]?.color) return "brand";
+        return semanticResolvePaletteFromCandidates(["purple", "violet", "fuchsia", "indigo"], state.neutralChoice);
+      }
+
+      function semanticResolvedReference(tokenName) {
+        const normalizedToken = normalizeSemanticTokenKey(tokenName);
+        const reference = semanticDefaultReference(normalizedToken);
+        const segments = semanticReferenceSegments(reference);
+        if (!segments.length) return reference;
+
+        if (segments[0] === "b&w" || segments[0] === "alpha") {
+          return reference;
+        }
+
+        const palette = segments[0];
+        const step = segments[1] || "500";
+        const isNeutral = ["slate", "gray", "zinc", "neutral", "stone"].includes(palette);
+        const isAccent = normalizedToken.includes("/accent-");
+        const intentPalette = semanticIntentPalette(normalizedToken);
+
+        if (isAccent) {
+          const accentPalette = semanticAccentPalette();
+          if (accentPalette) return `{${accentPalette}/${step}}`;
+        }
+
+        if (intentPalette) {
+          return `{${intentPalette}/${step}}`;
+        }
+
+        if (isNeutral && state.neutralChoice) {
+          return `{${normalizePaletteKey(state.neutralChoice)}/${step}}`;
+        }
+
+        return reference;
+      }
+
+      function semanticCurrentReference(tokenName) {
+        const key = normalizeSemanticTokenKey(tokenName);
+        return state.semanticOverrides[key] || semanticResolvedReference(key);
+      }
+
+      function semanticPreviewPalettes() {
+        return currentPreviewPalettes();
+      }
+
+      function buildSemanticReferenceOptions() {
+        const options = new Map();
+        const register = (reference, support, preview = "") => {
+          const value = String(reference || "").trim();
+          if (!value || options.has(value)) return;
+          options.set(value, {
+            value,
+            label: semanticReferenceLabel(value),
+            supportingText: support || "",
+            preview: preview || "",
+          });
+        };
+
+        register("{b&w/white}", "Base white", state.baseWhite);
+        register("{b&w/black}", "Base black", state.baseBlack);
+
+        const opacityEntries = [
+          ["{alpha/light/200}", "Overlay on light", `rgba(0,0,0,0.${Math.round(20).toString().padStart(2, "0")})`],
+          ["{alpha/light/500}", "Overlay on light", `rgba(0,0,0,0.48)`],
+          ["{alpha/dark/300}", "Overlay on dark", `rgba(255,255,255,0.28)`],
+          ["{alpha/dark/500}", "Overlay on dark", `rgba(255,255,255,0.48)`],
+        ];
+        opacityEntries.forEach(([reference, support, preview]) => register(reference, support, preview));
+
+        const shadeSteps = deriveShadeSteps(state.namingPattern, state.shadeCount);
+        const baseStep = resolveBaseStep(shadeSteps);
+        const primaryBrand = state.brands[0];
+        if (primaryBrand && primaryBrand.color) {
+          const scale = resolveBrandScale(primaryBrand, shadeSteps, baseStep);
+          shadeSteps.forEach((step) => {
+            register(`{brand/${step}}`, "Couleur principale", scale[step] || "");
+          });
+        }
+
+        semanticPreviewPalettes().forEach((palette, index) => {
+          const paletteKey = buildPaletteKey(palette, index);
+          const paletteLabel = palette?.name || paletteKey;
+          const values = getResolvedPaletteColors(palette);
+          const steps = Array.isArray(palette.steps) ? palette.steps : Object.keys(values);
+          steps.forEach((step) => {
+            if (!values[step]) return;
+            register(`{${paletteKey}/${step}}`, paletteLabel, values[step]);
+          });
+        });
+
+        return Array.from(options.values());
+      }
+
+      function resolveSemanticPreview(reference) {
+        const segments = semanticReferenceSegments(reference);
+        if (!segments.length) return "";
+
+        if (segments[0] === "b&w") {
+          return segments[1] === "black" ? state.baseBlack : state.baseWhite;
+        }
+
+        if (segments[0] === "alpha") {
+          const alphaKey = segments[2] || "500";
+          const opacityMap = {
+            "00": 1,
+            "50": 0.06,
+            "100": 0.09,
+            "200": 0.2,
+            "300": 0.28,
+            "400": 0.36,
+            "500": 0.48,
+            "600": 0.6,
+            "700": 0.7,
+            "800": 0.75,
+            "900": 0.8,
+            "1000": 1,
+          };
+          const opacity = opacityMap[alphaKey] ?? 0.48;
+          return segments[1] === "dark" ? `rgba(255,255,255,${opacity})` : `rgba(0,0,0,${opacity})`;
+        }
+
+        const step = segments[1] || "500";
+        if (segments[0] === "brand") {
+          const shadeSteps = deriveShadeSteps(state.namingPattern, state.shadeCount);
+          const baseStep = resolveBaseStep(shadeSteps);
+          const primaryBrand = state.brands[0];
+          if (!primaryBrand) return "";
+          const scale = resolveBrandScale(primaryBrand, shadeSteps, baseStep);
+          return scale[Number(step)] || scale[step] || "";
+        }
+
+        const palette = semanticPreviewPalettes().find((entry, index) => buildPaletteKey(entry, index) === normalizePaletteKey(segments[0]));
+        if (!palette) return "";
+        const values = getResolvedPaletteColors(palette);
+        return values[step] || "";
+      }
+
+      function populateSemanticSelect(select, selectedReference) {
+        if (!select) return;
+        const options = buildSemanticReferenceOptions();
+        const currentValue = String(selectedReference || "");
+        select.innerHTML = "";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Choisir une couleur";
+        select.appendChild(placeholder);
+
+        options.forEach((entry) => {
+          const option = document.createElement("option");
+          option.value = entry.value;
+          option.textContent = entry.label;
+          if (entry.supportingText) {
+            option.dataset.supportingText = entry.supportingText;
+          }
+          if (entry.preview) {
+            option.dataset.colorPreview = entry.preview;
+          }
+          select.appendChild(option);
+        });
+
+        const defaultValue = semanticDefaultReference(select.dataset.tokenName || "");
+        if (options.some((entry) => entry.value === currentValue)) {
+          select.value = currentValue;
+        } else if (options.some((entry) => entry.value === defaultValue)) {
+          select.value = defaultValue;
+        } else {
+          select.value = options[0]?.value || "";
+        }
+      }
+
+      function collectSemanticPaletteKeys() {
+        const keys = new Set((state.selectedPaletteKeys || []).map((entry) => normalizePaletteKey(entry)));
+        Object.entries(SEMANTIC_TEMPLATE_REFERENCES).forEach(([tokenName]) => {
+          const reference = semanticCurrentReference(tokenName);
+          const segments = semanticReferenceSegments(reference);
+          const paletteKey = normalizePaletteKey(segments[0]);
+          if (!paletteKey || paletteKey === "b-w" || paletteKey === "alpha" || paletteKey === "brand") return;
+          keys.add(paletteKey);
+        });
+        return Array.from(keys);
+      }
+
+      function resetSemanticCustomSelectRegistry() {
+        Array.from(customSelectRegistry.keys()).forEach((key) => {
+          if (!String(key).startsWith("semantic-select-")) return;
+          closeCustomSelect(key);
+          customSelectRegistry.delete(key);
+        });
+      }
+
+      function semanticTokenLabel(key) {
+        return String(key || "")
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (match) => match.toUpperCase());
+      }
+
+      function renderSemanticScreen() {
+        if (!semanticGroups) return;
+        resetSemanticCustomSelectRegistry();
+        semanticGroups.innerHTML = "";
+        semanticError.textContent = "";
+
+        if (state.tokenLevel !== "color-modes") {
+          return;
+        }
+
+        const availableOptions = buildSemanticReferenceOptions();
+        if (!availableOptions.length) {
+          const empty = document.createElement("p");
+          empty.className = "muted";
+          empty.textContent = "Choisis d'abord une palette sur l'écran Couleur pour mapper les semantics.";
+          semanticGroups.appendChild(empty);
+          return;
+        }
+
+        Object.entries(SEMANTIC_UI_TEMPLATE).forEach(([family, tokens]) => {
+          const group = document.createElement("section");
+          group.className = "semantic-group";
+
+          const head = document.createElement("div");
+          head.className = "semantic-group-head";
+
+          const title = document.createElement("h2");
+          title.className = "semantic-group-title";
+          title.textContent = SEMANTIC_GROUP_LABELS[family] || family;
+
+          const count = document.createElement("span");
+          count.className = "semantic-group-count";
+          count.textContent = `${tokens.length} alias`;
+
+          head.appendChild(title);
+          head.appendChild(count);
+          group.appendChild(head);
+
+          const list = document.createElement("div");
+          list.className = "semantic-item-list";
+
+          tokens.forEach((tokenKey) => {
+            const tokenName = `${family}/${tokenKey}`;
+            const currentReference = semanticCurrentReference(tokenName);
+            const defaultReference = semanticDefaultReference(tokenName);
+
+            const row = document.createElement("div");
+            row.className = "semantic-item";
+
+            const label = document.createElement("span");
+            label.className = "semantic-token-label";
+            label.textContent = semanticTokenLabel(tokenKey);
+
+            const selectRow = document.createElement("div");
+            selectRow.className = "semantic-select-row";
+
+            const chip = document.createElement("span");
+            chip.className = "semantic-color-chip";
+            chip.style.background = resolveSemanticPreview(currentReference) || "transparent";
+
+            const select = createSelectPrimitive({
+              id: `semantic-select-${tokenName.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`,
+              searchable: true,
+              searchPlaceholder: "Search colors...",
+              menuMaxHeight: 304,
+            });
+            select.dataset.tokenName = tokenName;
+
+            populateSemanticSelect(select, currentReference);
+            const { field } = createFieldPrimitive({ control: select });
+
+            select.addEventListener("change", () => {
+              const nextReference = String(select.value || "").trim();
+              if (!nextReference || nextReference === defaultReference) {
+                delete state.semanticOverrides[normalizeSemanticTokenKey(tokenName)];
+              } else {
+                state.semanticOverrides[normalizeSemanticTokenKey(tokenName)] = nextReference;
+              }
+              chip.style.background = resolveSemanticPreview(semanticCurrentReference(tokenName)) || "transparent";
+              renderSemanticSummary();
+              refreshCustomSelect(select);
+              reset.classList.toggle("is-active", Boolean(state.semanticOverrides[normalizeSemanticTokenKey(tokenName)]));
+            });
+
+            selectRow.appendChild(chip);
+            selectRow.appendChild(field);
+
+            const reset = document.createElement("button");
+            reset.type = "button";
+            reset.className = "semantic-reset ds-icon-button ds-icon-button--ghost ds-icon-button--small";
+            reset.textContent = "×";
+            reset.title = "Réinitialiser";
+            reset.setAttribute("aria-label", "Réinitialiser");
+            reset.classList.toggle("is-active", Boolean(state.semanticOverrides[normalizeSemanticTokenKey(tokenName)]));
+            reset.addEventListener("click", () => {
+              delete state.semanticOverrides[normalizeSemanticTokenKey(tokenName)];
+              populateSemanticSelect(select, semanticCurrentReference(tokenName));
+              chip.style.background = resolveSemanticPreview(semanticCurrentReference(tokenName)) || "transparent";
+              reset.classList.remove("is-active");
+              initCustomSelects();
+              refreshCustomSelect(select);
+            });
+
+            row.appendChild(label);
+            row.appendChild(selectRow);
+            row.appendChild(reset);
+            list.appendChild(row);
+          });
+
+          group.appendChild(list);
+          semanticGroups.appendChild(group);
+        });
+
+        initCustomSelects();
+        semanticGroups.querySelectorAll("select.ui-select").forEach((select) => refreshCustomSelect(select));
+      }
+
       function togglePaletteSelection(paletteKey) {
         const key = normalizePaletteKey(paletteKey);
         if (!key) return;
         const selected = new Set(state.selectedPaletteKeys.map((entry) => normalizePaletteKey(entry)));
         if (selected.has(key)) {
           if (state.neutralChoice === key) {
-            presetError.textContent = "Base Neutral doit rester sélectionnée.";
+            presetError.textContent = "Le neutre de base doit rester sélectionné.";
             return;
           }
           if (selected.size <= 1) {
@@ -3153,20 +5515,333 @@
         editingMode = "edit-palette";
         editingPaletteKey = paletteKey;
         editingBrandIndex = null;
-        brandModalTitle.textContent = "Edit Color Shade";
-        brandModalSave.textContent = "Enregistré les changements";
+        brandModalTitle.textContent = "Modifier la couleur";
+        brandModalSave.textContent = "Enregistrer les changements";
         brandModalName.value = String(palette.name || paletteKey);
         brandModalName.disabled = true;
         brandModalHex.value = modalColor;
         brandModalPicker.value = isHexColor(modalColor) ? modalColor : DEFAULT_MODAL_BRAND_COLOR;
         brandContrast.value = "0";
-        state.shadeCount = currentShadeCount;
         shadeCountSelect.value = String(currentShadeCount);
         refreshCustomSelect(shadeCountSelect);
         brandModalError.textContent = "";
         renderBrandModalScale();
         syncBrandModalSwatch();
         brandModal.classList.remove("is-hidden");
+      }
+
+      function createUiIcon(name = "search", options = {}) {
+        const { libraryId = state.icons.library || "lucide", className = "library-preview-icon", size = 24 } = options;
+        const assets = ICON_PREVIEW_ASSETS[libraryId] || ICON_PREVIEW_ASSETS.lucide;
+        const src = assets[name] || ICON_PREVIEW_ASSETS.lucide[name] || ICON_PREVIEW_ASSETS.lucide.search;
+        const img = document.createElement("img");
+        img.className = className;
+        img.width = size;
+        img.height = size;
+        img.alt = "";
+        img.setAttribute("aria-hidden", "true");
+        img.src = src;
+        return img;
+      }
+
+      function selectedIconLibraryLabel() {
+        return ICON_LIBRARY_OPTIONS.find((library) => library.id === state.icons.library)?.label || "Lucide";
+      }
+
+      function iconStrokeOption() {
+        return ICON_STROKE_OPTIONS.find((option) => option.id === state.icons.stroke) || ICON_STROKE_OPTIONS[2];
+      }
+
+      function normalizeReferenceLabel(reference = "") {
+        return String(reference || "")
+          .replace(/[{}]/g, "")
+          .trim()
+          .split("/")
+          .map((segment) => segment.trim())
+          .filter(Boolean)
+          .join("/");
+      }
+
+      function iconColorOptions() {
+        return (SEMANTIC_UI_TEMPLATE.icon || []).map((tokenKey) => {
+          const alias = `icon/${tokenKey}`;
+          const reference = semanticCurrentReference(alias) || semanticDefaultReference(alias);
+          const fallback = SEMANTIC_TEMPLATE_REFERENCES[alias] || reference;
+          return {
+            alias,
+            label: normalizeReferenceLabel(reference || fallback || alias),
+            support: semanticTokenLabel(tokenKey),
+            preview: resolveSemanticPreview(reference || fallback) || "#171717",
+          };
+        });
+      }
+
+      function selectedIconColorOption() {
+        const options = iconColorOptions();
+        return options.find((option) => option.alias === state.icons.colorAlias) || options[0] || null;
+      }
+
+      function populateIconControls() {
+        if (!(iconLibrarySelect instanceof HTMLSelectElement)) return;
+        if (!(iconStrokeSelect instanceof HTMLSelectElement)) return;
+        if (!(iconColorSelect instanceof HTMLSelectElement)) return;
+        if (!(iconSizeSelect instanceof HTMLSelectElement)) return;
+        if (!(iconPreviewSelect instanceof HTMLSelectElement)) return;
+
+        iconLibrarySelect.innerHTML = "";
+        ICON_LIBRARY_OPTIONS.forEach((library) => {
+          const option = document.createElement("option");
+          option.value = library.id;
+          option.textContent = library.label;
+          iconLibrarySelect.appendChild(option);
+        });
+        if (!ICON_LIBRARY_OPTIONS.some((option) => option.id === state.icons.library)) {
+          state.icons.library = ICON_LIBRARY_OPTIONS[0]?.id || "lucide";
+        }
+        iconLibrarySelect.value = state.icons.library;
+
+        iconStrokeSelect.innerHTML = "";
+        ICON_STROKE_OPTIONS.forEach((stroke) => {
+          const option = document.createElement("option");
+          option.value = stroke.id;
+          option.textContent = stroke.label;
+          iconStrokeSelect.appendChild(option);
+        });
+        if (!ICON_STROKE_OPTIONS.some((option) => option.id === state.icons.stroke)) {
+          state.icons.stroke = ICON_STROKE_OPTIONS[2]?.id || "medium";
+        }
+        iconStrokeSelect.value = state.icons.stroke;
+
+        const colorOptions = iconColorOptions();
+        iconColorSelect.innerHTML = "";
+        colorOptions.forEach((entry) => {
+          const option = document.createElement("option");
+          option.value = entry.alias;
+          option.textContent = entry.label;
+          option.dataset.supportingText = entry.support;
+          option.dataset.colorPreview = entry.preview;
+          iconColorSelect.appendChild(option);
+        });
+        if (!colorOptions.some((entry) => entry.alias === state.icons.colorAlias)) {
+          state.icons.colorAlias = colorOptions[0]?.alias || "icon/primary";
+        }
+        iconColorSelect.value = state.icons.colorAlias;
+
+        iconSizeSelect.innerHTML = "";
+        ICON_SIZE_OPTIONS.forEach((size) => {
+          const option = document.createElement("option");
+          option.value = String(size);
+          option.textContent = `${size} px`;
+          iconSizeSelect.appendChild(option);
+        });
+        if (!ICON_SIZE_OPTIONS.includes(Number(state.icons.size))) {
+          state.icons.size = 24;
+        }
+        iconSizeSelect.value = String(state.icons.size || 24);
+
+        iconPreviewSelect.innerHTML = "";
+        ICON_PREVIEW_SET.forEach((iconName) => {
+          const option = document.createElement("option");
+          option.value = iconName;
+          option.textContent = iconName.charAt(0).toUpperCase() + iconName.slice(1);
+          iconPreviewSelect.appendChild(option);
+        });
+        if (!ICON_PREVIEW_SET.includes(String(state.icons.previewIcon || ""))) {
+          state.icons.previewIcon = "search";
+        }
+        iconPreviewSelect.value = state.icons.previewIcon;
+
+        refreshCustomSelect(iconLibrarySelect);
+        refreshCustomSelect(iconStrokeSelect);
+        refreshCustomSelect(iconColorSelect);
+        refreshCustomSelect(iconSizeSelect);
+      }
+
+      function renderIconPreview() {
+        if (!(iconPreviewStage instanceof HTMLElement)) return;
+        iconPreviewStage.innerHTML = "";
+        iconPreviewStage.appendChild(
+          createUiIcon(state.icons.previewIcon || "search", {
+            libraryId: state.icons.library,
+            size: Math.max(20, Math.min(32, Number(state.icons.size) || 24)),
+          }),
+        );
+      }
+
+      function syncIconsFromControls() {
+        if (iconLibrarySelect instanceof HTMLSelectElement) {
+          state.icons.library = String(iconLibrarySelect.value || "lucide");
+        }
+        if (iconStrokeSelect instanceof HTMLSelectElement) {
+          state.icons.stroke = String(iconStrokeSelect.value || "medium");
+        }
+        if (iconColorSelect instanceof HTMLSelectElement) {
+          state.icons.colorAlias = String(iconColorSelect.value || "icon/primary");
+        }
+        if (iconSizeSelect instanceof HTMLSelectElement) {
+          state.icons.size = Number(iconSizeSelect.value || 24) || 24;
+        }
+        if (iconPreviewSelect instanceof HTMLSelectElement) {
+          state.icons.previewIcon = String(iconPreviewSelect.value || "search");
+        }
+      }
+
+      function iconSettingsSummaryText() {
+        const color = selectedIconColorOption();
+        const stroke = iconStrokeOption();
+        return `${selectedIconLibraryLabel()} · ${state.icons.size || 24} px · ${color?.label || "Neutral/900"} · ${stroke.label}`;
+      }
+
+      function textStyleFamilyForKey(key) {
+        if (state.typography.styleFamilies && state.typography.styleFamilies[key]) return state.typography.styleFamilies[key];
+        return key.startsWith("display") ? state.typography.displayFamily : state.typography.bodyFamily;
+      }
+
+      function textStyleWeightsForKey(key) {
+        const saved = state.typography.styleWeights && Array.isArray(state.typography.styleWeights[key]) ? state.typography.styleWeights[key] : null;
+        return saved && saved.length ? saved : DEFAULT_STYLE_WEIGHTS;
+      }
+
+      function prettyTextStyleName(key = "") {
+        return String(key || "")
+          .split("-")
+          .map((part, index) => (index === 0 ? part.charAt(0).toUpperCase() + part.slice(1) : part))
+          .join("-");
+      }
+
+      function createTextStyleRow(key) {
+        const row = document.createElement("div");
+        row.className = "text-style-row";
+
+        const field = document.createElement("div");
+        field.className = "text-style-field";
+
+        const label = document.createElement("span");
+        label.className = "text-style-label";
+        label.textContent = prettyTextStyleName(key);
+
+        const summary = document.createElement("div");
+        summary.className = "text-style-summary";
+
+        const primary = document.createElement("span");
+        primary.className = "text-style-primary";
+        primary.textContent = `${textStyleFamilyForKey(key)}, ${state.typography.fontSizes[key] || FONT_DEFAULTS[key] || ""}`;
+        summary.appendChild(primary);
+
+        const tags = document.createElement("span");
+        tags.className = "text-style-tags";
+        const tagLabel = document.createElement("span");
+        tagLabel.className = "text-style-tags-label";
+        tagLabel.textContent = "Styles inclus";
+        tags.appendChild(tagLabel);
+        textStyleWeightsForKey(key)
+          .slice(0, 6)
+          .forEach((weight) => {
+            const tag = document.createElement("span");
+            tag.className = "text-style-tag";
+            tag.textContent = weight;
+            tags.appendChild(tag);
+          });
+        summary.appendChild(tags);
+
+        field.appendChild(label);
+        field.appendChild(summary);
+
+        const action = document.createElement("button");
+        action.type = "button";
+        action.className = "text-style-action ds-icon-button ds-icon-button--primary ds-icon-button--small";
+        action.setAttribute("aria-label", `Modifier ${prettyTextStyleName(key)}`);
+        action.innerHTML =
+          '<span class="ds-icon-button__icon"><svg class="text-style-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5.5" r="1.75" fill="currentColor"></circle><circle cx="12" cy="12" r="1.75" fill="currentColor"></circle><circle cx="12" cy="18.5" r="1.75" fill="currentColor"></circle></svg></span>';
+        action.addEventListener("click", () => openTextStyleModal(key));
+
+        row.appendChild(field);
+        row.appendChild(action);
+        return row;
+      }
+
+      function populateTextStyleFamilySelect(key) {
+        const families = Array.isArray(state.fontFamilies) ? state.fontFamilies.slice() : [];
+        const current = textStyleFamilyForKey(key);
+        const entries = [...new Set([current, state.typography.displayFamily, state.typography.bodyFamily, "Inter", "Roboto", ...families])].filter(Boolean);
+        textStyleFamilySelect.innerHTML = "";
+        entries.forEach((family) => {
+          const option = document.createElement("option");
+          option.value = family;
+          option.textContent = family;
+          textStyleFamilySelect.appendChild(option);
+        });
+        textStyleFamilySelect.value = current;
+        refreshCustomSelect(textStyleFamilySelect);
+      }
+
+      function renderTextStyleWeights(key) {
+        textStyleWeightList.innerHTML = "";
+        const selected = new Set(textStyleWeightsForKey(key));
+        FONT_WEIGHT_OPTIONS.forEach((weight) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "weight-chip";
+          button.classList.toggle("is-muted", !selected.has(weight));
+          button.textContent = weight;
+          button.addEventListener("click", () => {
+            if (selected.has(weight)) selected.delete(weight);
+            else selected.add(weight);
+            if (!selected.size) selected.add("Regular");
+            state.typography.styleWeights[key] = Array.from(selected);
+            renderTextStyleWeights(key);
+          });
+          textStyleWeightList.appendChild(button);
+        });
+      }
+
+      function openTextStyleModal(key) {
+        editingTextStyleKey = key;
+        textStyleModalError.textContent = "";
+        textStyleNameInput.value = prettyTextStyleName(key);
+        textStyleSizeInput.value = String(state.typography.fontSizes[key] || FONT_DEFAULTS[key] || "");
+        textStyleLineHeightInput.value = String(state.typography.lineHeights[key] || LINE_HEIGHT_DEFAULTS[key] || "");
+        textStyleLetterSpacingInput.value = String(state.typography.letterSpacings[key] ?? LETTER_SPACING_DEFAULTS[key] ?? 0);
+        populateTextStyleFamilySelect(key);
+        renderTextStyleWeights(key);
+        textStyleDelete.disabled = key !== "label";
+        textStyleModal.classList.remove("is-hidden");
+      }
+
+      function closeTextStyleModal() {
+        textStyleModal.classList.add("is-hidden");
+        textStyleModalError.textContent = "";
+        editingTextStyleKey = "";
+      }
+
+      function saveTextStyleModal() {
+        const key = editingTextStyleKey;
+        if (!key) return;
+        const size = Number(textStyleSizeInput.value);
+        const lineHeight = Number(textStyleLineHeightInput.value);
+        const letterSpacing = Number(textStyleLetterSpacingInput.value || 0);
+        if (!Number.isFinite(size) || size <= 0 || !Number.isFinite(lineHeight) || lineHeight <= 0) {
+          textStyleModalError.textContent = "La taille et l’interligne doivent être supérieurs à 0.";
+          return;
+        }
+        state.typography.fontSizes[key] = size;
+        state.typography.lineHeights[key] = lineHeight;
+        state.typography.letterSpacings[key] = Number.isFinite(letterSpacing) ? letterSpacing : 0;
+        state.typography.styleFamilies[key] = String(textStyleFamilySelect.value || textStyleFamilyForKey(key));
+        renderTypography();
+        closeTextStyleModal();
+      }
+
+      function deleteTextStyle() {
+        const key = editingTextStyleKey;
+        if (key !== "label") return;
+        delete state.typography.fontSizes[key];
+        delete state.typography.lineHeights[key];
+        delete state.typography.letterSpacings[key];
+        delete state.typography.styleFamilies[key];
+        delete state.typography.styleWeights[key];
+        renderTypography();
+        closeTextStyleModal();
       }
 
       function renderTypography() {
@@ -3211,30 +5886,20 @@
         refreshCustomSelect(displayFamilySelect);
         refreshCustomSelect(bodyFamilySelect);
         createTextStylesCheckbox.checked = Boolean(state.createTextStyles);
+        renderIconSettings();
 
         fontGrid.innerHTML = "";
         FONT_ORDER.forEach((key) => {
-          const wrap = document.createElement("div");
-          wrap.className = "field";
-          const label = document.createElement("label");
-          label.textContent = key;
-          label.style.fontSize = "12px";
-          label.style.color = "#94a3b8";
-          const input = document.createElement("input");
-          input.className = "ui-number";
-          input.type = "number";
-          input.value = String(state.typography.fontSizes[key] || "");
-          input.min = "1";
-          input.addEventListener("input", () => {
-            const value = Number(input.value);
-            if (Number.isFinite(value) && value > 0) {
-              state.typography.fontSizes[key] = value;
-            }
-          });
-          wrap.appendChild(label);
-          wrap.appendChild(input);
-          fontGrid.appendChild(wrap);
+          fontGrid.appendChild(createTextStyleRow(key));
         });
+      }
+
+      function renderIconSettings() {
+        populateIconControls();
+        renderIconPreview();
+        if (iconSettingsSummary) {
+          iconSettingsSummary.textContent = iconSettingsSummaryText();
+        }
       }
 
       function syncTypography() {
@@ -3248,7 +5913,9 @@
           MIN_SHADE_COUNT,
           Math.min(MAX_SHADE_COUNT, Number(shadeCountSelect.value || state.shadeCount || 11)),
         );
-        state.shadeCount = shadeCount;
+        if (editingMode !== "edit-palette") {
+          state.shadeCount = shadeCount;
+        }
         const steps = deriveShadeSteps(state.namingPattern, shadeCount);
         const baseStep = resolveBaseStep(steps);
         const color = resolveModalBrandColor();
@@ -3282,13 +5949,14 @@
         editingMode = mode;
         editingBrandIndex = index;
         editingPaletteKey = "";
+        pendingDeleteBrandIndex = null;
         brandModalName.disabled = false;
         const isAdd = mode === "add";
 
         if (isAdd) {
           const isFirst = state.brands.length === 0;
-          brandModalTitle.textContent = isFirst ? "Ajouter Brand Primary" : "Ajouter Brand Color";
-          brandModalSave.textContent = isFirst ? "Ajouter votre primary brand" : "Ajouter une couleur";
+          brandModalTitle.textContent = isFirst ? "Ajouter la couleur principale" : "Ajouter une couleur";
+          brandModalSave.textContent = isFirst ? "Ajouter la couleur principale" : "Ajouter une couleur";
           brandModalName.value = "";
           brandModalName.placeholder = "Nom de la couleur (ex: brand-primary)";
           brandModalHex.value = "";
@@ -3297,8 +5965,8 @@
           brandContrast.value = "0";
         } else if (index !== null && state.brands[index]) {
           const brand = state.brands[index];
-          brandModalTitle.textContent = "Edit Color Shade";
-          brandModalSave.textContent = "Enregistré les changements";
+          brandModalTitle.textContent = "Modifier la couleur";
+          brandModalSave.textContent = "Enregistrer les changements";
           brandModalName.placeholder = "Nom de la couleur (ex: brand-primary)";
           brandModalHex.placeholder = "#ffffff";
           brandModalName.value = brand.name || "";
@@ -3334,6 +6002,10 @@
               : `brand-${state.brands.length + 1}`
             : `brand-${editingBrandIndex + 1}`;
         const name = String(brandModalName.value || "").trim() || fallbackName;
+        if (hasInvalidManualHexInput()) {
+          brandModalError.textContent = "Couleur invalide. Utilise un hex valide, par exemple #82BE5C.";
+          return;
+        }
         const color = resolveModalBrandColor();
 
         if (!isValidColor(color)) {
@@ -3367,6 +6039,7 @@
 
         if (editingMode === "edit" && editingBrandIndex !== null && state.brands[editingBrandIndex]) {
           state.brands[editingBrandIndex] = payload;
+          pendingDeleteBrandIndex = null;
           brandError.textContent = "";
           closeBrandModal();
           renderBrands();
@@ -3374,11 +6047,12 @@
         }
 
         if (state.brands.length >= 10) {
-          brandModalError.textContent = "Maximum 10 couleurs atteinte.";
+          brandModalError.textContent = "Maximum 10 couleurs atteint.";
           return;
         }
 
         state.brands.push(payload);
+        pendingDeleteBrandIndex = null;
         brandError.textContent = "";
         closeBrandModal();
         renderBrands();
@@ -3392,11 +6066,11 @@
         if (!isValidColor(state.baseBlack)) return "Base black invalide.";
 
         if (!state.brands.length) {
-          return "Ajoute au moins une primary brand.";
+          return "Ajoute au moins une couleur principale.";
         }
         const primary = state.brands[0];
         if (!primary || !isValidColor(primary.color)) {
-          return "Brand primary invalide.";
+          return "Couleur principale invalide.";
         }
 
         const invalid = state.brands.slice(1).find((brand) => brand.color && !isValidColor(brand.color));
@@ -3409,28 +6083,41 @@
       function validateStep3() {
         syncPaletteSetupValues();
         applyStep3FieldErrors();
-        if (!state.presetId) return "Base Librari obligatoire.";
-        if (!state.neutralChoice) return "Base Neutral obligatoire.";
+        if (!state.presetId) return "Bibliothèque de base obligatoire.";
+        if (!state.neutralChoice) return "Neutre de base obligatoire.";
         if (!Array.isArray(state.selectedPaletteKeys) || !state.selectedPaletteKeys.length) {
           return "Sélectionne au moins une palette.";
         }
         return "";
       }
 
+      function validateColorStep() {
+        const brandStepError = validateStep2();
+        const paletteStepError = validateStep3();
+        brandError.textContent = brandStepError;
+        presetError.textContent = paletteStepError;
+        return brandStepError || paletteStepError;
+      }
+
+      function validateSemanticStep() {
+        semanticError.textContent = "";
+        return "";
+      }
+
       function moveStep(direction) {
+        const flow = getFlowConfig();
         if (direction > 0) {
-          if (state.step === 2) {
-            const err = validateStep2();
-            brandError.textContent = err;
+          const currentScreen = getPhysicalScreenForStep(state.step);
+          if (currentScreen === 2) {
+            const err = validateColorStep();
             if (err) return;
           }
-          if (state.step === 3) {
-            const err = validateStep3();
-            presetError.textContent = err;
+          if (currentScreen === 3) {
+            const err = validateSemanticStep();
             if (err) return;
           }
         }
-        const next = Math.max(1, Math.min(4, state.step + direction));
+        const next = Math.max(1, Math.min(flow.length, state.step + direction));
         if (next !== state.step) {
           state.step = next;
         }
@@ -3438,28 +6125,29 @@
       }
 
       function canNavigateToStep(targetStep) {
-        if (!Number.isFinite(targetStep) || targetStep < 1 || targetStep > 4) return false;
+        const flow = getFlowConfig();
+        if (!Number.isFinite(targetStep) || targetStep < 1 || targetStep > flow.length) return false;
         if (targetStep <= state.step) return true;
 
         brandError.textContent = "";
         presetError.textContent = "";
+        semanticError.textContent = "";
 
         for (let step = state.step; step < targetStep; step += 1) {
-          if (step === 2) {
-            const err = validateStep2();
+          const screenId = flow[step - 1]?.screen;
+          if (screenId === 2) {
+            const err = validateColorStep();
             if (err) {
-              brandError.textContent = err;
-              state.step = 2;
+              state.step = getStepIndexForScreen(2);
               updateStepper();
               setStatus(err, "err");
               return false;
             }
           }
-          if (step === 3) {
-            const err = validateStep3();
+          if (screenId === 3) {
+            const err = validateSemanticStep();
             if (err) {
-              presetError.textContent = err;
-              state.step = 3;
+              state.step = getStepIndexForScreen(3);
               updateStepper();
               setStatus(err, "err");
               return false;
@@ -3476,16 +6164,14 @@
           return;
         }
 
-        const step2Error = validateStep2();
-        const step3Error = validateStep3();
-        brandError.textContent = step2Error;
-        presetError.textContent = step3Error;
+        const step2Error = validateColorStep();
+        const step3Error = state.tokenLevel === "color-modes" ? validateSemanticStep() : "";
 
         if (step2Error || step3Error) {
           if (step2Error) {
-            state.step = 2;
+            state.step = getStepIndexForScreen(2);
           } else if (step3Error) {
-            state.step = 3;
+            state.step = getStepIndexForScreen(3);
           }
           updateStepper();
           setStatus(step2Error || step3Error, "err");
@@ -3509,12 +6195,14 @@
                 brands: state.brands,
                 presetId: state.presetId,
                 neutralChoice: state.neutralChoice,
-                selectedPalettes: state.selectedPaletteKeys,
+                selectedPalettes: state.tokenLevel === "color-modes" ? collectSemanticPaletteKeys() : state.selectedPaletteKeys,
                 paletteOverrides: currentPresetPaletteOverrides(),
+                semanticOverrides: state.semanticOverrides,
                 baseWhite: state.baseWhite,
                 baseBlack: state.baseBlack,
                 createTextStyles: state.createTextStyles,
                 typography: state.typography,
+                icons: state.icons,
               },
             },
           },
@@ -3529,6 +6217,8 @@
             if (!level || level === "semantic") return;
             state.tokenLevel = level;
             renderModeCards();
+            renderSemanticScreen();
+            updateStepper();
           });
         });
       }
@@ -3538,7 +6228,7 @@
           button.addEventListener("click", () => {
             const target = Number(button.dataset.step);
             if (!Number.isFinite(target)) return;
-            if (target < 1 || target > 4) return;
+            if (target < 1 || target > getFlowLength()) return;
             if (!canNavigateToStep(target)) return;
             state.step = target;
             updateStepper();
@@ -3547,7 +6237,7 @@
 
         backBtn.addEventListener("click", () => moveStep(-1));
         nextBtn.addEventListener("click", () => {
-          if (state.step < 4) {
+          if (state.step < getFlowLength()) {
             moveStep(1);
             return;
           }
@@ -3556,20 +6246,27 @@
 
         uiModeSelect.addEventListener("change", () => {
           state.uiMode = normalizeUiModeValue(uiModeSelect.value);
+          renderSemanticSummary();
+          renderSemanticScreen();
         });
 
         baseWhiteInput.addEventListener("input", () => {
           state.baseWhite = String(baseWhiteInput.value || "").trim();
           applyStep2FieldErrors();
+          renderSemanticScreen();
         });
         baseBlackInput.addEventListener("input", () => {
           state.baseBlack = String(baseBlackInput.value || "").trim();
           applyStep2FieldErrors();
+          renderSemanticScreen();
         });
 
         shadeCountSelect.addEventListener("change", () => {
-          state.shadeCount = Number(shadeCountSelect.value);
-          renderBrands();
+          if (editingMode !== "edit-palette") {
+            state.shadeCount = Number(shadeCountSelect.value);
+            renderBrands();
+            renderSemanticScreen();
+          }
           renderBrandModalScale();
         });
 
@@ -3625,14 +6322,45 @@
 
         displayFamilySelect.addEventListener("change", () => {
           state.typography.displayFamily = displayFamilySelect.value;
+          renderTypography();
         });
         bodyFamilySelect.addEventListener("change", () => {
           state.typography.bodyFamily = bodyFamilySelect.value;
+          renderTypography();
         });
         createTextStylesCheckbox.addEventListener("change", () => {
           state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
         });
+        iconLibrarySelect.addEventListener("change", () => {
+          syncIconsFromControls();
+          renderIconSettings();
+        });
+        iconStrokeSelect.addEventListener("change", () => {
+          syncIconsFromControls();
+          renderIconSettings();
+        });
+        iconColorSelect.addEventListener("change", () => {
+          syncIconsFromControls();
+          renderIconSettings();
+        });
+        iconSizeSelect.addEventListener("change", () => {
+          syncIconsFromControls();
+          renderIconSettings();
+        });
+        iconPreviewSelect.addEventListener("change", () => {
+          syncIconsFromControls();
+          renderIconPreview();
+        });
 
+        textStyleModalClose.addEventListener("click", closeTextStyleModal);
+        textStyleCancel.addEventListener("click", closeTextStyleModal);
+        textStyleModal.addEventListener("click", (event) => {
+          if (event.target === textStyleModal) {
+            closeTextStyleModal();
+          }
+        });
+        textStyleSave.addEventListener("click", saveTextStyleModal);
+        textStyleDelete.addEventListener("click", deleteTextStyle);
         window.onmessage = (event) => {
           const msg = event.data.pluginMessage;
           if (!msg) return;
@@ -3658,9 +6386,9 @@
           if (msg.type === "generate-result") {
             clearGenerationWatchdog();
             const report = msg.report || {};
-            const text = `OK: +${report.created || 0} / ~${report.updated || 0} / collisions ${
+            const text = `Variables générées: ${report.created || 0} créées, ${report.updated || 0} mises à jour, ${
               report.collisionsReplaced || 0
-            }${report.aliasMissing ? ` / alias manquants ${report.aliasMissing}` : ""}`;
+            } collisions${report.aliasMissing ? `, ${report.aliasMissing} alias manquants` : ""}.`;
             setStatus(text, "ok");
 
             const messages = [];
@@ -3703,6 +6431,7 @@
         renderPatterns();
         renderModeCards();
         renderBrands();
+        renderSemanticScreen();
         renderTypography();
         initCustomSelects();
         refreshAllCustomSelects();
@@ -3714,9 +6443,15 @@
 
       function renderPresetSection() {
         renderPresetSelector();
+        renderSemanticScreen();
       }
 
       initialize();
     </script>
   </body>
 </html>
+
+
+
+
+

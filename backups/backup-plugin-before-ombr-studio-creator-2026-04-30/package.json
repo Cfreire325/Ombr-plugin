@@ -1,0 +1,16 @@
+{
+  "name": "starter-tokens-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --prefix packages/plugin-starter-tokens",
+    "typecheck": "npm run typecheck --prefix packages/plugin-starter-tokens",
+    "extract:presets": "npm run extract:presets --prefix packages/plugin-starter-tokens",
+    "extract:palette-presets": "npm run extract:palette-presets --prefix packages/plugin-starter-tokens",
+    "extract:text-styles": "npm run extract:text-styles --prefix packages/plugin-starter-tokens",
+    "extract:typography-reference": "npm run extract:typography-reference --prefix packages/plugin-starter-tokens",
+    "test:ds-core": "npm run test --prefix packages/ds-core"
+  }
+}
