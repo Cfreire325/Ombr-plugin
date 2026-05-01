@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import ts from "typescript";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -14,7 +14,9 @@ const transpiled = ts.transpileModule(source, {
     target: ts.ScriptTarget.ES2020,
   },
 });
-const moduleUrl = `data:text/javascript;base64,${Buffer.from(transpiled.outputText).toString("base64")}`;
+const dsCoreUrl = pathToFileURL(path.resolve(__dirname, "../../../ds-core/src/index.js")).href;
+const outputText = transpiled.outputText.replace(/from\s+["']@starter-tokens\/ds-core["']/g, `from "${dsCoreUrl}"`);
+const moduleUrl = `data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`;
 const { buildBrandScale, colorWithAlpha, parseColorInput, rgbaToHex, sanitizeKebabSegment } = await import(moduleUrl);
 
 function assertColorAlmostEqual(actual, expected, message) {

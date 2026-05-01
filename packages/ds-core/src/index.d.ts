@@ -4,6 +4,13 @@ export type TokenType = "COLOR" | "FLOAT" | "STRING";
 
 export type TokenModeValue = string | number | { alias: string };
 
+export interface RGBA {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
 export interface TokenEntry {
   collection?: TokenCollection;
   name: string;
@@ -45,3 +52,7 @@ export function toFlatTokenList(bundle: unknown): Array<{
   description: string;
 }>;
 export function createPluginInputFromTokenBundle(bundle: unknown): { tokenBundle: TokenBundle };
+export function parseColorInput(value: string): RGBA;
+export function rgbaToHex(value: RGBA): string;
+export function colorWithAlpha(baseColor: string, alphaPct: number): string;
+export function sanitizeKebabSegment(input: string, fallback?: string): string;

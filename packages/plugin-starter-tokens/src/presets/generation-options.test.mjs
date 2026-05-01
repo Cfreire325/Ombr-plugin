@@ -17,7 +17,9 @@ async function importTsModule(filePath) {
       target: ts.ScriptTarget.ES2020,
     },
   });
-  return import(`data:text/javascript;base64,${Buffer.from(transpiled.outputText).toString("base64")}`);
+  const dsCoreUrl = pathToFileURL(path.resolve(packageSrcDir, "../../ds-core/src/index.js")).href;
+  const outputText = transpiled.outputText.replace(/from\s+["']@starter-tokens\/ds-core["']/g, `from "${dsCoreUrl}"`);
+  return import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
 }
 
 async function importGenerationOptionsHarness() {

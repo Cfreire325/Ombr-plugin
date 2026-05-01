@@ -275,3 +275,10 @@ export {
   toFlatTokenList,
   validateTokenBundle,
 };
+
+export {
+  colorWithAlpha,
+  parseColorInput,
+  rgbaToHex,
+  sanitizeKebabSegment,
+} from "./color-utils.js";
