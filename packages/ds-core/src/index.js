@@ -286,10 +286,17 @@ export {
 
 export {
   basePatternSteps,
+  closestPresetStep,
   closestStep,
   deriveShadeSteps,
   extendSteps,
+  fallbackPresetSteps,
+  getPaletteSteps,
   nextShadeStep,
+  normalizePresetSteps,
+  parsePresetNumericStep,
   pickSubset,
+  resolveClosestPaletteStep,
   resolveBaseStep,
+  sortPresetSteps,
 } from "./palette-steps.js";

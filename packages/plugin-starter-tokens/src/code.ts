@@ -4,13 +4,20 @@ import { TEXT_STYLE_TEMPLATES } from "./presets/text-styles.generated";
 import { TYPOGRAPHY_REFERENCE } from "./presets/typography.generated";
 import {
   basePatternSteps,
+  closestPresetStep,
   closestStep,
   deriveShadeSteps,
   extendSteps,
+  fallbackPresetSteps,
+  getPaletteSteps,
   nextShadeStep,
+  normalizePresetSteps,
+  parsePresetNumericStep,
   normalizeTokenBundle,
   pickSubset,
+  resolveClosestPaletteStep,
   resolveBaseStep,
+  sortPresetSteps,
   validateTokenBundle,
 } from "../../ds-core/src/index.js";
 import type {
@@ -301,7 +308,6 @@ const ICON_LIBRARY_NAME_MAP: Record<IconLibraryId, Record<StarterIconId, string>
   },
 };
 
-const PRESET_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
 const OPACITY_STEPS = [4, 6, 8, 9, 10, 15, 20, 28, 30, 36, 40, 48, 50, 60, 70, 75, 80, 90, 100] as const;
 const PIXEL_VALUES = [
   0, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208,
@@ -644,66 +650,6 @@ function semanticScopes(name: string): VariableScope[] {
   if (name.startsWith("icon/")) return ["STROKE_COLOR", "SHAPE_FILL"];
   if (name.startsWith("alpha/")) return ["ALL_FILLS"];
   return ["ALL_SCOPES"];
-}
-
-function parsePresetNumericStep(step: string): number | null {
-  if (!/^-?\d+(?:\.\d+)?$/.test(step)) return null;
-  const numeric = Number(step);
-  return Number.isFinite(numeric) ? numeric : null;
-}
-
-function sortPresetSteps(steps: string[]): string[] {
-  return [...new Set(steps)].sort((a, b) => {
-    const na = parsePresetNumericStep(a);
-    const nb = parsePresetNumericStep(b);
-    if (na !== null && nb !== null) return na - nb;
-    if (na !== null) return -1;
-    if (nb !== null) return 1;
-    return a.localeCompare(b);
-  });
-}
-
-function fallbackPresetSteps(): string[] {
-  return PRESET_STEPS.map((step) => String(step));
-}
-
-function getPaletteSteps(preset: PresetDefinition, paletteName: string): string[] {
-  const palette = preset.palettes[paletteName];
-  if (!palette) return [];
-  return sortPresetSteps(Object.keys(palette));
-}
-
-function resolveClosestPaletteStep(preset: PresetDefinition, paletteName: string, requestedStep: string): string {
-  const palette = preset.palettes[paletteName];
-  if (!palette) return requestedStep;
-  if (palette[requestedStep]) return requestedStep;
-
-  const steps = getPaletteSteps(preset, paletteName);
-  if (!steps.length) return requestedStep;
-
-  const exactCaseInsensitive = steps.find((step) => step.toLowerCase() === requestedStep.toLowerCase());
-  if (exactCaseInsensitive) return exactCaseInsensitive;
-
-  const requestedNumeric = parsePresetNumericStep(requestedStep);
-  if (requestedNumeric !== null) {
-    const numericPairs = steps
-      .map((step) => ({ step, numeric: parsePresetNumericStep(step) }))
-      .filter((entry): entry is { step: string; numeric: number } => entry.numeric !== null);
-    if (numericPairs.length) {
-      let best = numericPairs[0];
-      let delta = Math.abs(best.numeric - requestedNumeric);
-      for (const pair of numericPairs) {
-        const currentDelta = Math.abs(pair.numeric - requestedNumeric);
-        if (currentDelta < delta) {
-          best = pair;
-          delta = currentDelta;
-        }
-      }
-      return best.step;
-    }
-  }
-
-  return steps.includes("500") ? "500" : steps[0];
 }
 
 type ColorModesIntent = "error" | "success" | "warning" | "info" | "offer";
@@ -1077,19 +1023,6 @@ function resolvePrimitivePaletteStep(
 ): string {
   if (paletteName === "brand") return remapStepForBrand(requestedStep, shadeSteps);
   return resolveClosestPaletteStep(preset, paletteName, requestedStep);
-}
-
-function normalizePresetSteps(preset: PresetDefinition): string[] {
-  if (preset.steps.length) return sortPresetSteps(preset.steps.map((step) => String(step)));
-  return fallbackPresetSteps();
-}
-
-function closestPresetStep(steps: string[], target: number): string {
-  const numeric = steps
-    .map((step) => ({ step, numeric: parsePresetNumericStep(step) }))
-    .filter((entry): entry is { step: string; numeric: number } => entry.numeric !== null);
-  if (!numeric.length) return steps[0] || "950";
-  return String(closestStep(numeric.map((entry) => entry.numeric), target));
 }
 
 function ensureNeutralStepExists(preset: PresetDefinition, neutralPalette: string, step: string): string {

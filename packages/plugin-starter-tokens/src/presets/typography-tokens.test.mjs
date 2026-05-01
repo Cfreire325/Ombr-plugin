@@ -42,7 +42,7 @@ async function importTypographyHarness() {
   const sourceWithoutImports = source.replace(/^import[\s\S]*?;\r?\n/gm, "");
   const dsCoreHarnessUrl = pathToFileURL(path.resolve(packageSrcDir, "../../ds-core/src/index.js")).href;
   const harnessSource = `
-import { basePatternSteps, closestStep, deriveShadeSteps, extendSteps, nextShadeStep, pickSubset, resolveBaseStep } from "${dsCoreHarnessUrl}";
+import { basePatternSteps, closestPresetStep, closestStep, deriveShadeSteps, extendSteps, fallbackPresetSteps, getPaletteSteps, nextShadeStep, normalizePresetSteps, parsePresetNumericStep, pickSubset, resolveBaseStep, resolveClosestPaletteStep, sortPresetSteps } from "${dsCoreHarnessUrl}";
 const __html__ = "";
 const { buildBrandScale, colorWithAlpha, parseColorInput, sanitizeKebabSegment } = globalThis.__colorUtilsForTypographyTest;
 const TYPOGRAPHY_REFERENCE = globalThis.__typographyReferenceForTypographyTest;

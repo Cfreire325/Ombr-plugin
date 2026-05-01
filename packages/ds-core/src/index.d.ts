@@ -64,3 +64,14 @@ export function extendSteps(baseSteps: number[], count: number): number[];
 export function deriveShadeSteps(pattern: string, shadeCount: unknown): number[];
 export function resolveBaseStep(shadeSteps: number[]): number;
 export function closestStep(steps: number[], target: number): number;
+export function parsePresetNumericStep(step: string): number | null;
+export function sortPresetSteps(steps: string[]): string[];
+export function fallbackPresetSteps(): string[];
+export function getPaletteSteps(preset: { palettes: Record<string, Record<string, string>> }, paletteName: string): string[];
+export function resolveClosestPaletteStep(
+  preset: { palettes: Record<string, Record<string, string>> },
+  paletteName: string,
+  requestedStep: string,
+): string;
+export function normalizePresetSteps(preset: { steps: Array<string | number> }): string[];
+export function closestPresetStep(steps: string[], target: number): string;

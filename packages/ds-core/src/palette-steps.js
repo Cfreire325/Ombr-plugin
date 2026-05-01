@@ -83,12 +83,92 @@ function resolveBaseStep(shadeSteps) {
   return closestStep(shadeSteps, midpoint);
 }
 
+function parsePresetNumericStep(step) {
+  if (!/^-?\d+(?:\.\d+)?$/.test(step)) return null;
+  const numeric = Number(step);
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function sortPresetSteps(steps) {
+  return [...new Set(steps)].sort((a, b) => {
+    const na = parsePresetNumericStep(a);
+    const nb = parsePresetNumericStep(b);
+    if (na !== null && nb !== null) return na - nb;
+    if (na !== null) return -1;
+    if (nb !== null) return 1;
+    return a.localeCompare(b);
+  });
+}
+
+function fallbackPresetSteps() {
+  return PRESET_STEPS.map((step) => String(step));
+}
+
+function getPaletteSteps(preset, paletteName) {
+  const palette = preset.palettes[paletteName];
+  if (!palette) return [];
+  return sortPresetSteps(Object.keys(palette));
+}
+
+function resolveClosestPaletteStep(preset, paletteName, requestedStep) {
+  const palette = preset.palettes[paletteName];
+  if (!palette) return requestedStep;
+  if (palette[requestedStep]) return requestedStep;
+
+  const steps = getPaletteSteps(preset, paletteName);
+  if (!steps.length) return requestedStep;
+
+  const exactCaseInsensitive = steps.find((step) => step.toLowerCase() === requestedStep.toLowerCase());
+  if (exactCaseInsensitive) return exactCaseInsensitive;
+
+  const requestedNumeric = parsePresetNumericStep(requestedStep);
+  if (requestedNumeric !== null) {
+    const numericPairs = steps
+      .map((step) => ({ step, numeric: parsePresetNumericStep(step) }))
+      .filter((entry) => entry.numeric !== null);
+    if (numericPairs.length) {
+      let best = numericPairs[0];
+      let delta = Math.abs(best.numeric - requestedNumeric);
+      for (const pair of numericPairs) {
+        const currentDelta = Math.abs(pair.numeric - requestedNumeric);
+        if (currentDelta < delta) {
+          best = pair;
+          delta = currentDelta;
+        }
+      }
+      return best.step;
+    }
+  }
+
+  return steps.includes("500") ? "500" : steps[0];
+}
+
+function normalizePresetSteps(preset) {
+  if (preset.steps.length) return sortPresetSteps(preset.steps.map((step) => String(step)));
+  return fallbackPresetSteps();
+}
+
+function closestPresetStep(steps, target) {
+  const numeric = steps
+    .map((step) => ({ step, numeric: parsePresetNumericStep(step) }))
+    .filter((entry) => entry.numeric !== null);
+  if (!numeric.length) return steps[0] || "950";
+  return String(closestStep(numeric.map((entry) => entry.numeric), target));
+}
+
 export {
   basePatternSteps,
+  closestPresetStep,
   closestStep,
   deriveShadeSteps,
   extendSteps,
+  fallbackPresetSteps,
+  getPaletteSteps,
   nextShadeStep,
+  normalizePresetSteps,
+  parsePresetNumericStep,
   pickSubset,
+  resolveClosestPaletteStep,
   resolveBaseStep,
+  sortPresetSteps,
 };
