@@ -18,6 +18,7 @@
     "test:semantic-color-modes": "npm run test:semantic-color-modes --prefix packages/plugin-starter-tokens",
     "test:typography-tokens": "npm run test:typography-tokens --prefix packages/plugin-starter-tokens",
     "test:spacing-radius-tokens": "npm run test:spacing-radius-tokens --prefix packages/plugin-starter-tokens",
-    "test:generation-options": "npm run test:generation-options --prefix packages/plugin-starter-tokens"
+    "test:generation-options": "npm run test:generation-options --prefix packages/plugin-starter-tokens",
+    "test:bundle-color-modes": "npm run test:bundle-color-modes --prefix packages/plugin-starter-tokens"
   }
 }
