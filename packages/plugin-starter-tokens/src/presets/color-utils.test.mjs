@@ -160,6 +160,214 @@ assert.deepEqual(customBaseStepScale, {
   700: "#000b00",
 }, "buildBrandScale keeps custom base-step output stable");
 
+assert.deepEqual(buildBrandScale("#777777", defaultSteps), {
+  50: "#f3f3f3",
+  100: "#e1e1e1",
+  200: "#cbcbcb",
+  300: "#b6b6b6",
+  400: "#9c9c9c",
+  500: "#777777",
+  600: "#626262",
+  700: "#4c4c4c",
+  800: "#373737",
+  900: "#232323",
+  950: "#161616",
+}, "buildBrandScale keeps grayscale base output stable");
+
+assert.deepEqual(buildBrandScale("#7a7874", defaultSteps), {
+  50: "#f4f3f2",
+  100: "#e2e1df",
+  200: "#cdccca",
+  300: "#b8b7b4",
+  400: "#9f9d9a",
+  500: "#7a7874",
+  600: "#65635f",
+  700: "#4e4d49",
+  800: "#393734",
+  900: "#242320",
+  950: "#171614",
+}, "buildBrandScale keeps near-gray base output stable");
+
+assert.deepEqual(buildBrandScale("#ff0000", defaultSteps), {
+  50: "#fff1ee",
+  100: "#fddcd7",
+  200: "#f9c3ba",
+  300: "#fca698",
+  400: "#f98171",
+  500: "#ff0000",
+  600: "#db0000",
+  700: "#b40000",
+  800: "#8e0000",
+  900: "#690000",
+  950: "#510000",
+}, "buildBrandScale keeps saturated red output and current gamut behavior stable");
+
+assert.deepEqual(buildBrandScale("#0000ff", defaultSteps), {
+  50: "#ebf1fe",
+  100: "#c9dbfe",
+  200: "#a2bffa",
+  300: "#7ba2f4",
+  400: "#4a7cef",
+  500: "#0000ff",
+  600: "#0400e2",
+  700: "#0a00c3",
+  800: "#0f00a4",
+  900: "#110086",
+  950: "#120073",
+}, "buildBrandScale keeps saturated blue output and current gamut behavior stable");
+
+assert.deepEqual(buildBrandScale("#00ff00", defaultSteps), {
+  50: "#ecfeea",
+  100: "#defeda",
+  200: "#c7fec2",
+  300: "#affea8",
+  400: "#97fb90",
+  500: "#00ff00",
+  600: "#00d400",
+  700: "#00a600",
+  800: "#007900",
+  900: "#004f00",
+  950: "#003400",
+}, "buildBrandScale keeps saturated green output and current gamut behavior stable");
+
+assert.deepEqual(buildBrandScale("#05070a", defaultSteps), {
+  50: "#eaecee",
+  100: "#c6c8ca",
+  200: "#9a9c9f",
+  300: "#717377",
+  400: "#414447",
+  500: "#05070a",
+  600: "#05070a",
+  700: "#050709",
+  800: "#050609",
+  900: "#050608",
+  950: "#050608",
+}, "buildBrandScale keeps very dark base output stable");
+
+assert.deepEqual(buildBrandScale("#f8fbff", defaultSteps), {
+  50: "#f9fafb",
+  100: "#f4f5f7",
+  200: "#eff0f2",
+  300: "#e9ebee",
+  400: "#e4e6e9",
+  500: "#f8fbff",
+  600: "#cbcdd1",
+  700: "#9a9c9f",
+  800: "#6c6e70",
+  900: "#414245",
+  950: "#26282a",
+}, "buildBrandScale keeps very light base output stable");
+
+assert.deepEqual(buildBrandScale("#82BE5C", [100, 300, 500, 700], 100), {
+  100: "#82be5c",
+  300: "#4b7c27",
+  500: "#183f00",
+  700: "#000b00",
+}, "buildBrandScale keeps base step 100 output stable");
+
+assert.deepEqual(buildBrandScale("#82BE5C", [100, 300, 500, 700, 900], 700), {
+  100: "#f3feed",
+  300: "#caebb9",
+  500: "#a6d48b",
+  700: "#82be5c",
+  900: "#000b00",
+}, "buildBrandScale keeps base step 700 output stable");
+
+assert.deepEqual(buildBrandScale("#82BE5C", [100, 300, 500, 700, 900], 900), {
+  100: "#f3feed",
+  300: "#d3f0c4",
+  500: "#b8e0a2",
+  700: "#9dcf80",
+  900: "#82be5c",
+}, "buildBrandScale keeps base step 900 output stable");
+
+const unsortedDuplicateStepScale = buildBrandScale("#336699", [500, 100, 500, 50, 900, 100]);
+assert.deepEqual(Object.keys(unsortedDuplicateStepScale), ["50", "100", "500", "900"], "buildBrandScale sorts and deduplicates step keys");
+assert.deepEqual(unsortedDuplicateStepScale, {
+  50: "#eaf3fd",
+  100: "#cae0f8",
+  500: "#336699",
+  900: "#001e3f",
+}, "buildBrandScale keeps unsorted duplicate step output stable");
+
+const extendedStepScale = buildBrandScale("#336699", [0, 25, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 975, 1000]);
+assert.deepEqual(Object.keys(extendedStepScale), [
+  "0",
+  "25",
+  "50",
+  "75",
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
+  "600",
+  "700",
+  "800",
+  "900",
+  "950",
+  "975",
+  "1000",
+], "buildBrandScale keeps extended shade keys stable");
+assert.deepEqual(extendedStepScale, {
+  0: "#f7fbff",
+  25: "#eff6fe",
+  50: "#eaf3fd",
+  75: "#e7f3ff",
+  100: "#cae0f8",
+  200: "#acc7e5",
+  300: "#8eafd3",
+  400: "#6991bb",
+  500: "#336699",
+  600: "#255583",
+  700: "#15426c",
+  800: "#052f55",
+  900: "#001e3f",
+  950: "#001331",
+  975: "#00041d",
+  1000: "#000219",
+}, "buildBrandScale keeps extended shade output stable");
+
+assert.deepEqual(buildBrandScale("#336699", [100, 200, 300, 400, 500, 600, 700, 800, 900]), {
+  100: "#cae0f8",
+  200: "#acc7e5",
+  300: "#8eafd3",
+  400: "#6991bb",
+  500: "#336699",
+  600: "#255583",
+  700: "#15426c",
+  800: "#052f55",
+  900: "#001e3f",
+}, "buildBrandScale keeps direct hundreds-pattern output stable");
+
+assert.deepEqual(buildBrandScale("#ggg", defaultSteps), {
+  50: "#NaNNaNNaN",
+  100: "#NaNNaNNaN",
+  200: "#NaNNaNNaN",
+  300: "#NaNNaNNaN",
+  400: "#NaNNaNNaN",
+  500: "#NaNNaNNaN",
+  600: "#NaNNaNNaN",
+  700: "#NaNNaNNaN",
+  800: "#NaNNaNNaN",
+  900: "#NaNNaNNaN",
+  950: "#NaNNaNNaN",
+}, "buildBrandScale currently preserves NaN hex output for non-hex #rgb input");
+
+assert.deepEqual(buildBrandScale("rgb(foo, 0, 0)", defaultSteps), {
+  50: "#NaNNaNNaN",
+  100: "#NaNNaNNaN",
+  200: "#NaNNaNNaN",
+  300: "#NaNNaNNaN",
+  400: "#NaNNaNNaN",
+  500: "#NaN0000",
+  600: "#NaNNaNNaN",
+  700: "#NaNNaNNaN",
+  800: "#NaNNaNNaN",
+  900: "#NaNNaNNaN",
+  950: "#NaNNaNNaN",
+}, "buildBrandScale currently preserves NaN output for nonnumeric rgb channels");
+
 assert.deepEqual(buildBrandScale("#82BE5C", []), {}, "buildBrandScale returns an empty scale for empty steps");
 assertThrowsWithMessage(
   () => buildBrandScale("#82BE5C", [100, 300, 700], 500),
