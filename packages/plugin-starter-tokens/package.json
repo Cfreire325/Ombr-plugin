@@ -10,6 +10,7 @@
     "extract:typography-reference": "node scripts/extract-typography-reference.mjs",
     "test:color-utils": "node src/presets/color-utils.test.mjs",
     "test:primitive-tokens": "node src/presets/primitive-tokens.test.mjs",
+    "test:palette-steps": "node src/presets/palette-steps.test.mjs",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit"
   },
