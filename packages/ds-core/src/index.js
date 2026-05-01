@@ -283,3 +283,13 @@ export {
   rgbaToHex,
   sanitizeKebabSegment,
 } from "./color-utils.js";
+
+export {
+  basePatternSteps,
+  closestStep,
+  deriveShadeSteps,
+  extendSteps,
+  nextShadeStep,
+  pickSubset,
+  resolveBaseStep,
+} from "./palette-steps.js";
