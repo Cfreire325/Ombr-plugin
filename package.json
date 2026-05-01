@@ -14,6 +14,7 @@
     "test:ds-core": "npm run test --prefix packages/ds-core",
     "test:color-utils": "npm run test:color-utils --prefix packages/plugin-starter-tokens",
     "test:primitive-tokens": "npm run test:primitive-tokens --prefix packages/plugin-starter-tokens",
-    "test:palette-steps": "npm run test:palette-steps --prefix packages/plugin-starter-tokens"
+    "test:palette-steps": "npm run test:palette-steps --prefix packages/plugin-starter-tokens",
+    "test:semantic-color-modes": "npm run test:semantic-color-modes --prefix packages/plugin-starter-tokens"
   }
 }

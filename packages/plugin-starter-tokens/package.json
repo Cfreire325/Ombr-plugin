@@ -11,6 +11,7 @@
     "test:color-utils": "node src/presets/color-utils.test.mjs",
     "test:primitive-tokens": "node src/presets/primitive-tokens.test.mjs",
     "test:palette-steps": "node src/presets/palette-steps.test.mjs",
+    "test:semantic-color-modes": "node src/presets/semantic-color-modes.test.mjs",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit"
   },
