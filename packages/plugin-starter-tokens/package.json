@@ -8,6 +8,8 @@
     "extract:palette-presets": "node scripts/extract-preset-palettes.mjs",
     "extract:text-styles": "node scripts/extract-text-styles.mjs",
     "extract:typography-reference": "node scripts/extract-typography-reference.mjs",
+    "test:color-utils": "node src/presets/color-utils.test.mjs",
+    "test:primitive-tokens": "node src/presets/primitive-tokens.test.mjs",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit"
   },

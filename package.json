@@ -11,6 +11,8 @@
     "extract:palette-presets": "npm run extract:palette-presets --prefix packages/plugin-starter-tokens",
     "extract:text-styles": "npm run extract:text-styles --prefix packages/plugin-starter-tokens",
     "extract:typography-reference": "npm run extract:typography-reference --prefix packages/plugin-starter-tokens",
-    "test:ds-core": "npm run test --prefix packages/ds-core"
+    "test:ds-core": "npm run test --prefix packages/ds-core",
+    "test:color-utils": "npm run test:color-utils --prefix packages/plugin-starter-tokens",
+    "test:primitive-tokens": "npm run test:primitive-tokens --prefix packages/plugin-starter-tokens"
   }
 }
