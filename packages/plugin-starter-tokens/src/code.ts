@@ -2,6 +2,7 @@
 import { BUILTIN_PRESETS, getPresetById, getPresetSummaries } from "./presets/builtin";
 import { TEXT_STYLE_TEMPLATES } from "./presets/text-styles.generated";
 import { TYPOGRAPHY_REFERENCE } from "./presets/typography.generated";
+import { exportTokenDefinitionsJson } from "./token-definitions-export";
 import {
   basePatternSteps,
   closestPresetStep,
@@ -25,6 +26,7 @@ import type {
   BrandColorInput,
   GenerationOptions,
   GenerationReport,
+  JsonExportMetadata,
   NamingPattern,
   PresetDefinition,
   TokenBundle,
@@ -38,6 +40,10 @@ const UI_WIDTH = 532;
 const UI_HEIGHT = 700;
 const UI_TITLE = "ombrstudio - Build your design system foundation";
 let isGenerationRunning = false;
+const DEFAULT_JSON_EXPORT_FILENAME = "ombrstudio-token-bundle.json";
+let lastGeneratedExportJson: string | null = null;
+let lastGeneratedExportFilename: string | null = null;
+let lastGeneratedExportMetadata: JsonExportMetadata | null = null;
 
 figma.showUI(__html__, { width: UI_WIDTH, height: UI_HEIGHT, themeColors: true, title: UI_TITLE });
 
@@ -63,6 +69,21 @@ type TokenDefinition = {
   scopes: VariableScope[];
   value?: RuntimeTokenValue;
   modeValues?: Partial<Record<RuntimeModeName, RuntimeTokenValue>>;
+};
+
+type GeneratedTokenDefinitionsResult = {
+  tokens: TokenDefinition[];
+  bundleColorModeTokens: TokenDefinition[];
+  colorModesResult: { tokens: TokenDefinition[]; missing: string[] } | null;
+};
+
+type JsonExportResultMessage = {
+  type: "json-export-result";
+  jsonReady: boolean;
+  filename: string | null;
+  bytes: number;
+  tokenCount: number;
+  json: string | null;
 };
 
 type PendingAlias = {
@@ -1709,6 +1730,7 @@ function buildGenerationOptions(rawPayload: unknown): GenerationOptions {
       ? inputIcons.colorAlias.trim().toLowerCase()
       : DEFAULT_ICON_COLOR_ALIAS;
   const iconStroke = normalizeIconStrokeId(inputIcons?.stroke);
+  const exportJson = input.exportJson === true;
 
   return {
     tokenLevel,
@@ -1726,6 +1748,7 @@ function buildGenerationOptions(rawPayload: unknown): GenerationOptions {
     paletteOverrides,
     semanticOverrides,
     tokenBundle,
+    exportJson,
     icons: {
       library: iconLibrary,
       includeStarterPack,
@@ -2161,22 +2184,18 @@ async function applyTypographyTextStyles(
   report.migrations.push(`Text styles: ${created} created, ${updated} updated (family/size/weight/line-height linked).`);
 }
 
-async function applyGeneration(options: GenerationOptions, progress?: (message: string) => void): Promise<GenerationReport> {
-  const totalStart = Date.now();
-  const preset = getPresetById(options.presetId);
-  if (!preset) throw new Error(`Preset inconnu: ${options.presetId}`);
-
-  progress?.("Préparation des tokens...");
-  const tokenPhaseStart = Date.now();
-  const shadeSteps = deriveShadeSteps(options.namingPattern, options.shadeCount);
-  const baseStep = resolveBaseStep(shadeSteps);
-  const brands = normalizeBrands(options.brands, preset, shadeSteps, baseStep);
-
+function buildGeneratedTokenDefinitions(
+  options: GenerationOptions,
+  preset: PresetDefinition,
+  brands: NormalizedBrand[],
+  shadeSteps: number[],
+): GeneratedTokenDefinitionsResult {
   const tokens: TokenDefinition[] = [];
   tokens.push(...buildPrimitiveTokens(options, preset, brands, shadeSteps));
   tokens.push(...buildTypographyTokens(options));
   tokens.push(...buildSpacingTokens());
   tokens.push(...buildRadiusTokens());
+
   let bundleColorModeTokens: TokenDefinition[] = [];
   let colorModesResult: { tokens: TokenDefinition[]; missing: string[] } | null = null;
   if (options.tokenLevel === "color-modes") {
@@ -2195,6 +2214,78 @@ async function applyGeneration(options: GenerationOptions, progress?: (message: 
       tokens.push(...colorModesResult.tokens);
     }
   }
+
+  return { tokens, bundleColorModeTokens, colorModesResult };
+}
+
+function clearLastGeneratedJsonExport(): void {
+  lastGeneratedExportJson = null;
+  lastGeneratedExportFilename = null;
+  lastGeneratedExportMetadata = null;
+}
+
+function jsonByteLength(value: string): number {
+  let bytes = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    const codePoint = value.codePointAt(index) ?? 0;
+    if (codePoint > 0xffff) index += 1;
+    if (codePoint <= 0x7f) bytes += 1;
+    else if (codePoint <= 0x7ff) bytes += 2;
+    else if (codePoint <= 0xffff) bytes += 3;
+    else bytes += 4;
+  }
+  return bytes;
+}
+
+function prepareGeneratedJsonExport(tokens: TokenDefinition[]): JsonExportMetadata {
+  const json = exportTokenDefinitionsJson(tokens);
+  const filename = DEFAULT_JSON_EXPORT_FILENAME;
+  const metadata: JsonExportMetadata = {
+    jsonReady: true,
+    filename,
+    bytes: jsonByteLength(json),
+    tokenCount: tokens.length,
+  };
+  lastGeneratedExportJson = json;
+  lastGeneratedExportFilename = filename;
+  lastGeneratedExportMetadata = metadata;
+  return metadata;
+}
+
+function getLastGeneratedJsonExport(): JsonExportResultMessage {
+  if (!lastGeneratedExportJson || !lastGeneratedExportMetadata) {
+    return {
+      type: "json-export-result",
+      jsonReady: false,
+      filename: null,
+      bytes: 0,
+      tokenCount: 0,
+      json: null,
+    };
+  }
+
+  return {
+    type: "json-export-result",
+    ...lastGeneratedExportMetadata,
+    filename: lastGeneratedExportFilename ?? lastGeneratedExportMetadata.filename,
+    json: lastGeneratedExportJson,
+  };
+}
+
+async function applyGeneration(options: GenerationOptions, progress?: (message: string) => void): Promise<GenerationReport> {
+  const totalStart = Date.now();
+  const preset = getPresetById(options.presetId);
+  if (!preset) throw new Error(`Preset inconnu: ${options.presetId}`);
+
+  progress?.("Préparation des tokens...");
+  const tokenPhaseStart = Date.now();
+  const shadeSteps = deriveShadeSteps(options.namingPattern, options.shadeCount);
+  const baseStep = resolveBaseStep(shadeSteps);
+  const brands = normalizeBrands(options.brands, preset, shadeSteps, baseStep);
+
+  const { tokens, bundleColorModeTokens, colorModesResult } = buildGeneratedTokenDefinitions(options, preset, brands, shadeSteps);
+  clearLastGeneratedJsonExport();
+  const exportJsonMetadata = options.exportJson === true ? prepareGeneratedJsonExport(tokens) : null;
   const tokenPhaseMs = Date.now() - tokenPhaseStart;
   progress?.(`Tokens préparés (${tokens.length}).`);
 
@@ -2212,6 +2303,7 @@ async function applyGeneration(options: GenerationOptions, progress?: (message: 
     warnings: [],
     migrations: [],
     collections: targetCollections.map((name) => ({ name, created: 0, updated: 0, collisionsReplaced: 0 })),
+    exportJson: exportJsonMetadata ?? undefined,
   };
 
   if (bundleColorModeTokens.length) {
@@ -2913,6 +3005,11 @@ figma.ui.onmessage = async (msg: unknown) => {
     if (payload.type === "ui-ready") {
       postPresetList();
       await postFontFamiliesList();
+      return;
+    }
+
+    if (payload.type === "request-last-json-export") {
+      figma.ui.postMessage(getLastGeneratedJsonExport());
       return;
     }
 

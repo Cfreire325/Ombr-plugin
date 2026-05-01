@@ -78,6 +78,7 @@ export interface GenerationOptions {
   paletteOverrides?: Record<string, Record<string, string>>;
   semanticOverrides?: Record<string, string>;
   tokenBundle?: TokenBundle;
+  exportJson?: boolean;
   icons?: {
     library: string;
     includeStarterPack?: boolean;
@@ -104,6 +105,13 @@ export interface CollectionReport {
   collisionsReplaced: number;
 }
 
+export interface JsonExportMetadata {
+  jsonReady: true;
+  filename: string;
+  bytes: number;
+  tokenCount: number;
+}
+
 export interface GenerationReport {
   created: number;
   updated: number;
@@ -113,4 +121,5 @@ export interface GenerationReport {
   warnings: string[];
   migrations: string[];
   collections: CollectionReport[];
+  exportJson?: JsonExportMetadata;
 }

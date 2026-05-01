@@ -21,21 +21,7 @@
   };
   var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 
-  // src/presets/color-utils.ts
-  var LIGHT_RATIO = {
-    50: 0.95,
-    100: 0.82,
-    200: 0.66,
-    300: 0.5,
-    400: 0.3
-  };
-  var DARK_RATIO = {
-    600: 0.16,
-    700: 0.34,
-    800: 0.52,
-    900: 0.7,
-    950: 0.82
-  };
+  // ../ds-core/src/color-utils.js
   function clamp01(value) {
     return Math.max(0, Math.min(1, value));
   }
@@ -87,6 +73,42 @@
   function toHexChannel(value) {
     return Math.round(clamp01(value) * 255).toString(16).padStart(2, "0");
   }
+  function parseColorInput(value) {
+    const text = value.trim();
+    if (text.startsWith("#")) return parseHex(text);
+    if (/^rgba?\(/i.test(text)) return parseRgb(text);
+    throw new Error(`Unsupported color format: ${value}`);
+  }
+  function sanitizeKebabSegment(input, fallback = "brand") {
+    const source = String(input || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+    const sanitized = source.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-");
+    return sanitized || fallback;
+  }
+  function rgbaToHex(value) {
+    return `#${toHexChannel(value.r)}${toHexChannel(value.g)}${toHexChannel(value.b)}`;
+  }
+  function colorWithAlpha(baseColor, alphaPct) {
+    const parsed = parseColorInput(baseColor);
+    const alpha = clamp01(alphaPct / 100);
+    const r = Math.round(parsed.r * 255);
+    const g = Math.round(parsed.g * 255);
+    const b = Math.round(parsed.b * 255);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+  var LIGHT_RATIO = {
+    50: 0.95,
+    100: 0.82,
+    200: 0.66,
+    300: 0.5,
+    400: 0.3
+  };
+  var DARK_RATIO = {
+    600: 0.16,
+    700: 0.34,
+    800: 0.52,
+    900: 0.7,
+    950: 0.82
+  };
   function rgbToHsl(color) {
     const r = clamp01(color.r);
     const g = clamp01(color.g);
@@ -168,28 +190,6 @@
       previous = value;
     }
     return result;
-  }
-  function parseColorInput(value) {
-    const text = value.trim();
-    if (text.startsWith("#")) return parseHex(text);
-    if (/^rgba?\(/i.test(text)) return parseRgb(text);
-    throw new Error(`Unsupported color format: ${value}`);
-  }
-  function sanitizeKebabSegment(input, fallback = "brand") {
-    const source = String(input || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
-    const sanitized = source.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-");
-    return sanitized || fallback;
-  }
-  function rgbaToHex(value) {
-    return `#${toHexChannel(value.r)}${toHexChannel(value.g)}${toHexChannel(value.b)}`;
-  }
-  function colorWithAlpha(baseColor, alphaPct) {
-    const parsed = parseColorInput(baseColor);
-    const alpha = clamp01(alphaPct / 100);
-    const r = Math.round(parsed.r * 255);
-    const g = Math.round(parsed.g * 255);
-    const b = Math.round(parsed.b * 255);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
   function srgbToLinear(value) {
     const v = clamp01(value);
@@ -379,6 +379,327 @@
     } catch (e) {
       return buildBrandScaleWithHsl(baseColor, steps, baseStep);
     }
+  }
+
+  // ../ds-core/src/naming.js
+  function normalizePaletteKey(input) {
+    return String(input || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  // ../ds-core/src/palette-steps.js
+  var PRESET_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  function clampCount(value, min, max, fallback) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return fallback;
+    return Math.min(max, Math.max(min, Math.round(numeric)));
+  }
+  function closestStep(steps, target) {
+    if (!steps.length) return target;
+    let best = steps[0];
+    let delta = Math.abs(best - target);
+    for (const step of steps) {
+      const current = Math.abs(step - target);
+      if (current < delta) {
+        best = step;
+        delta = current;
+      }
+    }
+    return best;
+  }
+  function basePatternSteps(pattern) {
+    if (pattern === "hundreds") {
+      return [100, 200, 300, 400, 500, 600, 700, 800, 900, 1e3];
+    }
+    return [...PRESET_STEPS];
+  }
+  function pickSubset(baseSteps, count) {
+    if (count >= baseSteps.length) return [...baseSteps];
+    if (count <= 1) return [baseSteps[Math.floor(baseSteps.length / 2)]];
+    const points = /* @__PURE__ */ new Set();
+    for (let i = 0; i < count; i += 1) {
+      points.add(Math.round(i * (baseSteps.length - 1) / (count - 1)));
+    }
+    const base500Index = baseSteps.indexOf(500);
+    if (base500Index >= 0 && !points.has(base500Index) && count >= 3) {
+      const sorted = Array.from(points);
+      let replace = sorted[0];
+      let distance = Math.abs(replace - base500Index);
+      for (const point of sorted) {
+        if (point === 0 || point === baseSteps.length - 1) continue;
+        const delta = Math.abs(point - base500Index);
+        if (delta < distance) {
+          replace = point;
+          distance = delta;
+        }
+      }
+      points.delete(replace);
+      points.add(base500Index);
+    }
+    return Array.from(points).sort((a, b) => a - b).map((index) => baseSteps[index]);
+  }
+  function nextShadeStep(previous) {
+    return previous === 950 ? 1e3 : previous + 100;
+  }
+  function extendSteps(baseSteps, count) {
+    const unique = Array.from(new Set(baseSteps)).sort((a, b) => a - b);
+    while (unique.length < count) {
+      unique.push(nextShadeStep(unique[unique.length - 1]));
+    }
+    return unique.slice(0, count);
+  }
+  function deriveShadeSteps(pattern, shadeCount) {
+    const base = basePatternSteps(pattern);
+    const requested = clampCount(shadeCount, 6, 14, 11);
+    if (requested <= base.length) return pickSubset(base, requested);
+    return extendSteps(base, requested);
+  }
+  function resolveBaseStep(shadeSteps) {
+    if (shadeSteps.includes(500)) return 500;
+    const midpoint = (shadeSteps[0] + shadeSteps[shadeSteps.length - 1]) / 2;
+    return closestStep(shadeSteps, midpoint);
+  }
+  function parsePresetNumericStep(step) {
+    if (!/^-?\d+(?:\.\d+)?$/.test(step)) return null;
+    const numeric = Number(step);
+    return Number.isFinite(numeric) ? numeric : null;
+  }
+  function sortPresetSteps(steps) {
+    return [...new Set(steps)].sort((a, b) => {
+      const na = parsePresetNumericStep(a);
+      const nb = parsePresetNumericStep(b);
+      if (na !== null && nb !== null) return na - nb;
+      if (na !== null) return -1;
+      if (nb !== null) return 1;
+      return a.localeCompare(b);
+    });
+  }
+  function fallbackPresetSteps() {
+    return PRESET_STEPS.map((step) => String(step));
+  }
+  function getPaletteSteps(preset, paletteName) {
+    const palette = preset.palettes[paletteName];
+    if (!palette) return [];
+    return sortPresetSteps(Object.keys(palette));
+  }
+  function resolveClosestPaletteStep(preset, paletteName, requestedStep) {
+    const palette = preset.palettes[paletteName];
+    if (!palette) return requestedStep;
+    if (palette[requestedStep]) return requestedStep;
+    const steps = getPaletteSteps(preset, paletteName);
+    if (!steps.length) return requestedStep;
+    const exactCaseInsensitive = steps.find((step) => step.toLowerCase() === requestedStep.toLowerCase());
+    if (exactCaseInsensitive) return exactCaseInsensitive;
+    const requestedNumeric = parsePresetNumericStep(requestedStep);
+    if (requestedNumeric !== null) {
+      const numericPairs = steps.map((step) => ({ step, numeric: parsePresetNumericStep(step) })).filter((entry) => entry.numeric !== null);
+      if (numericPairs.length) {
+        let best = numericPairs[0];
+        let delta = Math.abs(best.numeric - requestedNumeric);
+        for (const pair of numericPairs) {
+          const currentDelta = Math.abs(pair.numeric - requestedNumeric);
+          if (currentDelta < delta) {
+            best = pair;
+            delta = currentDelta;
+          }
+        }
+        return best.step;
+      }
+    }
+    return steps.includes("500") ? "500" : steps[0];
+  }
+  function normalizePresetSteps(preset) {
+    if (preset.steps.length) return sortPresetSteps(preset.steps.map((step) => String(step)));
+    return fallbackPresetSteps();
+  }
+
+  // ../ds-core/src/index.js
+  var TOKEN_COLLECTIONS = ["primitives", "semantic", "components"];
+  var TOKEN_TYPES = ["COLOR", "FLOAT", "STRING"];
+  var TOKEN_MODES = ["light", "dark"];
+  var DEFAULT_SCHEMA_VERSION = "1.0.0";
+  var DEFAULT_SOURCE = "figma";
+  var TOKEN_NAME_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
+  var HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+  var FUNCTION_COLOR_REGEX = /^(rgb|rgba|hsl|hsla)\((.*)\)$/i;
+  function isObjectLike(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  }
+  function normalizeTokenSegment(input) {
+    return String(input || "").trim().replace(/\./g, "/").replace(/[^a-zA-Z0-9/-]+/g, "-").replace(/--+/g, "-").replace(/\/+/g, "/").replace(/^-+|-+$/g, "").replace(/\/-+/g, "/").replace(/-+\//g, "/").toLowerCase();
+  }
+  function normalizeTokenName(input) {
+    return normalizeTokenSegment(input).split("/").map((part) => part.replace(/^-+|-+$/g, "")).filter(Boolean).join("/");
+  }
+  function isSlashCaseTokenName(name) {
+    return TOKEN_NAME_REGEX.test(name);
+  }
+  function isAliasValue(value) {
+    return isObjectLike(value) && typeof value.alias === "string";
+  }
+  function normalizeAliasPath(aliasPath) {
+    return normalizeTokenName(aliasPath);
+  }
+  function normalizeModeValue(type, value) {
+    if (isAliasValue(value)) {
+      return { alias: normalizeAliasPath(value.alias) };
+    }
+    if (type === "FLOAT") {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) {
+        throw new Error(`Invalid FLOAT value: ${String(value)}`);
+      }
+      return numeric;
+    }
+    if (type === "STRING") {
+      if (typeof value !== "string") {
+        throw new Error(`Invalid STRING value: ${String(value)}`);
+      }
+      return value.trim();
+    }
+    const candidate = String(value || "").trim();
+    if (!candidate) {
+      throw new Error("Invalid COLOR value: empty");
+    }
+    return candidate;
+  }
+  function validateColorValue(rawValue) {
+    if (isAliasValue(rawValue)) return null;
+    const value = String(rawValue || "").trim();
+    if (HEX_COLOR_REGEX.test(value) || FUNCTION_COLOR_REGEX.test(value)) return null;
+    return `Invalid COLOR format: ${value}`;
+  }
+  function validateAlias(rawValue) {
+    if (!isAliasValue(rawValue)) return null;
+    const normalized = normalizeAliasPath(rawValue.alias);
+    if (!normalized.includes("/")) {
+      return `Alias must include collection prefix: ${rawValue.alias}`;
+    }
+    const [collection, ...rest] = normalized.split("/");
+    if (!TOKEN_COLLECTIONS.includes(collection)) {
+      return `Alias collection must be one of ${TOKEN_COLLECTIONS.join(", ")}: ${rawValue.alias}`;
+    }
+    if (!rest.length || !isSlashCaseTokenName(rest.join("/"))) {
+      return `Alias token path is invalid slash-case: ${rawValue.alias}`;
+    }
+    return null;
+  }
+  function validateModeValue(type, rawValue) {
+    const aliasError = validateAlias(rawValue);
+    if (aliasError) return aliasError;
+    if (isAliasValue(rawValue)) return null;
+    if (type === "FLOAT") {
+      return Number.isFinite(Number(rawValue)) ? null : `Invalid FLOAT value: ${String(rawValue)}`;
+    }
+    if (type === "STRING") {
+      return typeof rawValue === "string" && rawValue.trim().length > 0 ? null : "Invalid STRING value";
+    }
+    return validateColorValue(rawValue);
+  }
+  function normalizeTokenEntry(collection, entry) {
+    const normalizedName = normalizeTokenName(entry.name);
+    const normalizedType = String(entry.type || "").trim().toUpperCase();
+    const values = isObjectLike(entry.values) ? entry.values : {};
+    const normalizedValues = {};
+    for (const mode of TOKEN_MODES) {
+      normalizedValues[mode] = normalizeModeValue(normalizedType, values[mode]);
+    }
+    const scopes = Array.isArray(entry.scopes) ? Array.from(new Set(entry.scopes.map((scope) => String(scope || "").trim()).filter(Boolean))) : [];
+    const normalized = {
+      name: normalizedName,
+      type: normalizedType,
+      values: normalizedValues
+    };
+    if (scopes.length) normalized.scopes = scopes;
+    if (entry.meta && isObjectLike(entry.meta)) normalized.meta = entry.meta;
+    if (entry.description && String(entry.description).trim()) normalized.description = String(entry.description).trim();
+    normalized.collection = collection;
+    return normalized;
+  }
+  function validateTokenBundle(bundle) {
+    const errors = [];
+    if (!isObjectLike(bundle)) {
+      return { valid: false, errors: ["TokenBundle must be an object."] };
+    }
+    const schemaVersion = String(bundle.schemaVersion || "").trim();
+    if (!schemaVersion) {
+      errors.push("schemaVersion is required.");
+    }
+    const collections = isObjectLike(bundle.collections) ? bundle.collections : null;
+    if (!collections) {
+      errors.push("collections is required.");
+    }
+    const normalizedSeen = /* @__PURE__ */ new Map();
+    for (const collection of TOKEN_COLLECTIONS) {
+      const tokens = collections ? collections[collection] : null;
+      if (!Array.isArray(tokens)) {
+        errors.push(`collections.${collection} must be an array.`);
+        continue;
+      }
+      normalizedSeen.set(collection, /* @__PURE__ */ new Set());
+      for (let index = 0; index < tokens.length; index += 1) {
+        const token = tokens[index];
+        if (!isObjectLike(token)) {
+          errors.push(`collections.${collection}[${index}] must be an object.`);
+          continue;
+        }
+        const name = normalizeTokenName(token.name);
+        if (!name || !isSlashCaseTokenName(name)) {
+          errors.push(`collections.${collection}[${index}].name must be slash-case.`);
+        } else {
+          const seen = normalizedSeen.get(collection);
+          if (seen.has(name)) {
+            errors.push(`Duplicate token name in ${collection}: ${name}`);
+          } else {
+            seen.add(name);
+          }
+        }
+        const type = String(token.type || "").trim().toUpperCase();
+        if (!TOKEN_TYPES.includes(type)) {
+          errors.push(`collections.${collection}[${index}].type must be one of ${TOKEN_TYPES.join(", ")}.`);
+        }
+        if (!isObjectLike(token.values)) {
+          errors.push(`collections.${collection}[${index}].values must be an object.`);
+          continue;
+        }
+        for (const mode of TOKEN_MODES) {
+          if (!(mode in token.values)) {
+            errors.push(`collections.${collection}[${index}].values.${mode} is required.`);
+            continue;
+          }
+          if (TOKEN_TYPES.includes(type)) {
+            const modeError = validateModeValue(type, token.values[mode]);
+            if (modeError) {
+              errors.push(`collections.${collection}[${index}].values.${mode}: ${modeError}`);
+            }
+          }
+        }
+      }
+    }
+    return { valid: errors.length === 0, errors };
+  }
+  function normalizeTokenBundle(input) {
+    if (!isObjectLike(input)) {
+      throw new Error("TokenBundle must be an object.");
+    }
+    const collections = isObjectLike(input.collections) ? input.collections : {};
+    const normalizedCollections = {};
+    for (const collection of TOKEN_COLLECTIONS) {
+      const tokens = Array.isArray(collections[collection]) ? collections[collection] : [];
+      normalizedCollections[collection] = tokens.map((entry) => normalizeTokenEntry(collection, entry)).sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+    }
+    const normalized = {
+      schemaVersion: String(input.schemaVersion || DEFAULT_SCHEMA_VERSION),
+      source: String(input.source || DEFAULT_SOURCE),
+      generatedAt: input.generatedAt ? String(input.generatedAt) : void 0,
+      collections: normalizedCollections
+    };
+    const validation = validateTokenBundle(normalized);
+    if (!validation.valid) {
+      throw new Error(`TokenBundle validation failed: ${validation.errors.join(" | ")}`);
+    }
+    return normalized;
   }
 
   // src/presets/local-presets.generated.ts
@@ -3070,9 +3391,6 @@
     }
     return merged;
   }
-  function normalizePaletteKey(input) {
-    return String(input || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  }
   var BUILTIN_PRESETS = mergePresets(STATIC_PRESETS, LOCAL_PRESETS);
   function getPresetById(presetId) {
     return BUILTIN_PRESETS.find((preset) => preset.id === presetId);
@@ -4235,194 +4553,85 @@
     }
   };
 
-  // ../ds-core/src/index.js
-  var TOKEN_COLLECTIONS = ["primitives", "semantic", "components"];
-  var TOKEN_TYPES = ["COLOR", "FLOAT", "STRING"];
-  var TOKEN_MODES = ["light", "dark"];
-  var DEFAULT_SCHEMA_VERSION = "1.0.0";
-  var DEFAULT_SOURCE = "figma";
-  var TOKEN_NAME_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
-  var HEX_COLOR_REGEX = /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
-  var FUNCTION_COLOR_REGEX = /^(rgb|rgba|hsl|hsla)\((.*)\)$/i;
-  function isObjectLike(value) {
-    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  // ../exporters/src/index.js
+  function exportTokenBundleJson(input, options = {}) {
+    const normalized = normalizeTokenBundle(input);
+    const space = Number.isInteger(options.space) ? options.space : 2;
+    const json = JSON.stringify(normalized, null, space);
+    return options.finalNewline === false ? json : `${json}
+`;
   }
-  function normalizeTokenSegment(input) {
-    return String(input || "").trim().replace(/\./g, "/").replace(/[^a-zA-Z0-9/-]+/g, "-").replace(/--+/g, "-").replace(/\/+/g, "/").replace(/^-+|-+$/g, "").replace(/\/-+/g, "/").replace(/-+\//g, "/").toLowerCase();
-  }
-  function normalizeTokenName(input) {
-    return normalizeTokenSegment(input).split("/").map((part) => part.replace(/^-+|-+$/g, "")).filter(Boolean).join("/");
-  }
-  function isSlashCaseTokenName(name) {
-    return TOKEN_NAME_REGEX.test(name);
-  }
-  function isAliasValue(value) {
-    return isObjectLike(value) && typeof value.alias === "string";
-  }
-  function normalizeAliasPath(aliasPath) {
-    return normalizeTokenName(aliasPath);
-  }
-  function normalizeModeValue(type, value) {
-    if (isAliasValue(value)) {
-      return { alias: normalizeAliasPath(value.alias) };
-    }
-    if (type === "FLOAT") {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) {
-        throw new Error(`Invalid FLOAT value: ${String(value)}`);
-      }
-      return numeric;
-    }
-    if (type === "STRING") {
-      if (typeof value !== "string") {
-        throw new Error(`Invalid STRING value: ${String(value)}`);
-      }
-      return value.trim();
-    }
-    const candidate = String(value || "").trim();
-    if (!candidate) {
-      throw new Error("Invalid COLOR value: empty");
-    }
-    return candidate;
-  }
-  function validateColorValue(rawValue) {
-    if (isAliasValue(rawValue)) return null;
-    const value = String(rawValue || "").trim();
-    if (HEX_COLOR_REGEX.test(value) || FUNCTION_COLOR_REGEX.test(value)) return null;
-    return `Invalid COLOR format: ${value}`;
-  }
-  function validateAlias(rawValue) {
-    if (!isAliasValue(rawValue)) return null;
-    const normalized = normalizeAliasPath(rawValue.alias);
-    if (!normalized.includes("/")) {
-      return `Alias must include collection prefix: ${rawValue.alias}`;
-    }
-    const [collection, ...rest] = normalized.split("/");
-    if (!TOKEN_COLLECTIONS.includes(collection)) {
-      return `Alias collection must be one of ${TOKEN_COLLECTIONS.join(", ")}: ${rawValue.alias}`;
-    }
-    if (!rest.length || !isSlashCaseTokenName(rest.join("/"))) {
-      return `Alias token path is invalid slash-case: ${rawValue.alias}`;
-    }
+
+  // src/token-definitions-to-token-bundle.ts
+  var PRIMITIVE_RUNTIME_COLLECTIONS = /* @__PURE__ */ new Set(["primitives", "2. spacing", "3. radius", "6. Typography"]);
+  var SEMANTIC_RUNTIME_COLLECTIONS = /* @__PURE__ */ new Set(["1. color-modes"]);
+  function mapRuntimeCollection(collection) {
+    if (PRIMITIVE_RUNTIME_COLLECTIONS.has(collection)) return "primitives";
+    if (SEMANTIC_RUNTIME_COLLECTIONS.has(collection)) return "semantic";
     return null;
   }
-  function validateModeValue(type, rawValue) {
-    const aliasError = validateAlias(rawValue);
-    if (aliasError) return aliasError;
-    if (isAliasValue(rawValue)) return null;
-    if (type === "FLOAT") {
-      return Number.isFinite(Number(rawValue)) ? null : `Invalid FLOAT value: ${String(rawValue)}`;
+  function mapAliasCollection(collection) {
+    const mapped = mapRuntimeCollection(collection);
+    if (!mapped) {
+      throw new Error(`Unsupported TokenDefinition alias collection: ${collection}`);
     }
-    if (type === "STRING") {
-      return typeof rawValue === "string" && rawValue.trim().length > 0 ? null : "Invalid STRING value";
-    }
-    return validateColorValue(rawValue);
+    return mapped;
   }
-  function normalizeTokenEntry(collection, entry) {
-    const normalizedName = normalizeTokenName(entry.name);
-    const normalizedType = String(entry.type || "").trim().toUpperCase();
-    const values = isObjectLike(entry.values) ? entry.values : {};
-    const normalizedValues = {};
-    for (const mode of TOKEN_MODES) {
-      normalizedValues[mode] = normalizeModeValue(normalizedType, values[mode]);
+  function mapRuntimeValue(value) {
+    if (value.kind === "raw") return value.value;
+    return { alias: `${mapAliasCollection(value.collection)}/${value.ref}` };
+  }
+  function resolveModeValue(token, mode) {
+    var _a, _b;
+    if (token.modeValues && Object.keys(token.modeValues).length) {
+      const direct = token.modeValues[mode];
+      if (direct !== void 0) return mapRuntimeValue(direct);
+      const fallback = (_b = (_a = token.modeValues.default) != null ? _a : token.modeValues.light) != null ? _b : token.modeValues.dark;
+      return fallback === void 0 ? null : mapRuntimeValue(fallback);
     }
-    const scopes = Array.isArray(entry.scopes) ? Array.from(new Set(entry.scopes.map((scope) => String(scope || "").trim()).filter(Boolean))) : [];
-    const normalized = {
-      name: normalizedName,
-      type: normalizedType,
-      values: normalizedValues
+    return token.value === void 0 ? null : mapRuntimeValue(token.value);
+  }
+  function mapTokenDefinition(token) {
+    const collection = mapRuntimeCollection(token.collection);
+    if (!collection) return null;
+    const light = resolveModeValue(token, "light");
+    const dark = resolveModeValue(token, "dark");
+    if (light === null || dark === null) {
+      throw new Error(`TokenDefinition missing values: ${token.collection}/${token.name}`);
+    }
+    const entry = {
+      name: token.name,
+      type: token.type,
+      values: { light, dark }
     };
-    if (scopes.length) normalized.scopes = scopes;
-    if (entry.meta && isObjectLike(entry.meta)) normalized.meta = entry.meta;
-    if (entry.description && String(entry.description).trim()) normalized.description = String(entry.description).trim();
-    normalized.collection = collection;
-    return normalized;
+    if (Array.isArray(token.scopes) && token.scopes.length) {
+      entry.scopes = token.scopes;
+    }
+    return { collection, entry };
   }
-  function validateTokenBundle(bundle) {
-    const errors = [];
-    if (!isObjectLike(bundle)) {
-      return { valid: false, errors: ["TokenBundle must be an object."] };
-    }
-    const schemaVersion = String(bundle.schemaVersion || "").trim();
-    if (!schemaVersion) {
-      errors.push("schemaVersion is required.");
-    }
-    const collections = isObjectLike(bundle.collections) ? bundle.collections : null;
-    if (!collections) {
-      errors.push("collections is required.");
-    }
-    const normalizedSeen = /* @__PURE__ */ new Map();
-    for (const collection of TOKEN_COLLECTIONS) {
-      const tokens = collections ? collections[collection] : null;
-      if (!Array.isArray(tokens)) {
-        errors.push(`collections.${collection} must be an array.`);
-        continue;
-      }
-      normalizedSeen.set(collection, /* @__PURE__ */ new Set());
-      for (let index = 0; index < tokens.length; index += 1) {
-        const token = tokens[index];
-        if (!isObjectLike(token)) {
-          errors.push(`collections.${collection}[${index}] must be an object.`);
-          continue;
-        }
-        const name = normalizeTokenName(token.name);
-        if (!name || !isSlashCaseTokenName(name)) {
-          errors.push(`collections.${collection}[${index}].name must be slash-case.`);
-        } else {
-          const seen = normalizedSeen.get(collection);
-          if (seen.has(name)) {
-            errors.push(`Duplicate token name in ${collection}: ${name}`);
-          } else {
-            seen.add(name);
-          }
-        }
-        const type = String(token.type || "").trim().toUpperCase();
-        if (!TOKEN_TYPES.includes(type)) {
-          errors.push(`collections.${collection}[${index}].type must be one of ${TOKEN_TYPES.join(", ")}.`);
-        }
-        if (!isObjectLike(token.values)) {
-          errors.push(`collections.${collection}[${index}].values must be an object.`);
-          continue;
-        }
-        for (const mode of TOKEN_MODES) {
-          if (!(mode in token.values)) {
-            errors.push(`collections.${collection}[${index}].values.${mode} is required.`);
-            continue;
-          }
-          if (TOKEN_TYPES.includes(type)) {
-            const modeError = validateModeValue(type, token.values[mode]);
-            if (modeError) {
-              errors.push(`collections.${collection}[${index}].values.${mode}: ${modeError}`);
-            }
-          }
-        }
-      }
-    }
-    return { valid: errors.length === 0, errors };
-  }
-  function normalizeTokenBundle(input) {
-    if (!isObjectLike(input)) {
-      throw new Error("TokenBundle must be an object.");
-    }
-    const collections = isObjectLike(input.collections) ? input.collections : {};
-    const normalizedCollections = {};
-    for (const collection of TOKEN_COLLECTIONS) {
-      const tokens = Array.isArray(collections[collection]) ? collections[collection] : [];
-      normalizedCollections[collection] = tokens.map((entry) => normalizeTokenEntry(collection, entry)).sort((a, b) => {
-        return a.name.localeCompare(b.name);
-      });
-    }
-    const normalized = {
-      schemaVersion: String(input.schemaVersion || DEFAULT_SCHEMA_VERSION),
-      source: String(input.source || DEFAULT_SOURCE),
-      generatedAt: input.generatedAt ? String(input.generatedAt) : void 0,
-      collections: normalizedCollections
+  function tokenDefinitionsToTokenBundle(tokens, options = {}) {
+    const collections = {
+      primitives: [],
+      semantic: [],
+      components: []
     };
-    const validation = validateTokenBundle(normalized);
-    if (!validation.valid) {
-      throw new Error(`TokenBundle validation failed: ${validation.errors.join(" | ")}`);
+    for (const token of tokens) {
+      const mapped = mapTokenDefinition(token);
+      if (!mapped) continue;
+      collections[mapped.collection].push(mapped.entry);
     }
-    return normalized;
+    return normalizeTokenBundle({
+      schemaVersion: options.schemaVersion || "1.0.0",
+      source: options.source || "figma",
+      generatedAt: options.generatedAt,
+      collections
+    });
+  }
+
+  // src/token-definitions-export.ts
+  function exportTokenDefinitionsJson(tokens, options = {}) {
+    const bundle = tokenDefinitionsToTokenBundle(tokens, options.mapperOptions);
+    return exportTokenBundleJson(bundle, options.jsonOptions);
   }
 
   // src/code.ts
@@ -4430,6 +4639,10 @@
   var UI_HEIGHT = 700;
   var UI_TITLE = "ombrstudio - Build your design system foundation";
   var isGenerationRunning = false;
+  var DEFAULT_JSON_EXPORT_FILENAME = "ombrstudio-token-bundle.json";
+  var lastGeneratedExportJson = null;
+  var lastGeneratedExportFilename = null;
+  var lastGeneratedExportMetadata = null;
   figma.showUI(__html__, { width: UI_WIDTH, height: UI_HEIGHT, themeColors: true, title: UI_TITLE });
   var COLLECTIONS = {
     primitives: "primitives",
@@ -4617,7 +4830,6 @@
       upload: "upload"
     }
   };
-  var PRESET_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
   var OPACITY_STEPS = [4, 6, 8, 9, 10, 15, 20, 28, 30, 36, 40, 48, 50, 60, 70, 75, 80, 90, 100];
   var PIXEL_VALUES = [
     0,
@@ -4889,9 +5101,6 @@
       value
     };
   }
-  function normalizePaletteKey2(input) {
-    return String(input || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  }
   function createModeToken(collection, name, type, scopes, modeValues) {
     return {
       collection,
@@ -4908,120 +5117,6 @@
     if (name.startsWith("icon/")) return ["STROKE_COLOR", "SHAPE_FILL"];
     if (name.startsWith("alpha/")) return ["ALL_FILLS"];
     return ["ALL_SCOPES"];
-  }
-  function closestStep(steps, target) {
-    if (!steps.length) return target;
-    let best = steps[0];
-    let delta = Math.abs(best - target);
-    for (const step of steps) {
-      const current = Math.abs(step - target);
-      if (current < delta) {
-        best = step;
-        delta = current;
-      }
-    }
-    return best;
-  }
-  function parsePresetNumericStep(step) {
-    if (!/^-?\d+(?:\.\d+)?$/.test(step)) return null;
-    const numeric = Number(step);
-    return Number.isFinite(numeric) ? numeric : null;
-  }
-  function sortPresetSteps(steps) {
-    return [...new Set(steps)].sort((a, b) => {
-      const na = parsePresetNumericStep(a);
-      const nb = parsePresetNumericStep(b);
-      if (na !== null && nb !== null) return na - nb;
-      if (na !== null) return -1;
-      if (nb !== null) return 1;
-      return a.localeCompare(b);
-    });
-  }
-  function fallbackPresetSteps() {
-    return PRESET_STEPS.map((step) => String(step));
-  }
-  function getPaletteSteps(preset, paletteName) {
-    const palette = preset.palettes[paletteName];
-    if (!palette) return [];
-    return sortPresetSteps(Object.keys(palette));
-  }
-  function resolveClosestPaletteStep(preset, paletteName, requestedStep) {
-    const palette = preset.palettes[paletteName];
-    if (!palette) return requestedStep;
-    if (palette[requestedStep]) return requestedStep;
-    const steps = getPaletteSteps(preset, paletteName);
-    if (!steps.length) return requestedStep;
-    const exactCaseInsensitive = steps.find((step) => step.toLowerCase() === requestedStep.toLowerCase());
-    if (exactCaseInsensitive) return exactCaseInsensitive;
-    const requestedNumeric = parsePresetNumericStep(requestedStep);
-    if (requestedNumeric !== null) {
-      const numericPairs = steps.map((step) => ({ step, numeric: parsePresetNumericStep(step) })).filter((entry) => entry.numeric !== null);
-      if (numericPairs.length) {
-        let best = numericPairs[0];
-        let delta = Math.abs(best.numeric - requestedNumeric);
-        for (const pair of numericPairs) {
-          const currentDelta = Math.abs(pair.numeric - requestedNumeric);
-          if (currentDelta < delta) {
-            best = pair;
-            delta = currentDelta;
-          }
-        }
-        return best.step;
-      }
-    }
-    return steps.includes("500") ? "500" : steps[0];
-  }
-  function basePatternSteps(pattern) {
-    if (pattern === "hundreds") {
-      return [100, 200, 300, 400, 500, 600, 700, 800, 900, 1e3];
-    }
-    return [...PRESET_STEPS];
-  }
-  function pickSubset(baseSteps, count) {
-    if (count >= baseSteps.length) return [...baseSteps];
-    if (count <= 1) return [baseSteps[Math.floor(baseSteps.length / 2)]];
-    const points = /* @__PURE__ */ new Set();
-    for (let i = 0; i < count; i += 1) {
-      points.add(Math.round(i * (baseSteps.length - 1) / (count - 1)));
-    }
-    const base500Index = baseSteps.indexOf(500);
-    if (base500Index >= 0 && !points.has(base500Index) && count >= 3) {
-      const sorted = Array.from(points);
-      let replace = sorted[0];
-      let distance = Math.abs(replace - base500Index);
-      for (const point of sorted) {
-        if (point === 0 || point === baseSteps.length - 1) continue;
-        const delta = Math.abs(point - base500Index);
-        if (delta < distance) {
-          replace = point;
-          distance = delta;
-        }
-      }
-      points.delete(replace);
-      points.add(base500Index);
-    }
-    return Array.from(points).sort((a, b) => a - b).map((index) => baseSteps[index]);
-  }
-  function nextShadeStep(previous) {
-    return previous === 950 ? 1e3 : previous + 100;
-  }
-  function extendSteps(baseSteps, count) {
-    const unique = Array.from(new Set(baseSteps)).sort((a, b) => a - b);
-    while (unique.length < count) {
-      unique.push(nextShadeStep(unique[unique.length - 1]));
-    }
-    return unique.slice(0, count);
-  }
-  function deriveShadeSteps(pattern, shadeCount) {
-    const base = basePatternSteps(pattern);
-    const requested = clampNumber(shadeCount, 6, 14, 11);
-    if (requested <= base.length) return pickSubset(base, requested);
-    return extendSteps(base, requested);
-  }
-  function resolveBaseStep(shadeSteps) {
-    if (shadeSteps.includes(500)) return 500;
-    const midpoint = (shadeSteps[0] + shadeSteps[shadeSteps.length - 1]) / 2;
-    return closestStep(shadeSteps, midpoint);
   }
   var COLOR_MODE_FAMILIES = ["bg", "text", "icon", "border"];
   var KIGEN_ALPHA_OPACITY_STEPS = {
@@ -5347,10 +5442,6 @@
     if (paletteName === "brand") return remapStepForBrand(requestedStep, shadeSteps);
     return resolveClosestPaletteStep(preset, paletteName, requestedStep);
   }
-  function normalizePresetSteps(preset) {
-    if (preset.steps.length) return sortPresetSteps(preset.steps.map((step) => String(step)));
-    return fallbackPresetSteps();
-  }
   function ensureNeutralStepExists(preset, neutralPalette, step) {
     return resolveClosestPaletteStep(preset, neutralPalette, step);
   }
@@ -5643,14 +5734,14 @@
     const tokens = [];
     const presetSteps = normalizePresetSteps(preset);
     const neutralPaletteSteps = getPaletteSteps(preset, options.neutralChoice);
-    const selectedPaletteSet = Array.isArray(options.selectedPalettes) && options.selectedPalettes.length ? new Set(options.selectedPalettes.map((palette) => normalizePaletteKey2(palette))) : null;
+    const selectedPaletteSet = Array.isArray(options.selectedPalettes) && options.selectedPalettes.length ? new Set(options.selectedPalettes.map((palette) => normalizePaletteKey(palette))) : null;
     if (selectedPaletteSet && options.neutralChoice) {
-      selectedPaletteSet.add(normalizePaletteKey2(options.neutralChoice));
+      selectedPaletteSet.add(normalizePaletteKey(options.neutralChoice));
     }
     tokens.push(createToken(COLLECTIONS.primitives, "colors/base/white", "COLOR", ["ALL_SCOPES"], raw(options.baseWhite)));
     tokens.push(createToken(COLLECTIONS.primitives, "colors/base/black", "COLOR", ["ALL_SCOPES"], raw(options.baseBlack)));
     for (const [paletteName, palette] of Object.entries(preset.palettes)) {
-      const paletteKey = normalizePaletteKey2(paletteName);
+      const paletteKey = normalizePaletteKey(paletteName);
       if (selectedPaletteSet && !selectedPaletteSet.has(paletteKey)) continue;
       const overridesByStep = (_d = (_c = (_a = options.paletteOverrides) == null ? void 0 : _a[paletteKey]) != null ? _c : (_b = options.paletteOverrides) == null ? void 0 : _b[paletteName]) != null ? _d : {};
       for (const step of presetSteps) {
@@ -5776,13 +5867,13 @@
     const neutralChoice = preset.neutralOptions.includes(candidateNeutral) ? candidateNeutral : preset.defaultNeutral;
     const rawBrandsInput = Array.isArray(input.brands) ? input.brands : [];
     const selectedPalettesInput = Array.isArray(input.selectedPalettes) ? (_b = input.selectedPalettes) != null ? _b : [] : [];
-    const selectedPalettes = selectedPalettesInput.map((entry) => normalizePaletteKey2(String(entry || ""))).filter(Boolean);
+    const selectedPalettes = selectedPalettesInput.map((entry) => normalizePaletteKey(String(entry || ""))).filter(Boolean);
     const paletteOverridesInput = input.paletteOverrides;
     const paletteOverrides = {};
     if (paletteOverridesInput && typeof paletteOverridesInput === "object") {
       for (const [paletteName, stepValues] of Object.entries(paletteOverridesInput)) {
         if (!stepValues || typeof stepValues !== "object") continue;
-        const normalizedPalette = normalizePaletteKey2(paletteName);
+        const normalizedPalette = normalizePaletteKey(paletteName);
         if (!normalizedPalette) continue;
         const overridesForPalette = {};
         for (const [step, rawValue] of Object.entries(stepValues)) {
@@ -5877,6 +5968,7 @@
     const iconSize = Number.isFinite(iconSizeCandidate) && iconSizeCandidate >= 12 && iconSizeCandidate <= 64 ? Math.round(iconSizeCandidate) : DEFAULT_ICON_SIZE;
     const iconColorAlias = inputIcons && typeof inputIcons.colorAlias === "string" && inputIcons.colorAlias.trim().length ? inputIcons.colorAlias.trim().toLowerCase() : DEFAULT_ICON_COLOR_ALIAS;
     const iconStroke = normalizeIconStrokeId(inputIcons == null ? void 0 : inputIcons.stroke);
+    const exportJson = input.exportJson === true;
     return {
       tokenLevel,
       uiMode,
@@ -5893,6 +5985,7 @@
       paletteOverrides,
       semanticOverrides,
       tokenBundle,
+      exportJson,
       icons: {
         library: iconLibrary,
         includeStarterPack,
@@ -6235,16 +6328,7 @@
     }
     report.migrations.push(`Text styles: ${created} created, ${updated} updated (family/size/weight/line-height linked).`);
   }
-  async function applyGeneration(options, progress) {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
-    const totalStart = Date.now();
-    const preset = getPresetById(options.presetId);
-    if (!preset) throw new Error(`Preset inconnu: ${options.presetId}`);
-    progress == null ? void 0 : progress("Pr\xE9paration des tokens...");
-    const tokenPhaseStart = Date.now();
-    const shadeSteps = deriveShadeSteps(options.namingPattern, options.shadeCount);
-    const baseStep = resolveBaseStep(shadeSteps);
-    const brands = normalizeBrands(options.brands, preset, shadeSteps, baseStep);
+  function buildGeneratedTokenDefinitions(options, preset, brands, shadeSteps) {
     const tokens = [];
     tokens.push(...buildPrimitiveTokens(options, preset, brands, shadeSteps));
     tokens.push(...buildTypographyTokens(options));
@@ -6268,6 +6352,71 @@
         tokens.push(...colorModesResult.tokens);
       }
     }
+    return { tokens, bundleColorModeTokens, colorModesResult };
+  }
+  function clearLastGeneratedJsonExport() {
+    lastGeneratedExportJson = null;
+    lastGeneratedExportFilename = null;
+    lastGeneratedExportMetadata = null;
+  }
+  function jsonByteLength(value) {
+    var _a;
+    let bytes = 0;
+    for (let index = 0; index < value.length; index += 1) {
+      const codePoint = (_a = value.codePointAt(index)) != null ? _a : 0;
+      if (codePoint > 65535) index += 1;
+      if (codePoint <= 127) bytes += 1;
+      else if (codePoint <= 2047) bytes += 2;
+      else if (codePoint <= 65535) bytes += 3;
+      else bytes += 4;
+    }
+    return bytes;
+  }
+  function prepareGeneratedJsonExport(tokens) {
+    const json = exportTokenDefinitionsJson(tokens);
+    const filename = DEFAULT_JSON_EXPORT_FILENAME;
+    const metadata = {
+      jsonReady: true,
+      filename,
+      bytes: jsonByteLength(json),
+      tokenCount: tokens.length
+    };
+    lastGeneratedExportJson = json;
+    lastGeneratedExportFilename = filename;
+    lastGeneratedExportMetadata = metadata;
+    return metadata;
+  }
+  function getLastGeneratedJsonExport() {
+    if (!lastGeneratedExportJson || !lastGeneratedExportMetadata) {
+      return {
+        type: "json-export-result",
+        jsonReady: false,
+        filename: null,
+        bytes: 0,
+        tokenCount: 0,
+        json: null
+      };
+    }
+    return __spreadProps(__spreadValues({
+      type: "json-export-result"
+    }, lastGeneratedExportMetadata), {
+      filename: lastGeneratedExportFilename != null ? lastGeneratedExportFilename : lastGeneratedExportMetadata.filename,
+      json: lastGeneratedExportJson
+    });
+  }
+  async function applyGeneration(options, progress) {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    const totalStart = Date.now();
+    const preset = getPresetById(options.presetId);
+    if (!preset) throw new Error(`Preset inconnu: ${options.presetId}`);
+    progress == null ? void 0 : progress("Pr\xE9paration des tokens...");
+    const tokenPhaseStart = Date.now();
+    const shadeSteps = deriveShadeSteps(options.namingPattern, options.shadeCount);
+    const baseStep = resolveBaseStep(shadeSteps);
+    const brands = normalizeBrands(options.brands, preset, shadeSteps, baseStep);
+    const { tokens, bundleColorModeTokens, colorModesResult } = buildGeneratedTokenDefinitions(options, preset, brands, shadeSteps);
+    clearLastGeneratedJsonExport();
+    const exportJsonMetadata = options.exportJson === true ? prepareGeneratedJsonExport(tokens) : null;
     const tokenPhaseMs = Date.now() - tokenPhaseStart;
     progress == null ? void 0 : progress(`Tokens pr\xE9par\xE9s (${tokens.length}).`);
     const targetCollections = [COLLECTIONS.primitives, COLLECTIONS.typography, COLLECTIONS.spacing, COLLECTIONS.radius];
@@ -6282,7 +6431,8 @@
       aliasMissing: 0,
       warnings: [],
       migrations: [],
-      collections: targetCollections.map((name) => ({ name, created: 0, updated: 0, collisionsReplaced: 0 }))
+      collections: targetCollections.map((name) => ({ name, created: 0, updated: 0, collisionsReplaced: 0 })),
+      exportJson: exportJsonMetadata != null ? exportJsonMetadata : void 0
     };
     if (bundleColorModeTokens.length) {
       report.migrations.push(`TokenBundle semantic branche: ${bundleColorModeTokens.length} tokens utilises.`);
@@ -6832,6 +6982,10 @@
       if (payload.type === "ui-ready") {
         postPresetList();
         await postFontFamiliesList();
+        return;
+      }
+      if (payload.type === "request-last-json-export") {
+        figma.ui.postMessage(getLastGeneratedJsonExport());
         return;
       }
       if (payload.type === "generate-variables") {

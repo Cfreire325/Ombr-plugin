@@ -1968,6 +1968,65 @@
         white-space: pre-wrap;
       }
 
+      .json-export-row {
+        display: flex;
+        align-items: center;
+        gap: var(--ds-spacing-md);
+      }
+
+      .json-export-row .label {
+        order: 2;
+        color: var(--neutral-400);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+      }
+
+      .json-export-row .ui-checkbox {
+        order: 1;
+        flex: 0 0 auto;
+      }
+
+      .json-export-panel {
+        border: 1px solid var(--neutral-700);
+        border-radius: var(--ds-radius-md);
+        padding: var(--ds-spacing-lg);
+        background: rgba(38, 38, 38, 0.7);
+        display: grid;
+        gap: var(--ds-spacing-md);
+      }
+
+      .json-export-panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--ds-spacing-lg);
+      }
+
+      .json-export-name {
+        color: var(--zinc-50);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 600;
+      }
+
+      .json-export-meta {
+        color: var(--neutral-400);
+        font-family: "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 11px;
+        line-height: 15px;
+      }
+
+      .json-export-error {
+        color: var(--danger);
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .json-export-error:empty {
+        display: none;
+      }
+
       .error {
         margin-top: 0;
         color: var(--danger);
@@ -2934,6 +2993,31 @@
             <div id="fontGrid" class="text-style-list"></div>
           </div>
 
+          <div class="panel-divider screen4-panel-divider" aria-hidden="true"></div>
+
+          <div class="section-block section-block--export">
+            <div class="section-head">
+              <h2 class="section-title screen4-section-title">Export développeur</h2>
+              <p class="muted">Prépare un JSON TokenBundle téléchargeable après génération.</p>
+            </div>
+
+            <label class="field json-export-row">
+              <span class="label">Prepare JSON export</span>
+              <input id="prepareJsonExportCheckbox" class="ui-checkbox" type="checkbox" />
+            </label>
+
+            <div id="jsonExportPanel" class="json-export-panel is-hidden" aria-live="polite">
+              <div class="json-export-panel-head">
+                <div>
+                  <div id="jsonExportFilename" class="json-export-name"></div>
+                  <div id="jsonExportMeta" class="json-export-meta"></div>
+                </div>
+                <button id="downloadJsonExportBtn" class="ds-button ds-button--secondary ds-button--small" type="button">Download JSON</button>
+              </div>
+              <div id="jsonExportError" class="json-export-error"></div>
+            </div>
+          </div>
+
           <div id="status" class="status"></div>
           <pre id="reportBox" class="report" style="display: none"></pre>
         </div>
@@ -3502,6 +3586,7 @@
         baseWhite: "#ffffff",
         baseBlack: "#000000",
         createTextStyles: true,
+        prepareJsonExport: false,
         fontFamilies: [],
         icons: {
           library: "lucide",
@@ -3567,6 +3652,12 @@
       const iconPreviewSelect = document.getElementById("iconPreviewSelect");
       const iconPreviewStage = document.getElementById("iconPreviewStage");
       const iconSettingsSummary = document.getElementById("iconSettingsSummary");
+      const prepareJsonExportCheckbox = document.getElementById("prepareJsonExportCheckbox");
+      const jsonExportPanel = document.getElementById("jsonExportPanel");
+      const jsonExportFilename = document.getElementById("jsonExportFilename");
+      const jsonExportMeta = document.getElementById("jsonExportMeta");
+      const jsonExportError = document.getElementById("jsonExportError");
+      const downloadJsonExportBtn = document.getElementById("downloadJsonExportBtn");
       const status = document.getElementById("status");
       const reportBox = document.getElementById("reportBox");
 
@@ -3610,6 +3701,8 @@
       let generationSlowTimer = null;
       let generationVerySlowTimer = null;
       let generationFailSafeTimer = null;
+      let jsonExportMetadata = null;
+      let jsonExportRequestInFlight = false;
       const customSelectRegistry = new Map();
       let openCustomSelectId = "";
 
@@ -4735,6 +4828,89 @@
       function clearReport() {
         reportBox.style.display = "none";
         reportBox.textContent = "";
+      }
+
+      function formatApproxBytes(bytes) {
+        const value = Number(bytes);
+        if (!Number.isFinite(value) || value <= 0) return "0 B";
+        if (value < 1024) return `${Math.round(value)} B`;
+        if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
+        return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+      }
+
+      function clearJsonExportState() {
+        jsonExportMetadata = null;
+        jsonExportRequestInFlight = false;
+        if (jsonExportPanel) jsonExportPanel.classList.add("is-hidden");
+        if (jsonExportFilename) jsonExportFilename.textContent = "";
+        if (jsonExportMeta) jsonExportMeta.textContent = "";
+        if (jsonExportError) jsonExportError.textContent = "";
+        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+      }
+
+      function renderJsonExportReady(metadata) {
+        if (!metadata || metadata.jsonReady !== true) {
+          clearJsonExportState();
+          return;
+        }
+        jsonExportMetadata = metadata;
+        if (jsonExportPanel) jsonExportPanel.classList.remove("is-hidden");
+        if (jsonExportFilename) jsonExportFilename.textContent = metadata.filename || "ombrstudio-token-bundle.json";
+        if (jsonExportMeta) {
+          const tokenCount = Number(metadata.tokenCount) || 0;
+          jsonExportMeta.textContent = `${formatApproxBytes(metadata.bytes)} · ${tokenCount} token${tokenCount === 1 ? "" : "s"}`;
+        }
+        if (jsonExportError) jsonExportError.textContent = "";
+        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+      }
+
+      function setJsonExportError(message) {
+        if (jsonExportPanel) jsonExportPanel.classList.remove("is-hidden");
+        if (jsonExportError) jsonExportError.textContent = message;
+        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+        jsonExportRequestInFlight = false;
+      }
+
+      function requestLastJsonExport() {
+        if (!jsonExportMetadata?.jsonReady) {
+          setJsonExportError("Aucun export JSON disponible. Active l’option puis relance la génération.");
+          return;
+        }
+        if (jsonExportRequestInFlight) return;
+        jsonExportRequestInFlight = true;
+        if (jsonExportError) jsonExportError.textContent = "";
+        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = true;
+        parent.postMessage({ pluginMessage: { type: "request-last-json-export" } }, "*");
+      }
+
+      function downloadJsonExportFromMessage(msg) {
+        if (!msg || msg.jsonReady !== true) {
+          setJsonExportError("Aucun export JSON disponible. Relance la génération avec l’option active.");
+          return;
+        }
+        if (!msg.json || typeof msg.json !== "string") {
+          setJsonExportError("Export JSON vide ou introuvable.");
+          return;
+        }
+        try {
+          const filename = msg.filename || jsonExportMetadata?.filename || "ombrstudio-token-bundle.json";
+          const blob = new Blob([msg.json], { type: "application/json;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = filename;
+          link.style.display = "none";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+          jsonExportRequestInFlight = false;
+          if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+          if (jsonExportError) jsonExportError.textContent = "";
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error || "");
+          setJsonExportError(`Export request failed: ${message || "download impossible"}`);
+        }
       }
 
       function reportUiRuntimeError(prefix, detail) {
@@ -6179,6 +6355,7 @@
 
         syncTypography();
         clearReport();
+        clearJsonExportState();
         setStatus("Génération en cours...");
         startGenerationWatchdog();
 
@@ -6200,6 +6377,7 @@
                 baseWhite: state.baseWhite,
                 baseBlack: state.baseBlack,
                 createTextStyles: state.createTextStyles,
+                exportJson: state.prepareJsonExport === true,
                 typography: state.typography,
                 icons: state.icons,
               },
@@ -6330,6 +6508,13 @@
         createTextStylesCheckbox.addEventListener("change", () => {
           state.createTextStyles = Boolean(createTextStylesCheckbox.checked);
         });
+        prepareJsonExportCheckbox.addEventListener("change", () => {
+          state.prepareJsonExport = Boolean(prepareJsonExportCheckbox.checked);
+          if (!state.prepareJsonExport) {
+            clearJsonExportState();
+          }
+        });
+        downloadJsonExportBtn.addEventListener("click", requestLastJsonExport);
         iconLibrarySelect.addEventListener("change", () => {
           syncIconsFromControls();
           renderIconSettings();
@@ -6389,6 +6574,11 @@
               report.collisionsReplaced || 0
             } collisions${report.aliasMissing ? `, ${report.aliasMissing} alias manquants` : ""}.`;
             setStatus(text, "ok");
+            if (report.exportJson?.jsonReady === true) {
+              renderJsonExportReady(report.exportJson);
+            } else {
+              clearJsonExportState();
+            }
 
             const messages = [];
             if (Array.isArray(report.migrations) && report.migrations.length) {
@@ -6405,6 +6595,11 @@
             } else {
               clearReport();
             }
+            return;
+          }
+
+          if (msg.type === "json-export-result") {
+            downloadJsonExportFromMessage(msg);
             return;
           }
 
@@ -6426,6 +6621,7 @@
         uiModeSelect.value = state.uiMode;
         baseWhiteInput.value = state.baseWhite;
         baseBlackInput.value = state.baseBlack;
+        prepareJsonExportCheckbox.checked = state.prepareJsonExport === true;
         syncBrandModalSwatch();
         renderPatterns();
         renderModeCards();

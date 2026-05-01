@@ -20,6 +20,9 @@
     "test:spacing-radius-tokens": "npm run test:spacing-radius-tokens --prefix packages/plugin-starter-tokens",
     "test:generation-options": "npm run test:generation-options --prefix packages/plugin-starter-tokens",
     "test:bundle-color-modes": "npm run test:bundle-color-modes --prefix packages/plugin-starter-tokens",
+    "test:token-assembly": "npm run test:token-assembly --prefix packages/plugin-starter-tokens",
+    "test:json-export-controller": "npm run test:json-export-controller --prefix packages/plugin-starter-tokens",
+    "test:ui-json-export": "npm run test:ui-json-export --prefix packages/plugin-starter-tokens",
     "test:token-bundle-mapper": "npm run test:token-bundle-mapper --prefix packages/plugin-starter-tokens",
     "test:token-definitions-export": "npm run test:token-definitions-export --prefix packages/plugin-starter-tokens",
     "test:exporters": "npm run test --prefix packages/exporters"
