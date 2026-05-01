@@ -2,11 +2,15 @@
   "name": "starter-tokens-monorepo",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "build": "npm run build --prefix packages/plugin-starter-tokens",
     "typecheck": "npm run typecheck --prefix packages/plugin-starter-tokens",
+    "dev:web": "npm run dev --prefix apps/web",
+    "build:web": "npm run build --prefix apps/web",
+    "typecheck:web": "npm run typecheck --prefix apps/web",
     "extract:presets": "npm run extract:presets --prefix packages/plugin-starter-tokens",
     "extract:palette-presets": "npm run extract:palette-presets --prefix packages/plugin-starter-tokens",
     "extract:text-styles": "npm run extract:text-styles --prefix packages/plugin-starter-tokens",

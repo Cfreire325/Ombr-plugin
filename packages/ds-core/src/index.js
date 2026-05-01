@@ -302,3 +302,9 @@ export {
   resolveBaseStep,
   sortPresetSteps,
 } from "./palette-steps.js";
+
+export {
+  BUILTIN_COLOR_PRESETS,
+  getColorPresetById,
+  getColorPresetSummaries,
+} from "./presets/index.js";

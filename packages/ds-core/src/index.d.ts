@@ -76,3 +76,36 @@ export function resolveClosestPaletteStep(
 ): string;
 export function normalizePresetSteps(preset: { steps: Array<string | number> }): string[];
 export function closestPresetStep(steps: string[], target: number): string;
+
+export interface ColorPresetPalettePreview {
+  key?: string;
+  name: string;
+  steps: string[];
+  colorsByStep: Record<string, string>;
+}
+
+export interface ColorPresetDefinition {
+  id: string;
+  label: string;
+  description: string;
+  palettes: Record<string, Record<string, string>>;
+  neutralOptions: string[];
+  defaultNeutral: string;
+  steps: string[];
+  previewPalettes: ColorPresetPalettePreview[];
+}
+
+export interface ColorPresetSummary {
+  id: string;
+  label: string;
+  description: string;
+  paletteCount: number;
+  neutralOptions: string[];
+  defaultNeutral: string;
+  steps: string[];
+  previewPalettes: Required<ColorPresetPalettePreview>[];
+}
+
+export const BUILTIN_COLOR_PRESETS: ColorPresetDefinition[];
+export function getColorPresetById(presetId: string): ColorPresetDefinition | undefined;
+export function getColorPresetSummaries(): ColorPresetSummary[];

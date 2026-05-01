@@ -1,0 +1,27 @@
+{
+  "name": "@starter-tokens/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ombr Studio Creator web app shell",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "node src/domain/project.test.mjs && node src/domain/token-bundle.test.mjs && node src/storage/local-projects.test.mjs"
+  },
+  "dependencies": {
+    "@starter-tokens/ds-core": "1.0.0",
+    "@starter-tokens/exporters": "1.0.0",
+    "@vitejs/plugin-react": "^5.1.2",
+    "vite": "^7.2.7",
+    "typescript": "^5.9.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3"
+  }
+}

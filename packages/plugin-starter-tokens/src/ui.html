@@ -2003,6 +2003,13 @@
         gap: var(--ds-spacing-lg);
       }
 
+      .json-export-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--ds-spacing-sm);
+        flex: 0 0 auto;
+      }
+
       .json-export-name {
         color: var(--zinc-50);
         font-size: 12px;
@@ -3012,7 +3019,10 @@
                   <div id="jsonExportFilename" class="json-export-name"></div>
                   <div id="jsonExportMeta" class="json-export-meta"></div>
                 </div>
-                <button id="downloadJsonExportBtn" class="ds-button ds-button--secondary ds-button--small" type="button">Download JSON</button>
+                <div class="json-export-actions">
+                  <button id="copyJsonExportBtn" class="ds-button ds-button--secondary ds-button--small" type="button">Copy JSON</button>
+                  <button id="downloadJsonExportBtn" class="ds-button ds-button--secondary ds-button--small" type="button">Download JSON</button>
+                </div>
               </div>
               <div id="jsonExportError" class="json-export-error"></div>
             </div>
@@ -3657,6 +3667,7 @@
       const jsonExportFilename = document.getElementById("jsonExportFilename");
       const jsonExportMeta = document.getElementById("jsonExportMeta");
       const jsonExportError = document.getElementById("jsonExportError");
+      const copyJsonExportBtn = document.getElementById("copyJsonExportBtn");
       const downloadJsonExportBtn = document.getElementById("downloadJsonExportBtn");
       const status = document.getElementById("status");
       const reportBox = document.getElementById("reportBox");
@@ -3703,6 +3714,8 @@
       let generationFailSafeTimer = null;
       let jsonExportMetadata = null;
       let jsonExportRequestInFlight = false;
+      let jsonExportRequestTimer = null;
+      let jsonExportPendingAction = "";
       const customSelectRegistry = new Map();
       let openCustomSelectId = "";
 
@@ -4830,6 +4843,13 @@
         reportBox.textContent = "";
       }
 
+      function clearJsonExportRequestTimer() {
+        if (jsonExportRequestTimer) {
+          clearTimeout(jsonExportRequestTimer);
+          jsonExportRequestTimer = null;
+        }
+      }
+
       function formatApproxBytes(bytes) {
         const value = Number(bytes);
         if (!Number.isFinite(value) || value <= 0) return "0 B";
@@ -4838,14 +4858,21 @@
         return `${(value / (1024 * 1024)).toFixed(1)} MB`;
       }
 
+      function setJsonExportActionsDisabled(disabled) {
+        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = Boolean(disabled);
+        if (copyJsonExportBtn) copyJsonExportBtn.disabled = Boolean(disabled);
+      }
+
       function clearJsonExportState() {
         jsonExportMetadata = null;
         jsonExportRequestInFlight = false;
+        jsonExportPendingAction = "";
+        clearJsonExportRequestTimer();
         if (jsonExportPanel) jsonExportPanel.classList.add("is-hidden");
         if (jsonExportFilename) jsonExportFilename.textContent = "";
         if (jsonExportMeta) jsonExportMeta.textContent = "";
         if (jsonExportError) jsonExportError.textContent = "";
-        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+        setJsonExportActionsDisabled(false);
       }
 
       function renderJsonExportReady(metadata) {
@@ -4861,29 +4888,37 @@
           jsonExportMeta.textContent = `${formatApproxBytes(metadata.bytes)} · ${tokenCount} token${tokenCount === 1 ? "" : "s"}`;
         }
         if (jsonExportError) jsonExportError.textContent = "";
-        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+        setJsonExportActionsDisabled(false);
       }
 
       function setJsonExportError(message) {
+        clearJsonExportRequestTimer();
         if (jsonExportPanel) jsonExportPanel.classList.remove("is-hidden");
         if (jsonExportError) jsonExportError.textContent = message;
-        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+        setJsonExportActionsDisabled(false);
         jsonExportRequestInFlight = false;
+        jsonExportPendingAction = "";
       }
 
-      function requestLastJsonExport() {
+      function requestLastJsonExport(action = "download") {
         if (!jsonExportMetadata?.jsonReady) {
           setJsonExportError("Aucun export JSON disponible. Active l’option puis relance la génération.");
           return;
         }
         if (jsonExportRequestInFlight) return;
         jsonExportRequestInFlight = true;
+        jsonExportPendingAction = action === "copy" ? "copy" : "download";
         if (jsonExportError) jsonExportError.textContent = "";
-        if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = true;
+        setJsonExportActionsDisabled(true);
+        clearJsonExportRequestTimer();
+        jsonExportRequestTimer = setTimeout(() => {
+          setJsonExportError("Export request failed: aucun retour du plugin.");
+        }, 10000);
         parent.postMessage({ pluginMessage: { type: "request-last-json-export" } }, "*");
       }
 
       function downloadJsonExportFromMessage(msg) {
+        clearJsonExportRequestTimer();
         if (!msg || msg.jsonReady !== true) {
           setJsonExportError("Aucun export JSON disponible. Relance la génération avec l’option active.");
           return;
@@ -4892,24 +4927,55 @@
           setJsonExportError("Export JSON vide ou introuvable.");
           return;
         }
+        let url = "";
+        let link = null;
         try {
           const filename = msg.filename || jsonExportMetadata?.filename || "ombrstudio-token-bundle.json";
           const blob = new Blob([msg.json], { type: "application/json;charset=utf-8" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
+          url = URL.createObjectURL(blob);
+          link = document.createElement("a");
           link.href = url;
           link.download = filename;
           link.style.display = "none";
           document.body.appendChild(link);
           link.click();
-          link.remove();
-          URL.revokeObjectURL(url);
           jsonExportRequestInFlight = false;
-          if (downloadJsonExportBtn) downloadJsonExportBtn.disabled = false;
+          jsonExportPendingAction = "";
+          setJsonExportActionsDisabled(false);
           if (jsonExportError) jsonExportError.textContent = "";
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error || "");
           setJsonExportError(`Export request failed: ${message || "download impossible"}`);
+        } finally {
+          if (link) link.remove();
+          if (url) URL.revokeObjectURL(url);
+        }
+      }
+
+      async function copyJsonExportFromMessage(msg) {
+        clearJsonExportRequestTimer();
+        if (!msg || msg.jsonReady !== true) {
+          setJsonExportError("Aucun export JSON disponible. Relance la génération avec l’option active.");
+          return;
+        }
+        if (!msg.json || typeof msg.json !== "string") {
+          setJsonExportError("Export JSON vide ou introuvable.");
+          return;
+        }
+        if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") {
+          setJsonExportError("Clipboard unavailable: copie JSON impossible dans cet environnement.");
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(msg.json);
+          jsonExportRequestInFlight = false;
+          jsonExportPendingAction = "";
+          setJsonExportActionsDisabled(false);
+          if (jsonExportError) jsonExportError.textContent = "";
+          setStatus("JSON copié dans le presse-papiers.", "ok");
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error || "");
+          setJsonExportError(`Clipboard unavailable: ${message || "copie impossible"}`);
         }
       }
 
@@ -6358,29 +6424,32 @@
         clearJsonExportState();
         setStatus("Génération en cours...");
         startGenerationWatchdog();
+        const generationPayload = {
+          tokenLevel: state.tokenLevel,
+          uiMode: state.uiMode,
+          namingPattern: state.namingPattern,
+          shadeCount: state.shadeCount,
+          brands: state.brands,
+          presetId: state.presetId,
+          neutralChoice: state.neutralChoice,
+          selectedPalettes: state.tokenLevel === "color-modes" ? collectSemanticPaletteKeys() : state.selectedPaletteKeys,
+          paletteOverrides: currentPresetPaletteOverrides(),
+          semanticOverrides: state.semanticOverrides,
+          baseWhite: state.baseWhite,
+          baseBlack: state.baseBlack,
+          createTextStyles: state.createTextStyles,
+          typography: state.typography,
+          icons: state.icons,
+        };
+        if (state.prepareJsonExport === true) {
+          generationPayload.exportJson = true;
+        }
 
         parent.postMessage(
           {
             pluginMessage: {
               type: "generate-variables",
-              payload: {
-                tokenLevel: state.tokenLevel,
-                uiMode: state.uiMode,
-                namingPattern: state.namingPattern,
-                shadeCount: state.shadeCount,
-                brands: state.brands,
-                presetId: state.presetId,
-                neutralChoice: state.neutralChoice,
-                selectedPalettes: state.tokenLevel === "color-modes" ? collectSemanticPaletteKeys() : state.selectedPaletteKeys,
-                paletteOverrides: currentPresetPaletteOverrides(),
-                semanticOverrides: state.semanticOverrides,
-                baseWhite: state.baseWhite,
-                baseBlack: state.baseBlack,
-                createTextStyles: state.createTextStyles,
-                exportJson: state.prepareJsonExport === true,
-                typography: state.typography,
-                icons: state.icons,
-              },
+              payload: generationPayload,
             },
           },
           "*",
@@ -6514,7 +6583,8 @@
             clearJsonExportState();
           }
         });
-        downloadJsonExportBtn.addEventListener("click", requestLastJsonExport);
+        copyJsonExportBtn.addEventListener("click", () => requestLastJsonExport("copy"));
+        downloadJsonExportBtn.addEventListener("click", () => requestLastJsonExport("download"));
         iconLibrarySelect.addEventListener("change", () => {
           syncIconsFromControls();
           renderIconSettings();
@@ -6599,7 +6669,17 @@
           }
 
           if (msg.type === "json-export-result") {
-            downloadJsonExportFromMessage(msg);
+            if (!jsonExportPendingAction) {
+              return;
+            }
+            if (jsonExportPendingAction === "copy") {
+              copyJsonExportFromMessage(msg);
+              return;
+            }
+            if (jsonExportPendingAction === "download") {
+              downloadJsonExportFromMessage(msg);
+              return;
+            }
             return;
           }
 
