@@ -4,6 +4,8 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import ts from "typescript";
 
+import { normalizePaletteKey, normalizeTokenName, sanitizeKebabSegment } from "../../../ds-core/src/index.js";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageSrcDir = path.resolve(__dirname, "..");
@@ -39,7 +41,7 @@ async function importPaletteStepHarness() {
   const sourceWithoutImports = source.replace(/^import[\s\S]*?;\r?\n/gm, "");
   const dsCoreHarnessUrl = pathToFileURL(path.resolve(packageSrcDir, "../../ds-core/src/index.js")).href;
   const harnessSource = `
-import { basePatternSteps, closestPresetStep, closestStep, deriveShadeSteps, extendSteps, fallbackPresetSteps, getPaletteSteps, nextShadeStep, normalizePresetSteps, parsePresetNumericStep, pickSubset, resolveBaseStep, resolveClosestPaletteStep, sortPresetSteps } from "${dsCoreHarnessUrl}";
+import { basePatternSteps, closestPresetStep, closestStep, deriveShadeSteps, extendSteps, fallbackPresetSteps, getPaletteSteps, nextShadeStep, normalizePaletteKey, normalizePresetSteps, parsePresetNumericStep, pickSubset, resolveBaseStep, resolveClosestPaletteStep, sortPresetSteps } from "${dsCoreHarnessUrl}";
 const __html__ = "";
 const { buildBrandScale, colorWithAlpha, parseColorInput, sanitizeKebabSegment } = globalThis.__colorUtilsForPaletteStepTest;
 const BUILTIN_PRESETS = [];
@@ -64,7 +66,6 @@ export {
   fallbackPresetSteps,
   getPaletteSteps,
   nextShadeStep,
-  normalizePaletteKey,
   normalizePresetSteps,
   parsePresetNumericStep,
   pickSubset,
@@ -94,7 +95,6 @@ const {
   fallbackPresetSteps,
   getPaletteSteps,
   nextShadeStep,
-  normalizePaletteKey,
   normalizePresetSteps,
   parsePresetNumericStep,
   pickSubset,
@@ -156,6 +156,35 @@ assert.equal(normalizePaletteKey("Brand Primary"), "brand-primary", "normalizePa
 assert.equal(normalizePaletteKey(" brand.primary/Primary! "), "brand-primary-primary", "normalizePaletteKey replaces punctuation");
 assert.equal(normalizePaletteKey(""), "", "normalizePaletteKey keeps empty values empty");
 assert.equal(normalizePaletteKey("Brand Primary"), normalizePaletteKey("brand_primary"), "different inputs can normalize to the same key");
+assert.equal(normalizePaletteKey("éèà"), "", "normalizePaletteKey strips unicode-only input to empty");
+assert.equal(sanitizeKebabSegment("éèà", ""), "eea", "sanitizeKebabSegment removes accents before kebab conversion");
+assert.equal(normalizePaletteKey("brand.primary/test_name"), "brand-primary-test-name", "normalizePaletteKey flattens dot slash and underscore separators");
+assert.equal(normalizePaletteKey("brand primary"), "brand-primary", "normalizePaletteKey flattens spaces");
+assert.equal(normalizePaletteKey("brand---primary"), "brand-primary", "normalizePaletteKey collapses repeated hyphens through separator replacement");
+assert.equal(normalizePaletteKey("brand___primary"), "brand-primary", "normalizePaletteKey collapses repeated underscores through separator replacement");
+assert.equal(normalizePaletteKey("brand...primary"), "brand-primary", "normalizePaletteKey collapses repeated dots through separator replacement");
+assert.equal(normalizePaletteKey("   "), "", "normalizePaletteKey keeps whitespace-only input empty");
+assert.equal(normalizePaletteKey("!!!"), "", "normalizePaletteKey keeps punctuation-only input empty");
+assert.equal(normalizePaletteKey("★★★"), "", "normalizePaletteKey keeps non-alphanumeric-only input empty");
+assert.equal(normalizePaletteKey("123"), "123", "normalizePaletteKey preserves numeric input strings");
+assert.equal(normalizePaletteKey("brand-123"), "brand-123", "normalizePaletteKey preserves mixed alpha numeric hyphenated strings");
+assert.equal(normalizePaletteKey("Brand 2 Primary 500"), "brand-2-primary-500", "normalizePaletteKey preserves mixed numeric alphabetic content");
+assert.equal(normalizePaletteKey("Brand Primary"), "brand-primary", "normalizePaletteKey collision case: spaced words");
+assert.equal(normalizePaletteKey("brand_primary"), "brand-primary", "normalizePaletteKey collision case: underscore");
+assert.equal(normalizePaletteKey("brand-primary"), "brand-primary", "normalizePaletteKey collision case: existing kebab");
+assert.equal(normalizeTokenName("brand.primary/test_name"), "brand/primary/test-name", "normalizeTokenName preserves slash-case path structure");
+assert.equal(
+  normalizePaletteKey("brand.primary/test_name"),
+  sanitizeKebabSegment("brand.primary/test_name", ""),
+  "normalizePaletteKey and sanitizeKebabSegment match for representative ASCII palette keys",
+);
+assert.notEqual(
+  normalizePaletteKey("brand.primary/test_name"),
+  normalizeTokenName("brand.primary/test_name"),
+  "normalizePaletteKey flattens paths while normalizeTokenName preserves them",
+);
+assert.equal(normalizePaletteKey(""), "", "normalizePaletteKey has no fallback for empty input");
+assert.equal(sanitizeKebabSegment("", "fallback-name"), "fallback-name", "sanitizeKebabSegment applies a fallback for empty input");
 
 assert.equal(parsePresetNumericStep("500"), 500, "parsePresetNumericStep parses integers");
 assert.equal(parsePresetNumericStep("050"), 50, "parsePresetNumericStep parses leading-zero numbers");

@@ -19,6 +19,9 @@
     "test:typography-tokens": "npm run test:typography-tokens --prefix packages/plugin-starter-tokens",
     "test:spacing-radius-tokens": "npm run test:spacing-radius-tokens --prefix packages/plugin-starter-tokens",
     "test:generation-options": "npm run test:generation-options --prefix packages/plugin-starter-tokens",
-    "test:bundle-color-modes": "npm run test:bundle-color-modes --prefix packages/plugin-starter-tokens"
+    "test:bundle-color-modes": "npm run test:bundle-color-modes --prefix packages/plugin-starter-tokens",
+    "test:token-bundle-mapper": "npm run test:token-bundle-mapper --prefix packages/plugin-starter-tokens",
+    "test:token-definitions-export": "npm run test:token-definitions-export --prefix packages/plugin-starter-tokens",
+    "test:exporters": "npm run test --prefix packages/exporters"
   }
 }

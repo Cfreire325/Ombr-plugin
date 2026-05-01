@@ -1,0 +1,17 @@
+{
+  "name": "@starter-tokens/exporters",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pure developer-facing exporters for Starter Tokens TokenBundle data",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "test": "node tests/json-token-bundle.test.mjs"
+  },
+  "dependencies": {
+    "@starter-tokens/ds-core": "1.0.0"
+  }
+}

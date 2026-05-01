@@ -284,6 +284,8 @@ export {
   sanitizeKebabSegment,
 } from "./color-utils.js";
 
+export { normalizePaletteKey } from "./naming.js";
+
 export {
   basePatternSteps,
   closestPresetStep,

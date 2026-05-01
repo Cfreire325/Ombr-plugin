@@ -11,6 +11,7 @@ import {
   fallbackPresetSteps,
   getPaletteSteps,
   nextShadeStep,
+  normalizePaletteKey,
   normalizePresetSteps,
   parsePresetNumericStep,
   normalizeTokenBundle,
@@ -617,14 +618,6 @@ function createToken(
     scopes,
     value,
   };
-}
-
-function normalizePaletteKey(input: string): string {
-  return String(input || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 function createModeToken(

@@ -9,6 +9,6 @@
     ".": "./src/index.js"
   },
   "scripts": {
-    "test": "node tests/token-bundle.test.mjs"
+    "test": "node tests/token-bundle.test.mjs && node tests/naming.test.mjs"
   }
 }

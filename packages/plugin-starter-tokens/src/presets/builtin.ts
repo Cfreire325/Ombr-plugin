@@ -1,3 +1,4 @@
+import { normalizePaletteKey } from "../../../ds-core/src/index.js";
 import type { PresetDefinition, PresetSummary } from "./types";
 import { LOCAL_PRESETS } from "./local-presets.generated";
 import { STATIC_PRESETS } from "./static-presets";
@@ -14,14 +15,6 @@ function mergePresets(staticPresets: PresetDefinition[], localPresets: PresetDef
     existingIds.add(preset.id);
   }
   return merged;
-}
-
-function normalizePaletteKey(input: string): string {
-  return String(input || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 export const BUILTIN_PRESETS: PresetDefinition[] = mergePresets(STATIC_PRESETS, LOCAL_PRESETS);

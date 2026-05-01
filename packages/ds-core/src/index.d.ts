@@ -57,6 +57,7 @@ export function rgbaToHex(value: RGBA): string;
 export function colorWithAlpha(baseColor: string, alphaPct: number): string;
 export function sanitizeKebabSegment(input: string, fallback?: string): string;
 export function buildBrandScale(baseColor: string, steps: number[], baseStep?: number): Record<number, string>;
+export function normalizePaletteKey(input: string): string;
 export function basePatternSteps(pattern: string): number[];
 export function pickSubset(baseSteps: number[], count: number): number[];
 export function nextShadeStep(previous: number): number;

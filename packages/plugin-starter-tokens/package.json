@@ -16,6 +16,8 @@
     "test:spacing-radius-tokens": "node src/presets/spacing-radius-tokens.test.mjs",
     "test:generation-options": "node src/presets/generation-options.test.mjs",
     "test:bundle-color-modes": "node src/presets/bundle-color-modes.test.mjs",
+    "test:token-bundle-mapper": "node src/token-bundle-mapper.test.mjs",
+    "test:token-definitions-export": "node src/token-definitions-export.test.mjs",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit"
   },
