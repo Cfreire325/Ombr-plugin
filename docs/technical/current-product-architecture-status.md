@@ -69,18 +69,21 @@ Product and architecture docs:
 - `docs/technical/palette-step-extraction-note.md`
 - `docs/technical/palette-key-normalization-extraction-note.md`
 - `docs/technical/preset-lookup-extraction-note.md`
+- `docs/memory/LEARNINGS.md` (`LRN-005`)
 
-Searches also checked for common web app entrypoints:
+Current web app evidence also checked:
 
 - `apps/web`
-- `packages/web`
-- `app/`
-- `pages/`
-- `src/App.*`
-- `vite.config.*`
-- `next.config.*`
-- React/Next/Vite-style `main.*` and `index.html` entrypoints
-- package scripts such as `dev`, `start`, `web`, and `app`
+- `apps/web/package.json`
+- `apps/web/vite.config.ts`
+- `apps/web/index.html`
+- `apps/web/src/main.tsx`
+- `apps/web/src/App.tsx`
+- `apps/web/src/domain/project.ts`
+- `apps/web/src/domain/token-bundle.ts`
+- `apps/web/src/storage/local-projects.ts`
+- `apps/web/src/views/ExportJsonView.tsx`
+- root package scripts such as `dev:web`, `build:web`, and `typecheck:web`
 
 ## Repo Structure Summary
 
@@ -89,7 +92,8 @@ Current active top-level structure:
 ```text
 .
 ├── apps/
-│   └── docs/
+│   ├── docs/
+│   └── web/
 ├── docs/
 │   ├── agents/
 │   ├── product/
@@ -107,30 +111,31 @@ Current active top-level structure:
 └── README.md
 ```
 
-The root `package.json` currently declares workspaces only for:
+The root `package.json` currently declares workspaces for:
 
 ```json
-["packages/*"]
+["packages/*", "apps/*"]
 ```
 
-There is no active app workspace under `apps/*`.
+There is now an active app workspace under `apps/web`.
 
 ## Does A Web App Exist Today?
 
-No. There is no actual web app package today.
+Yes. `apps/web` now exists as a local-first React/Vite/TypeScript shell.
 
 Evidence:
 
-- No `apps/web` directory exists.
-- No `packages/web` directory exists.
-- No root-level `app/` or `pages/` app directory exists.
-- No `src/App.*`, `vite.config.*`, `next.config.*`, `index.html`, or React/Vite/Next entrypoint was found for a web app.
-- Root scripts contain plugin, `ds-core`, and exporter commands, but no `dev`, `start`, `web`, or app-specific script.
-- `apps/` contains only `apps/docs`, which is documentation.
+- `docs/memory/LEARNINGS.md` (`LRN-005`) marks `apps/web` as an active local-first Vite shell.
+- `apps/web/package.json` declares `@starter-tokens/web` with React, Vite, TypeScript, `@starter-tokens/ds-core`, and `@starter-tokens/exporters`.
+- `apps/web/vite.config.ts`, `apps/web/index.html`, `apps/web/src/main.tsx`, and `apps/web/src/App.tsx` are present.
+- `apps/web/src/domain/project.ts` defines local project state and foundations.
+- `apps/web/src/storage/local-projects.ts` persists projects through `localStorage`.
+- `apps/web/src/domain/token-bundle.ts` builds a minimal TokenBundle from project state without importing plugin runtime code.
+- Root scripts include `dev:web`, `build:web`, and `typecheck:web`.
 
-The current implemented product surface is the Figma plugin UI in `packages/plugin-starter-tokens/src/ui.html`.
+The Figma plugin UI in `packages/plugin-starter-tokens/src/ui.html` still exists and remains active, but it is no longer the only implemented product UI surface. The web app is currently a shell and does not yet cover the full V1 product scope.
 
-## Where The Web App Plan Is Documented
+## Where The Web App Direction Is Documented
 
 The web app direction is documented clearly in newer product and technical docs:
 
@@ -151,11 +156,11 @@ The web app direction is documented clearly in newer product and technical docs:
 
 - `docs/technical/monorepo-target-architecture.md`
   - Defines target structure with `apps/web`, `apps/figma-plugin`, `packages/ds-core`, `packages/exporters`, and `packages/figma-adapter`.
-  - States `apps/web` is the future primary product interface.
+  - States `apps/web` is the target primary product interface.
   - States `apps/figma-plugin` should be importer/synchronizer, not full product creator.
 
 - `docs/technical/migration-roadmap.md`
-  - Places `apps/web` creation in Phase 6.
+  - Historically placed `apps/web` creation in Phase 6; that creation step has now started.
   - Places plugin narrowing into importer behavior in Phase 8.
   - Places final move to `apps/figma-plugin` in Phase 9.
 
@@ -218,7 +223,7 @@ It currently owns:
 - `buildBrandScale`
 - palette and preset step helpers such as `deriveShadeSteps`, `basePatternSteps`, `resolveBaseStep`, `getPaletteSteps`, and `resolveClosestPaletteStep`
 
-This is already useful for a future web app because it provides the shared contract and several pure helpers.
+This is already useful for the `apps/web` shell and future web app expansion because it provides the shared contract and several pure helpers.
 
 But `ds-core` is not yet a complete web-app-ready product engine:
 
@@ -247,7 +252,7 @@ Current limits:
 - JSON is the only implemented exporter.
 - CSS variables export is documented but not implemented.
 - Tailwind config export is documented but not implemented.
-- There is no file/package export UI outside the plugin.
+- `apps/web/src/views/ExportJsonView.tsx` provides a shell-level JSON copy/download UI; there is still no CSS/Tailwind export UI.
 - Older docs such as `docs/technical/developer-export-surface-audit.md` and `docs/technical/phase-1-behavior-lock-checkpoint.md` say `packages/exporters` does not exist yet; those statements are now stale.
 
 ## Current State Of Figma Adapter
@@ -307,7 +312,7 @@ This is valuable for the current plugin but should not become the long-term prim
 
 ### Web-app-ready foundation
 
-Work already usable by a future web app:
+Work already usable by the `apps/web` shell and future web app expansion:
 
 - TokenBundle contract and docs.
 - `ds-core` normalization and validation.
@@ -412,10 +417,10 @@ The plugin can keep minimal controls needed to validate current behavior, but ne
 
 Current implementation:
 
-- Plugin is the only real app UI.
+- Plugin remains an active implemented UI surface.
+- `apps/web` now exists as a local-first React/Vite/TypeScript shell.
 - `ds-core` exists and is increasingly useful.
 - `exporters` exists with JSON export only.
-- Web app is documented but not implemented.
 - Figma adapter is documented but not implemented.
 - Plugin still contains several product-level generators and adapter-like runtime logic.
 
@@ -429,14 +434,14 @@ Intended direction:
 
 Conclusion:
 
-The repository is partially aligned at the shared-core/exporter layer, but not yet aligned at the product surface layer. Recent work made the future web app more feasible, but the only implemented UI still lives in the Figma plugin.
+The repository is partially aligned at the shared-core/exporter layer and now has an initial `apps/web` product shell. It is still not fully aligned at the product surface layer because the web app does not yet cover the full V1 creation, preview, export, and Figma handoff loop.
 
 ## Recommended Next Implementation Step
 
 Smallest safe next step:
 
-1. Create a short `apps/web` implementation plan before scaffolding runtime code.
-2. Define the V1 web app data flow around TokenBundle:
+1. Continue from the existing `apps/web` shell and keep its shared-package dependency boundary.
+2. Expand the V1 web app data flow around TokenBundle:
    - local project metadata
    - project settings
    - foundation inputs
@@ -444,15 +449,15 @@ Smallest safe next step:
    - preview state
    - export state
    - Figma import handoff
-3. Decide the first web app MVP screen sequence:
+3. Continue validating the first web app MVP screen sequence:
    - dashboard
    - new project
    - Creator shell
    - foundations/colors first
    - JSON export
-4. Then scaffold `apps/web` as a minimal app that imports only `@starter-tokens/ds-core` and `@starter-tokens/exporters`.
+4. Keep extending `apps/web` as a minimal app that imports only `@starter-tokens/ds-core` and `@starter-tokens/exporters`.
 
-Do not start by moving plugin UI into the web app. The safer move is to define a small web app shell that consumes shared packages, then gradually extract reusable generation logic from the plugin into `ds-core` as each web screen needs it.
+Do not move plugin UI wholesale into the web app. The safer move is to grow the existing shell around shared packages, then gradually extract reusable generation logic from the plugin into `ds-core` as each web screen needs it.
 
 ## Risks If Plugin UI Continues As Main Product Surface
 
@@ -461,7 +466,7 @@ Do not start by moving plugin UI into the web app. The safer move is to define a
 - Export UX becomes plugin-specific instead of product-level.
 - Token creation logic may remain coupled to Figma write models.
 - `ds-core` may stop short of becoming the true source contract.
-- Future `apps/web` may be tempted to import plugin code, which target architecture explicitly forbids.
+- `apps/web` may be tempted to import plugin code, which target architecture explicitly forbids.
 - CSS/Tailwind/export behavior may drift from TokenBundle if built around plugin-local `TokenDefinition[]`.
 - User expectations may blur: the plugin appears to be the product, while the product plan says it should be the bridge.
 - Component/Expert Mode work may pull the project into V2 before V1 web app foundations exist.
@@ -470,14 +475,17 @@ Do not start by moving plugin UI into the web app. The safer move is to define a
 
 Web app:
 
-- Does not exist today.
-- Planned clearly in `docs/product/*` and `docs/technical/monorepo-target-architecture.md`.
+- Exists today as `apps/web`.
+- Implemented as a local-first React/Vite/TypeScript shell.
+- Depends on `@starter-tokens/ds-core` and `@starter-tokens/exporters`.
+- Persists local projects and builds a minimal color TokenBundle.
+- Does not yet cover the full V1 product scope.
 
 Figma plugin:
 
 - Exists and is active.
 - Currently carries the main implemented UX.
-- Should be narrowed toward import/sync once the web app begins.
+- Should be narrowed toward import/sync as the web app matures.
 
 `ds-core`:
 
@@ -500,4 +508,4 @@ Roadmap/schema locations:
 
 Recommended next move:
 
-- Plan and then scaffold `apps/web` as a minimal web product shell that depends only on shared packages, while pausing advanced plugin UI expansion.
+- Continue the existing `apps/web` shell as the minimal web product surface that depends only on shared packages, while pausing advanced plugin UI expansion.

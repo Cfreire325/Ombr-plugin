@@ -6,6 +6,8 @@ import ts from "typescript";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const repoRoot = path.resolve(__dirname, "../../../..");
+const dsCoreUrl = pathToFileURL(path.resolve(repoRoot, "packages/ds-core/src/index.js")).href;
 
 async function importTs(filePath, replacements = {}) {
   const source = await fs.readFile(filePath, "utf8");
@@ -24,7 +26,7 @@ const domainDir = path.resolve(__dirname, "../domain");
 const projectUrl = pathToFileURL(path.resolve(domainDir, "project.ts")).href;
 const storagePath = path.resolve(__dirname, "local-projects.ts");
 
-const { createLocalProject } = await importTs(path.resolve(domainDir, "project.ts"));
+const { createLocalProject } = await importTs(path.resolve(domainDir, "project.ts"), { "@starter-tokens/ds-core": dsCoreUrl });
 const { loadProjects, saveProjects, upsertProject } = await importTs(storagePath, { "../domain/project": projectUrl });
 
 function createMemoryStorage() {

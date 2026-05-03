@@ -1,5 +1,5 @@
 import type { TokenBundle, TokenBundleValidationResult } from "@starter-tokens/ds-core";
-import type { LocalProject } from "../domain/project";
+import type { LocalProject, ProjectBaseColorKey } from "../domain/project";
 import type { TokenBundleSummary } from "../domain/token-bundle";
 import ExportJsonView from "./ExportJsonView";
 import FoundationsColorsView from "./FoundationsColorsView";
@@ -14,7 +14,13 @@ type CreatorShellProps = {
   activeSection: CreatorSection;
   onSelectSection: (section: CreatorSection) => void;
   onBackToDashboard: () => void;
-  onBrandColorChange: (brandColor: string) => void;
+  onAddBrand: () => void;
+  onBaseColorChange: (colorKey: ProjectBaseColorKey, colorValue: string) => void;
+  onColorPresetChange: (colorPresetId: string) => void;
+  onNeutralChoiceChange: (neutralChoice: string) => void;
+  onRemoveBrand: (brandId: string) => void;
+  onSelectedPaletteChange: (paletteKey: string, selected: boolean) => void;
+  onUpdateBrand: (brandId: string, patch: { name?: string; color?: string }) => void;
 };
 
 const navigation: Array<{ id: CreatorSection; label: string; disabled?: boolean; note?: string }> = [
@@ -30,7 +36,20 @@ const navigation: Array<{ id: CreatorSection; label: string; disabled?: boolean;
 
 function renderSection(props: CreatorShellProps) {
   if (props.activeSection === "colors") {
-    return <FoundationsColorsView project={props.project} bundle={props.bundle} validation={props.validation} onBrandColorChange={props.onBrandColorChange} />;
+    return (
+      <FoundationsColorsView
+        project={props.project}
+        bundle={props.bundle}
+        validation={props.validation}
+        onAddBrand={props.onAddBrand}
+        onBaseColorChange={props.onBaseColorChange}
+        onColorPresetChange={props.onColorPresetChange}
+        onNeutralChoiceChange={props.onNeutralChoiceChange}
+        onRemoveBrand={props.onRemoveBrand}
+        onSelectedPaletteChange={props.onSelectedPaletteChange}
+        onUpdateBrand={props.onUpdateBrand}
+      />
+    );
   }
 
   if (props.activeSection === "export-json") {

@@ -1,82 +1,89 @@
 # Agents Guide
 
-This file routes lightweight multi-agent work for Starter Tokens. Use it to keep decisions focused, avoid duplicated analysis, and protect the current product priority.
+Stable repo memory for Codex and other AI agents working on Ombr Studio. Keep this file short, actionable, and stable. Do not use it as a session log.
 
-## Product Direction
+For current context, read:
 
-Starter Tokens is a Figma plugin that generates a shared design system base between Figma and code: variables, styles, tokens, light/dark modes, icons, then developer exports. Button/Input/component generation comes later.
+- `docs/agent/CURRENT_STATE.md`
+- `docs/agent/PROJECT_LOG.md`
+- `docs/agent/SESSION_CLOSEOUT_SKILL.md`
+- `docs/memory/LEARNINGS.md`
 
-Current priority order:
+## Product Snapshot
 
-1. Stabilize the current plugin UX/UI
-2. Stabilize foundations
-3. Stabilize semantic tokens
-4. Stabilize TokenBundle
-5. Add dev export MVP
-6. Generate Button/Input/etc. only after that milestone is active
+Ombr Studio is a Figma plugin and future web Creator for generating design system foundations shared between Figma and code:
 
-The user remains the final product decision-maker. Agents may recommend, challenge, or warn, but they must not redefine product direction without explicit user validation.
+- primitive palettes
+- tokens and semantic aliases
+- light/dark modes
+- typography
+- spacing
+- radius
+- icons
+- JSON exports now, broader developer exports later
+- components such as Button and Input later, after foundation and export milestones are stable
 
-## Default Routing
+Current product direction from active learnings:
 
-Use one agent by default. Add a specialized agent only when its scope is directly affected.
+- `LRN-001`: the web app is the primary product surface; the Figma plugin should narrow toward import/sync over time.
+- `LRN-002`: TokenBundle is the shared contract boundary.
+- `LRN-004`: exporters are pure TokenBundle transformations.
+- `LRN-005`: `apps/web` exists as a local-first Vite shell.
 
-- Stay in simple mode for small local fixes, docs cleanup, command checks, or build hygiene.
-- Use Project Lead when scope, priority, or sequencing is unclear.
-- Use UX/UI Reviewer when plugin screens, flow, copy, states, or `src/ui.html` behavior are affected.
-- Use QA Reviewer before merge, or when build, manifest, runtime, tests, or generated outputs are affected.
-- Use TokenBundle Architect when `packages/ds-core`, TokenBundle shape, aliases, collections, light/dark behavior, or semantic mapping are affected.
+## Repo Architecture
 
-Do not drift into dev exports, Expert Mode, or component generation unless the current milestone explicitly asks for it.
+- `packages/plugin-starter-tokens`: active Figma plugin runtime, plugin UI, manifest package, Figma API calls, and plugin-specific messaging.
+- `packages/ds-core`: pure token logic, TokenBundle contract, validation, normalization, naming, palette helpers, and mapping helpers independent from Figma APIs.
+- `packages/exporters`: pure developer-facing exports from TokenBundle data, decoupled from plugin UI and Figma runtime.
+- `apps/web`: future Ombr Studio Creator web surface. It must stay decoupled from Figma plugin runtime code.
+- `docs`: product, architecture, technical notes, agent memory, and decision history.
+- `legacy/root-plugin` and `backups`: historical references only. Do not treat them as active implementation by default.
 
-## Agent Files
+## Non-Negotiable Rules
+
+- Read `docs/memory/LEARNINGS.md` before structuring product, design-system, architecture, or workflow decisions.
+- Do not move Figma API logic into `packages/ds-core`.
+- Keep `packages/ds-core` pure and independent from Figma APIs, plugin UI, browser UI, and framework state.
+- Keep `packages/exporters` pure and decoupled from plugin UI, `code.ts`, `ui.html`, and Figma runtime code.
+- Keep `apps/web` decoupled from the Figma plugin runtime. Do not import plugin entrypoints, manifests, `code.ts`, or `ui.html`.
+- Do not treat legacy root plugin files as active implementation unless the task explicitly asks for legacy investigation.
+- Do not drift into dev exports, Expert Mode, or component generation unless the current milestone explicitly asks for it.
+
+## Modification Practice
+
+- Prefer small, targeted, testable changes.
+- Do not modify files unrelated to the task.
+- Do not mix architecture refactors, UI work, tests, exporters, and runtime logic in one task unless explicitly requested.
+- Follow existing package boundaries before adding new abstractions.
+- Update generated files only when the task and build flow require it.
+- When a durable decision, repeated error, or project constraint appears, propose adding it to the appropriate documentation.
+
+## Agent Routing
+
+Use one agent by default. Add a specialized agent only when its scope is directly affected:
+
+- Project Lead: scope, priority, milestone, or sequencing ambiguity.
+- UX/UI Reviewer: plugin or web screens, flow, copy, states, or visual behavior.
+- QA Reviewer: merge readiness, build/runtime risk, manifest, generated outputs, tests.
+- TokenBundle Architect: `packages/ds-core`, TokenBundle shape, aliases, collections, modes, semantic mapping.
+
+Relevant agent notes live in:
 
 - `docs/agents/project-lead.md`
 - `docs/agents/ux-ui-reviewer.md`
 - `docs/agents/qa-reviewer.md`
 - `docs/agents/tokenbundle-architect.md`
 
-## Token Budget Rules
+## End-Of-Task Report
 
-- Do not call multiple agents by default.
-- Give each agent only the files and context needed for its scope.
-- Ask for findings, risks, recommendation, and checklist only.
-- Do not duplicate work already covered by another agent.
-- Prefer short verdicts over broad audits.
-- Keep durable decisions in docs; keep transient command output out of docs.
+For significant sessions, run the closeout routine in `docs/agent/SESSION_CLOSEOUT_SKILL.md` before the final response.
 
-## Notion Updates
+Always report:
 
-Do not update Notion by default. Update it only for durable decisions:
+- files created
+- files modified
+- tests or checks run
+- command results
+- remaining risks or follow-ups
 
-- priority changes
-- TokenBundle or architecture rules
-- milestone validation
-- important accepted risks
-
-Do not update Notion for routine command results, regenerated files, small wording changes, or temporary investigation notes.
-
-Suggested Notion shape:
-
-```text
-Decision:
-Context:
-Files impacted:
-Validation:
-Next step:
-```
-
-## Before Merge
-
-Validate changes before merge:
-
-1. Scope stayed inside the current milestone
-2. No unrequested feature work was added
-3. Functional code changes are intentional and listed
-4. Generated files are intentional and listed
-5. `npm run typecheck` passes
-6. `npm run test:ds-core` passes
-7. `npm run build` passes when plugin runtime or build pipeline is touched
-8. Manifest/dist are checked when Figma entrypoints are touched
-9. Risks remaining are listed
-10. Notion is updated only if a durable decision changed
+If no tests were run because the task was documentation-only, say that clearly.
