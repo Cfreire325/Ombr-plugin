@@ -675,3 +675,53 @@ Keep entries short. Link to detailed docs when more context is needed.
 ### Recommended next step
 
 - Implement Passe 1B: migrate `apps/web` `LocalProject` typography, spacing, and radius defaults to the canonical `ds-core` presets.
+
+## 2026-05-06 - Migrate web LocalProject foundations to canonical presets
+
+### Summary
+
+- Migrated `apps/web` `LocalProject` typography, spacing, and radius defaults to consume canonical `ds-core` preset token coverage.
+- Added explicit legacy id migration for old web typography, spacing, and radius ids.
+- Preserved valid custom values during normalization and storage repair.
+- Kept the pass focused on local model migration; no plugin, manifest, component semantics, CSS/Tailwind export, or Figma sync/import work was added.
+- Updated the MVP Preview view only enough to read canonical typography and spacing ids.
+
+### Files created
+
+- None.
+
+### Files modified
+
+- `apps/web/src/domain/project.ts`
+- `apps/web/src/domain/project.test.mjs`
+- `apps/web/src/domain/token-bundle.test.mjs`
+- `apps/web/src/storage/local-projects.test.mjs`
+- `apps/web/src/views/FoundationsPreviewView.tsx`
+- `docs/agent/CURRENT_STATE.md`
+- `docs/agent/PROJECT_LOG.md`
+
+### Decisions made
+
+- `apps/web` local typography styles now use canonical size ids such as `display-lg`, `text-md`, and `label`.
+- Old web ids migrate explicitly: `display -> display-lg`, `heading -> display-sm`, `body -> text-md`, `label -> text-sm`, `caption -> text-xs`.
+- Old spacing and radius ids migrate through explicit maps instead of preserving ids blindly.
+- Numeric `fontWeight` remains a local UI field until a later TokenBundle output alignment pass.
+
+### Tests run
+
+- `node apps/web/src/domain/project.test.mjs`: failed first on old defaults, then passed after implementation.
+- `node apps/web/src/storage/local-projects.test.mjs`: passed.
+- `npm.cmd --workspace @starter-tokens/web test`: failed first on old TokenBundle expectations, then passed after tests were aligned to the migrated local model.
+- `npm.cmd run typecheck:web`: passed.
+- `npm.cmd run build:web`: failed inside sandbox with `spawn EPERM`, then passed outside the sandbox.
+- `npm.cmd --workspace @starter-tokens/ds-core test`: passed.
+
+### Known risks / follow-ups
+
+- TokenBundle generation logic was not refactored in this pass; it now reflects canonical local ids but still emits local numeric `font-weight/*` style tokens rather than the final canonical typography variable set.
+- The UI was not redesigned for the larger canonical typography, spacing, and radius coverage.
+- Full repo and plugin test suites were not run.
+
+### Recommended next step
+
+- Implement Passe 1C: align `apps/web` TokenBundle output to the canonical `ds-core` presets, including `pixel/*`, spacing/radius aliases, `letter-spacing/*`, and `font-weight/*` as `STRING`.

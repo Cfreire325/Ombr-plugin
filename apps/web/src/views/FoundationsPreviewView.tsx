@@ -186,11 +186,11 @@ function FoundationsPreviewView({ project, bundle, validation }: FoundationsPrev
   const typographyStyles = getProjectTypographyStyles(project);
   const spacingScale = getProjectSpacingScale(project);
   const radiusScale = getProjectRadiusScale(project);
-  const headingStyle = getStyle(typographyStyles, "heading", 1);
-  const bodyStyle = getStyle(typographyStyles, "body", 2);
-  const captionStyle = getStyle(typographyStyles, "caption", 4);
-  const labelStyle = getStyle(typographyStyles, "label", 3);
-  const spacing = getFiniteValue(getScaleStep(spacingScale, ["6", "4"], 5), 24, 56);
+  const headingStyle = getStyle(typographyStyles, "display-sm", 4);
+  const bodyStyle = getStyle(typographyStyles, "text-md", 8);
+  const captionStyle = getStyle(typographyStyles, "text-xs", 10);
+  const labelStyle = getStyle(typographyStyles, "label", 11);
+  const spacing = getFiniteValue(getScaleStep(spacingScale, ["3xl", "xl"], 8), 24, 56);
   const radius = getFiniteValue(getScaleStep(radiusScale, ["lg", "md"], 4), 12, 32);
   const lightTokens = bundle ? getPreviewTokens(bundle, "light") : null;
   const darkTokens = bundle ? getPreviewTokens(bundle, "dark") : null;

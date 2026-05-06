@@ -112,9 +112,12 @@ assert.deepEqual(
     ["color/background/primary", "colors/brand/50", "colors/brand/900"],
   ],
 );
-assert.equal(getProjectTypographyStyles(repaired[0])[0].fontFamily, "Acme");
-assert.equal(getProjectTypographyStyles(repaired[0])[0].fontSize, 60);
-assert.equal(getProjectSpacingScale(repaired[0]).find((step) => step.id === "4").value, 20);
+assert.equal(getProjectTypographyStyles(repaired[0]).find((style) => style.id === "display-lg").fontFamily, "Acme");
+assert.equal(getProjectTypographyStyles(repaired[0]).find((style) => style.id === "display-lg").fontSize, 60);
+assert.equal(getProjectTypographyStyles(repaired[0]).find((style) => style.id === "display-2xl").fontFamily, "Acme");
+assert.equal(getProjectTypographyStyles(repaired[0]).find((style) => style.id === "display-2xl").fontSize, 72);
+assert.equal(getProjectSpacingScale(repaired[0]).find((step) => step.id === "xl").value, 20);
+assert.equal(getProjectSpacingScale(repaired[0]).find((step) => step.id === "11xl").value, 160);
 assert.equal(getProjectRadiusScale(repaired[0]).find((step) => step.id === "full").value, 9999);
 
 console.log("local project storage tests passed.");

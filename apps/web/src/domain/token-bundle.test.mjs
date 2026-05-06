@@ -106,50 +106,59 @@ assert.equal(
   "selected palette colors are generated as primitives",
 );
 
-assertPrimitiveToken(bundle, "font-family/display", "STRING", "Inter");
-assertPrimitiveToken(bundle, "font-size/display", "FLOAT", 48);
-assertPrimitiveToken(bundle, "line-height/display", "FLOAT", 56);
-assertPrimitiveToken(bundle, "font-weight/display", "FLOAT", 700);
-assertPrimitiveToken(bundle, "font-family/heading", "STRING", "Inter");
-assertPrimitiveToken(bundle, "font-size/heading", "FLOAT", 32);
-assertPrimitiveToken(bundle, "line-height/heading", "FLOAT", 40);
-assertPrimitiveToken(bundle, "font-weight/heading", "FLOAT", 700);
-assertPrimitiveToken(bundle, "font-family/body", "STRING", "Inter");
-assertPrimitiveToken(bundle, "font-size/body", "FLOAT", 16);
-assertPrimitiveToken(bundle, "line-height/body", "FLOAT", 24);
-assertPrimitiveToken(bundle, "font-weight/body", "FLOAT", 400);
-assertPrimitiveToken(bundle, "font-family/label", "STRING", "Inter");
-assertPrimitiveToken(bundle, "font-size/label", "FLOAT", 14);
-assertPrimitiveToken(bundle, "line-height/label", "FLOAT", 20);
-assertPrimitiveToken(bundle, "font-weight/label", "FLOAT", 600);
-assertPrimitiveToken(bundle, "font-family/caption", "STRING", "Inter");
-assertPrimitiveToken(bundle, "font-size/caption", "FLOAT", 12);
-assertPrimitiveToken(bundle, "line-height/caption", "FLOAT", 16);
-assertPrimitiveToken(bundle, "font-weight/caption", "FLOAT", 400);
+for (const [styleId, family, fontSize, lineHeight] of [
+  ["display-2xl", "Roboto", 72, 88],
+  ["display-xl", "Roboto", 60, 72],
+  ["display-lg", "Roboto", 48, 60],
+  ["display-md", "Roboto", 36, 44],
+  ["display-sm", "Roboto", 30, 38],
+  ["display-xs", "Roboto", 24, 32],
+  ["text-xl", "Inter", 20, 30],
+  ["text-lg", "Inter", 18, 28],
+  ["text-md", "Inter", 16, 24],
+  ["text-sm", "Inter", 14, 20],
+  ["text-xs", "Inter", 12, 16],
+  ["label", "Inter", 10, 14],
+]) {
+  assertPrimitiveToken(bundle, `font-family/${styleId}`, "STRING", family);
+  assertPrimitiveToken(bundle, `font-size/${styleId}`, "FLOAT", fontSize);
+  assertPrimitiveToken(bundle, `line-height/${styleId}`, "FLOAT", lineHeight);
+  assertPrimitiveToken(bundle, `font-weight/${styleId}`, "FLOAT", 400);
+}
 
 for (const [step, value] of [
-  ["0", 0],
-  ["1", 4],
-  ["2", 8],
-  ["3", 12],
-  ["4", 16],
-  ["6", 24],
-  ["8", 32],
-  ["10", 40],
-  ["12", 48],
-  ["16", 64],
+  ["none", 0],
+  ["xxs", 2],
+  ["xs", 4],
+  ["sm", 6],
+  ["md", 8],
+  ["lg", 12],
+  ["xl", 16],
+  ["2xl", 20],
+  ["3xl", 24],
+  ["4xl", 32],
+  ["5xl", 40],
+  ["6xl", 48],
+  ["7xl", 64],
+  ["8xl", 80],
+  ["9xl", 96],
+  ["10xl", 128],
+  ["11xl", 160],
 ]) {
   assertPrimitiveToken(bundle, `spacing/${step}`, "FLOAT", value);
 }
 
 for (const [step, value] of [
   ["none", 0],
-  ["xs", 2],
-  ["sm", 4],
+  ["xxs", 2],
+  ["xs", 4],
+  ["sm", 6],
   ["md", 8],
-  ["lg", 12],
-  ["xl", 16],
-  ["2xl", 24],
+  ["lg", 10],
+  ["xl", 12],
+  ["2xl", 16],
+  ["3xl", 20],
+  ["4xl", 24],
   ["full", 9999],
 ]) {
   assertPrimitiveToken(bundle, `radius/${step}`, "FLOAT", value);
@@ -275,8 +284,8 @@ const invalidFoundationResult = buildTokenBundleResult({
 });
 assert.equal(invalidFoundationResult.bundle, null);
 assert.equal(invalidFoundationResult.validation.valid, false);
-assert.ok(invalidFoundationResult.validation.errors.some((error) => error.includes("Typography style display needs a font family.")));
-assert.ok(invalidFoundationResult.validation.errors.some((error) => error.includes("Typography style display needs a positive font size.")));
+assert.ok(invalidFoundationResult.validation.errors.some((error) => error.includes("Typography style display-2xl needs a font family.")));
+assert.ok(invalidFoundationResult.validation.errors.some((error) => error.includes("Typography style display-2xl needs a positive font size.")));
 assert.equal(invalidFoundationResult.summary.tokenCount, 0);
 
 const materialProject = {

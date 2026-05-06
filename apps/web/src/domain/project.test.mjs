@@ -49,6 +49,55 @@ const {
 } = await importTs("project.ts");
 const { getColorPresetById, normalizePaletteKey } = await import(dsCoreUrl);
 
+const CANONICAL_TYPOGRAPHY_DEFAULTS = [
+  ["display-2xl", "Roboto", 72, 88],
+  ["display-xl", "Roboto", 60, 72],
+  ["display-lg", "Roboto", 48, 60],
+  ["display-md", "Roboto", 36, 44],
+  ["display-sm", "Roboto", 30, 38],
+  ["display-xs", "Roboto", 24, 32],
+  ["text-xl", "Inter", 20, 30],
+  ["text-lg", "Inter", 18, 28],
+  ["text-md", "Inter", 16, 24],
+  ["text-sm", "Inter", 14, 20],
+  ["text-xs", "Inter", 12, 16],
+  ["label", "Inter", 10, 14],
+];
+
+const CANONICAL_SPACING_DEFAULTS = [
+  ["none", 0],
+  ["xxs", 2],
+  ["xs", 4],
+  ["sm", 6],
+  ["md", 8],
+  ["lg", 12],
+  ["xl", 16],
+  ["2xl", 20],
+  ["3xl", 24],
+  ["4xl", 32],
+  ["5xl", 40],
+  ["6xl", 48],
+  ["7xl", 64],
+  ["8xl", 80],
+  ["9xl", 96],
+  ["10xl", 128],
+  ["11xl", 160],
+];
+
+const CANONICAL_RADIUS_DEFAULTS = [
+  ["none", 0],
+  ["xxs", 2],
+  ["xs", 4],
+  ["sm", 6],
+  ["md", 8],
+  ["lg", 10],
+  ["xl", 12],
+  ["2xl", 16],
+  ["3xl", 20],
+  ["4xl", 24],
+  ["full", 9999],
+];
+
 function defaultSelectedPalettes(presetId) {
   const preset = getColorPresetById(presetId);
   return preset.previewPalettes.map((palette) => palette.key || normalizePaletteKey(palette.name)).filter((paletteKey) => preset.palettes[paletteKey]);
@@ -71,41 +120,15 @@ assert.equal(project.foundations.colors.brandPrimary, "#3f6f5f");
 assert.deepEqual(project.foundations.colors.brands, [{ id: "brand-primary", name: "Primary", color: "#3f6f5f" }]);
 assert.deepEqual(
   getProjectTypographyStyles(project).map((style) => [style.id, style.fontFamily, style.fontSize, style.lineHeight, style.fontWeight]),
-  [
-    ["display", "Inter", 48, 56, 700],
-    ["heading", "Inter", 32, 40, 700],
-    ["body", "Inter", 16, 24, 400],
-    ["label", "Inter", 14, 20, 600],
-    ["caption", "Inter", 12, 16, 400],
-  ],
+  CANONICAL_TYPOGRAPHY_DEFAULTS.map(([id, family, fontSize, lineHeight]) => [id, family, fontSize, lineHeight, 400]),
 );
 assert.deepEqual(
   getProjectSpacingScale(project).map((step) => [step.id, step.value]),
-  [
-    ["0", 0],
-    ["1", 4],
-    ["2", 8],
-    ["3", 12],
-    ["4", 16],
-    ["6", 24],
-    ["8", 32],
-    ["10", 40],
-    ["12", 48],
-    ["16", 64],
-  ],
+  CANONICAL_SPACING_DEFAULTS,
 );
 assert.deepEqual(
   getProjectRadiusScale(project).map((step) => [step.id, step.value]),
-  [
-    ["none", 0],
-    ["xs", 2],
-    ["sm", 4],
-    ["md", 8],
-    ["lg", 12],
-    ["xl", 16],
-    ["2xl", 24],
-    ["full", 9999],
-  ],
+  CANONICAL_RADIUS_DEFAULTS,
 );
 assert.deepEqual(getProjectBrands(project), [{ id: "brand-primary", name: "Primary", color: "#3f6f5f" }]);
 assert.deepEqual(
@@ -187,47 +210,47 @@ assert.deepEqual(
   ],
 );
 
-const typographyUpdated = updateProjectTypographyStyle(project, "body", {
+const typographyUpdated = updateProjectTypographyStyle(project, "text-md", {
   fontFamily: "IBM Plex Sans",
   fontSize: 18,
   lineHeight: 28,
   fontWeight: 500,
 });
-const updatedBodyStyle = getProjectTypographyStyles(typographyUpdated).find((style) => style.id === "body");
+const updatedBodyStyle = getProjectTypographyStyles(typographyUpdated).find((style) => style.id === "text-md");
 assert.equal(updatedBodyStyle.fontFamily, "IBM Plex Sans");
 assert.equal(updatedBodyStyle.fontSize, 18);
 assert.equal(updatedBodyStyle.lineHeight, 28);
 assert.equal(updatedBodyStyle.fontWeight, 500);
-assert.equal(getProjectTypographyStyles(project).find((style) => style.id === "body").fontSize, 16);
+assert.equal(getProjectTypographyStyles(project).find((style) => style.id === "text-md").fontSize, 16);
 
-const typographyInvalid = updateProjectTypographyStyle(project, "display", { fontFamily: "", fontSize: 0 });
+const typographyInvalid = updateProjectTypographyStyle(project, "display-lg", { fontFamily: "", fontSize: 0 });
 assert.deepEqual(
   validateProjectFoundations(typographyInvalid)
     .filter((issue) => issue.path.startsWith("foundations.typography"))
     .map((issue) => issue.path),
-  ["foundations.typography.styles[0].fontFamily", "foundations.typography.styles[0].fontSize"],
+  ["foundations.typography.styles[2].fontFamily", "foundations.typography.styles[2].fontSize"],
 );
 
-const typographyInvalidPreserved = updateProjectTypographyStyle(typographyInvalid, "display", { lineHeight: 60 });
-assert.equal(typographyInvalidPreserved.foundations.typography.styles[0].fontFamily, "");
-assert.equal(typographyInvalidPreserved.foundations.typography.styles[0].fontSize, 0);
-assert.equal(typographyInvalidPreserved.foundations.typography.styles[0].lineHeight, 60);
+const typographyInvalidPreserved = updateProjectTypographyStyle(typographyInvalid, "display-lg", { lineHeight: 62 });
+assert.equal(typographyInvalidPreserved.foundations.typography.styles[2].fontFamily, "");
+assert.equal(typographyInvalidPreserved.foundations.typography.styles[2].fontSize, 0);
+assert.equal(typographyInvalidPreserved.foundations.typography.styles[2].lineHeight, 62);
 
-const spacingUpdated = updateProjectSpacingStep(project, "4", 18);
-assert.equal(getProjectSpacingScale(spacingUpdated).find((step) => step.id === "4").value, 18);
-assert.equal(getProjectSpacingScale(project).find((step) => step.id === "4").value, 16);
+const spacingUpdated = updateProjectSpacingStep(project, "xl", 18);
+assert.equal(getProjectSpacingScale(spacingUpdated).find((step) => step.id === "xl").value, 18);
+assert.equal(getProjectSpacingScale(project).find((step) => step.id === "xl").value, 16);
 
-const spacingInvalid = updateProjectSpacingStep(project, "4", -1);
+const spacingInvalid = updateProjectSpacingStep(project, "xl", -1);
 assert.deepEqual(
   validateProjectFoundations(spacingInvalid)
     .filter((issue) => issue.path.startsWith("foundations.spacing"))
     .map((issue) => issue.path),
-  ["foundations.spacing.scale[4].value"],
+  ["foundations.spacing.scale[6].value"],
 );
 
-const spacingInvalidPreserved = updateProjectSpacingStep(spacingInvalid, "6", 26);
-assert.equal(spacingInvalidPreserved.foundations.spacing.scale.find((step) => step.id === "4").value, -1);
-assert.equal(spacingInvalidPreserved.foundations.spacing.scale.find((step) => step.id === "6").value, 26);
+const spacingInvalidPreserved = updateProjectSpacingStep(spacingInvalid, "3xl", 26);
+assert.equal(spacingInvalidPreserved.foundations.spacing.scale.find((step) => step.id === "xl").value, -1);
+assert.equal(spacingInvalidPreserved.foundations.spacing.scale.find((step) => step.id === "3xl").value, 26);
 
 const radiusUpdated = updateProjectRadiusStep(project, "md", 10);
 assert.equal(getProjectRadiusScale(radiusUpdated).find((step) => step.id === "md").value, 10);
@@ -238,12 +261,12 @@ assert.deepEqual(
   validateProjectFoundations(radiusInvalid)
     .filter((issue) => issue.path.startsWith("foundations.radius"))
     .map((issue) => issue.path),
-  ["foundations.radius.scale[3].value"],
+  ["foundations.radius.scale[4].value"],
 );
 
-const radiusInvalidPreserved = updateProjectRadiusStep(radiusInvalid, "lg", 14);
+const radiusInvalidPreserved = updateProjectRadiusStep(radiusInvalid, "xl", 14);
 assert.equal(radiusInvalidPreserved.foundations.radius.scale.find((step) => step.id === "md").value, -1);
-assert.equal(radiusInvalidPreserved.foundations.radius.scale.find((step) => step.id === "lg").value, 14);
+assert.equal(radiusInvalidPreserved.foundations.radius.scale.find((step) => step.id === "xl").value, 14);
 
 const materialWithMatchingNeutral = updateProjectNeutralChoice(project, "neutral");
 const materialKeepsNeutral = updateProjectColorPreset(materialWithMatchingNeutral, "material");
@@ -369,7 +392,10 @@ const repairedProject = normalizeLocalProject({
     typography: {
       styles: [
         { id: "display", fontFamily: "  Acme Display  ", fontSize: "64", lineHeight: "72", fontWeight: "800" },
+        { id: "heading", fontFamily: "Acme Heading", fontSize: "34", lineHeight: "42", fontWeight: "700" },
         { id: "body", fontFamily: "", fontSize: -1, lineHeight: "bad", fontWeight: 0 },
+        { id: "label", fontFamily: "Acme Label", fontSize: "15", lineHeight: "21", fontWeight: "600" },
+        { id: "caption", fontFamily: "Acme Caption", fontSize: "11", lineHeight: "15", fontWeight: "500" },
         { id: "extra", fontFamily: "Nope", fontSize: 1, lineHeight: 1, fontWeight: 100 },
       ],
     },
@@ -428,24 +454,60 @@ assert.deepEqual(
   ],
 );
 assert.deepEqual(getProjectTypographyStyles(repairedProject)[0], {
-  id: "display",
-  name: "Display",
+  id: "display-2xl",
+  name: "Display 2XL",
+  fontFamily: "Acme Display",
+  fontSize: 72,
+  lineHeight: 88,
+  fontWeight: 400,
+});
+assert.deepEqual(getProjectTypographyStyles(repairedProject).find((style) => style.id === "display-lg"), {
+  id: "display-lg",
+  name: "Display LG",
   fontFamily: "Acme Display",
   fontSize: 64,
   lineHeight: 72,
   fontWeight: 800,
 });
-assert.deepEqual(getProjectTypographyStyles(repairedProject)[2], {
-  id: "body",
-  name: "Body",
+assert.deepEqual(getProjectTypographyStyles(repairedProject).find((style) => style.id === "display-sm"), {
+  id: "display-sm",
+  name: "Display SM",
+  fontFamily: "Acme Heading",
+  fontSize: 34,
+  lineHeight: 42,
+  fontWeight: 700,
+});
+assert.deepEqual(getProjectTypographyStyles(repairedProject).find((style) => style.id === "text-md"), {
+  id: "text-md",
+  name: "Text MD",
   fontFamily: "Inter",
   fontSize: 16,
   lineHeight: 24,
   fontWeight: 400,
 });
-assert.equal(getProjectSpacingScale(repairedProject).find((step) => step.id === "4").value, 18);
-assert.equal(getProjectSpacingScale(repairedProject).find((step) => step.id === "16").value, 64);
+assert.deepEqual(getProjectTypographyStyles(repairedProject).find((style) => style.id === "text-sm"), {
+  id: "text-sm",
+  name: "Text SM",
+  fontFamily: "Acme Label",
+  fontSize: 15,
+  lineHeight: 21,
+  fontWeight: 600,
+});
+assert.deepEqual(getProjectTypographyStyles(repairedProject).find((style) => style.id === "text-xs"), {
+  id: "text-xs",
+  name: "Text XS",
+  fontFamily: "Acme Caption",
+  fontSize: 11,
+  lineHeight: 15,
+  fontWeight: 500,
+});
+assert.equal(getProjectSpacingScale(repairedProject).find((step) => step.id === "xl").value, 18);
+assert.equal(getProjectSpacingScale(repairedProject).find((step) => step.id === "7xl").value, 64);
+assert.equal(getProjectSpacingScale(repairedProject).find((step) => step.id === "xxs").value, 2);
+assert.equal(getProjectSpacingScale(repairedProject).find((step) => step.id === "11xl").value, 160);
 assert.equal(getProjectRadiusScale(repairedProject).find((step) => step.id === "md").value, 10);
+assert.equal(getProjectRadiusScale(repairedProject).find((step) => step.id === "xl").value, 12);
+assert.equal(getProjectRadiusScale(repairedProject).find((step) => step.id === "4xl").value, 24);
 assert.equal(getProjectRadiusScale(repairedProject).find((step) => step.id === "full").value, 9999);
 assert.equal(Number.isNaN(Date.parse(repairedProject.createdAt)), false);
 assert.equal(Number.isNaN(Date.parse(repairedProject.updatedAt)), false);
@@ -476,12 +538,12 @@ const invalidFoundationIssues = validateProjectFoundations({
     ...project.foundations,
     typography: {
       styles: [
-        { id: "display", name: "Display", fontFamily: "", fontSize: 0, lineHeight: -1, fontWeight: 1200 },
+        { id: "display-2xl", name: "Display 2XL", fontFamily: "", fontSize: 0, lineHeight: -1, fontWeight: 1200 },
         ...getProjectTypographyStyles(project).slice(1),
       ],
     },
     spacing: {
-      scale: [{ id: "0", value: -1 }, ...getProjectSpacingScale(project).slice(1)],
+      scale: [{ id: "none", value: -1 }, ...getProjectSpacingScale(project).slice(1)],
     },
     radius: {
       scale: [{ id: "none", value: -1 }, ...getProjectRadiusScale(project).slice(1)],

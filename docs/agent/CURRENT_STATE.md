@@ -14,7 +14,7 @@ The repo is a monorepo with active packages for the Figma plugin, shared design-
 - Keep exporters pure and TokenBundle-based.
 - Continue foundations UI work in small passes before adding exporter or Figma sync scope.
 - Preserve the color architecture chain: primitives first, Color Modes / semantic aliases for light/dark intent, future component tokens later.
-- Use `packages/ds-core` as the source for canonical data-only foundation presets before migrating `apps/web` to consume them.
+- Use `packages/ds-core` canonical data-only foundation presets as the source for `apps/web` local typography, spacing, and radius defaults.
 
 Unknown / not verified yet:
 
@@ -55,6 +55,7 @@ From repo documentation and package evidence:
 - `apps/web` now validates Color Mode light/dark references against generated color primitives before TokenBundle generation and shows unknown primitive references inline in the Color Modes editor.
 - `apps/web` now includes a MVP Preview view showing foundations together across light/dark surfaces: semantic colors, typography, spacing, radius, and a sample action button.
 - `packages/ds-core` now exposes canonical data-only Pixel, Spacing, Radius, and Typography preset token arrays for future web migration.
+- `apps/web` `LocalProject` typography, spacing, and radius defaults now consume the canonical `ds-core` preset coverage and explicitly migrate old MVP ids to canonical ids.
 
 Unknown / not verified yet:
 
@@ -96,8 +97,7 @@ Unknown / not verified yet:
 
 - `apps/web` is present but does not yet cover the full V1 Creator workflow.
 - Color Modes are editable and reference-validated at MVP level, but the full semantic color model, add/remove flows, token-picker interaction, and component-token consumption are not implemented yet.
-- Typography, spacing, and radius have editable MVP views and a first combined light/dark preview, but no advanced product preview refinement has been completed.
-- `apps/web` typography, spacing, and radius still use their current MVP local model and have not yet been migrated to the new canonical `ds-core` presets.
+- Typography, spacing, and radius have editable MVP views, a first combined light/dark preview, and canonical local defaults, but TokenBundle output still needs the next alignment pass for canonical aliases and typography token families.
 - `packages/exporters` currently implements JSON export only; CSS variables and Tailwind config exports are planned but not verified as implemented.
 - No `packages/figma-adapter` package exists yet; adapter-like Figma mapping still appears to live in plugin runtime code.
 - Some older docs may still describe `apps/web` or `packages/exporters` as future/nonexistent; prefer active learnings and current package evidence.
@@ -113,7 +113,7 @@ Unknown / not verified yet:
 5. Continue extracting pure token behavior into `packages/ds-core` only when it is product-neutral and covered by tests.
 6. Add exporter targets in `packages/exporters` as pure TokenBundle transformations with focused tests.
 7. Keep plugin work focused on current stabilization and future import/sync behavior.
-8. Next foundations pass should migrate `apps/web` `LocalProject` typography, spacing, and radius defaults to consume the canonical `ds-core` presets.
+8. Next foundations pass should align `apps/web` TokenBundle output with the canonical `ds-core` presets, including `pixel/*`, spacing/radius aliases, `letter-spacing/*`, and `font-weight/*` as `STRING`.
 
 ## Last Updated
 

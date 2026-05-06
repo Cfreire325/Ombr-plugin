@@ -1,4 +1,14 @@
-import { getColorPresetById, normalizePaletteKey, parseColorInput } from "@starter-tokens/ds-core";
+import {
+  CANONICAL_PIXEL_TOKENS,
+  CANONICAL_RADIUS_TOKENS,
+  CANONICAL_SPACING_TOKENS,
+  CANONICAL_TYPOGRAPHY_TOKENS,
+  getColorPresetById,
+  normalizePaletteKey,
+  parseColorInput,
+  type TokenEntry,
+  type TokenModeValue,
+} from "@starter-tokens/ds-core";
 
 export type ProjectModeSetup = "light" | "light-dark";
 export type ProjectPreset = "custom" | "starter";
@@ -17,7 +27,19 @@ export type ProjectColorModeAlias = {
   scopes: string[];
   description: string;
 };
-export type ProjectTypographyStyleId = "display" | "heading" | "body" | "label" | "caption";
+export type ProjectTypographyStyleId =
+  | "display-2xl"
+  | "display-xl"
+  | "display-lg"
+  | "display-md"
+  | "display-sm"
+  | "display-xs"
+  | "text-xl"
+  | "text-lg"
+  | "text-md"
+  | "text-sm"
+  | "text-xs"
+  | "label";
 export type ProjectTypographyStyle = {
   id: ProjectTypographyStyleId;
   name: string;
@@ -84,6 +106,49 @@ const DEFAULT_BASE_WHITE = "#ffffff";
 const DEFAULT_BASE_BLACK = "#171717";
 const DEFAULT_COLOR_PRESET_ID = "tailwind";
 export const MAX_PROJECT_BRANDS = 10;
+const TYPOGRAPHY_STYLE_ORDER: ProjectTypographyStyleId[] = [
+  "display-2xl",
+  "display-xl",
+  "display-lg",
+  "display-md",
+  "display-sm",
+  "display-xs",
+  "text-xl",
+  "text-lg",
+  "text-md",
+  "text-sm",
+  "text-xs",
+  "label",
+];
+const LEGACY_TYPOGRAPHY_STYLE_ID_MAP: Record<string, ProjectTypographyStyleId> = {
+  display: "display-lg",
+  heading: "display-sm",
+  body: "text-md",
+  label: "text-sm",
+  caption: "text-xs",
+};
+const LEGACY_SPACING_ID_MAP: Record<string, string> = {
+  "0": "none",
+  "1": "xs",
+  "2": "md",
+  "3": "lg",
+  "4": "xl",
+  "6": "3xl",
+  "8": "4xl",
+  "10": "5xl",
+  "12": "6xl",
+  "16": "7xl",
+};
+const LEGACY_RADIUS_ID_MAP: Record<string, string> = {
+  none: "none",
+  xs: "xxs",
+  sm: "xs",
+  md: "md",
+  lg: "xl",
+  xl: "2xl",
+  "2xl": "4xl",
+  full: "full",
+};
 const DEFAULT_COLOR_MODE_ALIASES: ProjectColorModeAlias[] = [
   {
     name: "color/text/primary",
@@ -102,35 +167,6 @@ const DEFAULT_COLOR_MODE_ALIASES: ProjectColorModeAlias[] = [
     description: "Primary background color mode.",
   },
 ];
-const DEFAULT_TYPOGRAPHY_STYLES: ProjectTypographyStyle[] = [
-  { id: "display", name: "Display", fontFamily: "Inter", fontSize: 48, lineHeight: 56, fontWeight: 700 },
-  { id: "heading", name: "Heading", fontFamily: "Inter", fontSize: 32, lineHeight: 40, fontWeight: 700 },
-  { id: "body", name: "Body", fontFamily: "Inter", fontSize: 16, lineHeight: 24, fontWeight: 400 },
-  { id: "label", name: "Label", fontFamily: "Inter", fontSize: 14, lineHeight: 20, fontWeight: 600 },
-  { id: "caption", name: "Caption", fontFamily: "Inter", fontSize: 12, lineHeight: 16, fontWeight: 400 },
-];
-const DEFAULT_SPACING_SCALE: ProjectFoundationScaleStep[] = [
-  { id: "0", name: "0", value: 0 },
-  { id: "1", name: "1", value: 4 },
-  { id: "2", name: "2", value: 8 },
-  { id: "3", name: "3", value: 12 },
-  { id: "4", name: "4", value: 16 },
-  { id: "6", name: "6", value: 24 },
-  { id: "8", name: "8", value: 32 },
-  { id: "10", name: "10", value: 40 },
-  { id: "12", name: "12", value: 48 },
-  { id: "16", name: "16", value: 64 },
-];
-const DEFAULT_RADIUS_SCALE: ProjectFoundationScaleStep[] = [
-  { id: "none", name: "None", value: 0 },
-  { id: "xs", name: "XS", value: 2 },
-  { id: "sm", name: "SM", value: 4 },
-  { id: "md", name: "MD", value: 8 },
-  { id: "lg", name: "LG", value: 12 },
-  { id: "xl", name: "XL", value: 16 },
-  { id: "2xl", name: "2XL", value: 24 },
-  { id: "full", name: "Full", value: 9999 },
-];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -148,6 +184,101 @@ function getFiniteNumber(value: unknown): number | null {
   const numeric = Number(value);
   return Number.isFinite(numeric) ? numeric : null;
 }
+
+function isAliasValue(value: TokenModeValue): value is { alias: string } {
+  return typeof value === "object" && value !== null && "alias" in value && typeof value.alias === "string";
+}
+
+function getRawTokenValue(tokens: readonly TokenEntry[], name: string): string | number {
+  const token = tokens.find((item) => item.name === name);
+  const value = token?.values.light;
+  if (value === undefined || isAliasValue(value)) {
+    throw new Error(`Missing raw canonical token value: ${name}`);
+  }
+  return value;
+}
+
+function getCanonicalStringToken(name: string): string {
+  return String(getRawTokenValue(CANONICAL_TYPOGRAPHY_TOKENS, name)).trim();
+}
+
+function getCanonicalNumberToken(name: string): number {
+  const value = Number(getRawTokenValue(CANONICAL_TYPOGRAPHY_TOKENS, name));
+  if (!Number.isFinite(value)) {
+    throw new Error(`Invalid numeric canonical token value: ${name}`);
+  }
+  return value;
+}
+
+function getPixelValue(pixelTokenName: string): number {
+  const value = Number(getRawTokenValue(CANONICAL_PIXEL_TOKENS, pixelTokenName));
+  if (!Number.isFinite(value)) {
+    throw new Error(`Invalid canonical pixel token value: ${pixelTokenName}`);
+  }
+  return value;
+}
+
+function getAliasTarget(token: TokenEntry): string {
+  const value = token.values.light;
+  if (!value || !isAliasValue(value)) {
+    throw new Error(`Missing canonical alias value: ${token.name}`);
+  }
+  return value.alias;
+}
+
+function getTokenId(tokenName: string, prefix: string): string {
+  return tokenName.replace(prefix, "");
+}
+
+function formatTokenNameSegment(segment: string): string {
+  return segment
+    .split("-")
+    .map((part) => {
+      if (/^\d+xl$/i.test(part)) return part.toUpperCase();
+      if (["xs", "sm", "md", "lg", "xl", "xxs"].includes(part)) return part.toUpperCase();
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join(" ");
+}
+
+function formatTypographyStyleName(styleId: ProjectTypographyStyleId): string {
+  if (styleId === "label") return "Label";
+  const [kind, ...rest] = styleId.split("-");
+  return `${formatTokenNameSegment(kind)} ${formatTokenNameSegment(rest.join("-"))}`;
+}
+
+function formatScaleStepName(stepId: string): string {
+  return formatTokenNameSegment(stepId);
+}
+
+const DEFAULT_DISPLAY_FONT_FAMILY = getCanonicalStringToken("font-family/display");
+const DEFAULT_BODY_FONT_FAMILY = getCanonicalStringToken("font-family/body");
+const DEFAULT_TYPOGRAPHY_STYLES: ProjectTypographyStyle[] = TYPOGRAPHY_STYLE_ORDER.map((id) => ({
+  id,
+  name: formatTypographyStyleName(id),
+  fontFamily: id.startsWith("display-") ? DEFAULT_DISPLAY_FONT_FAMILY : DEFAULT_BODY_FONT_FAMILY,
+  fontSize: getCanonicalNumberToken(`font-size/${id}`),
+  lineHeight: getCanonicalNumberToken(`line-height/${id}`),
+  fontWeight: 400,
+}));
+const DEFAULT_SPACING_SCALE: ProjectFoundationScaleStep[] = CANONICAL_SPACING_TOKENS.map((token) => {
+  const pixelTokenName = getAliasTarget(token).replace(/^primitives\//, "");
+  const id = getTokenId(token.name, "spacing/");
+  return {
+    id,
+    name: formatScaleStepName(id),
+    value: getPixelValue(pixelTokenName),
+  };
+});
+const DEFAULT_RADIUS_SCALE: ProjectFoundationScaleStep[] = CANONICAL_RADIUS_TOKENS.map((token) => {
+  const pixelTokenName = getAliasTarget(token).replace(/^primitives\//, "");
+  const id = getTokenId(token.name, "radius/");
+  return {
+    id,
+    name: formatScaleStepName(id),
+    value: getPixelValue(pixelTokenName),
+  };
+});
 
 function isProjectModeSetup(value: unknown): value is ProjectModeSetup {
   return value === "light" || value === "light-dark";
@@ -297,14 +428,56 @@ function normalizeColorModeAliases(input: unknown): ProjectColorModeAlias[] {
   });
 }
 
+function findStyleById(source: Record<string, unknown>[], styleId: string): Record<string, unknown> | undefined {
+  return source.find((style) => String(style.id) === styleId);
+}
+
+function findMigratedStyle(source: Record<string, unknown>[], canonicalStyleId: ProjectTypographyStyleId): Record<string, unknown> | undefined {
+  const exact = findStyleById(source, canonicalStyleId);
+  if (exact) return exact;
+
+  const legacyEntry = Object.entries(LEGACY_TYPOGRAPHY_STYLE_ID_MAP).find(([, mappedStyleId]) => mappedStyleId === canonicalStyleId);
+  return legacyEntry ? findStyleById(source, legacyEntry[0]) : undefined;
+}
+
+function getStyleFontFamily(style: Record<string, unknown> | undefined): string {
+  return getString(style?.fontFamily, "").trim();
+}
+
+function getTypographyFallbackFamily(source: Record<string, unknown>[], kind: "display" | "body"): string {
+  if (kind === "display") {
+    return (
+      getStyleFontFamily(findStyleById(source, "display")) ||
+      getStyleFontFamily(findStyleById(source, "display-lg")) ||
+      getStyleFontFamily(findStyleById(source, "display-2xl")) ||
+      DEFAULT_DISPLAY_FONT_FAMILY
+    );
+  }
+
+  return (
+    getStyleFontFamily(findStyleById(source, "body")) ||
+    getStyleFontFamily(findStyleById(source, "text-md")) ||
+    getStyleFontFamily(findStyleById(source, "text-sm")) ||
+    DEFAULT_BODY_FONT_FAMILY
+  );
+}
+
 function normalizeTypographyStyles(input: unknown): ProjectTypographyStyle[] {
-  const source = Array.isArray(input) ? input : [];
+  const source = Array.isArray(input) ? input.filter(isRecord) : [];
+  const displayFamily = getTypographyFallbackFamily(source, "display");
+  const bodyFamily = getTypographyFallbackFamily(source, "body");
 
   return DEFAULT_TYPOGRAPHY_STYLES.map((defaultStyle) => {
-    const rawStyle = source.find((style) => isRecord(style) && style.id === defaultStyle.id);
-    if (!isRecord(rawStyle)) return { ...defaultStyle };
+    const rawStyle = findMigratedStyle(source, defaultStyle.id);
+    const fallbackFamily = defaultStyle.id.startsWith("display-") ? displayFamily : bodyFamily;
+    if (!rawStyle) {
+      return {
+        ...defaultStyle,
+        fontFamily: fallbackFamily,
+      };
+    }
 
-    const fontFamily = getString(rawStyle.fontFamily, "").trim() || defaultStyle.fontFamily;
+    const fontFamily = getString(rawStyle.fontFamily, "").trim() || fallbackFamily;
     const fontSize = getFiniteNumber(rawStyle.fontSize);
     const lineHeight = getFiniteNumber(rawStyle.lineHeight);
     const fontWeight = getFiniteNumber(rawStyle.fontWeight);
@@ -320,11 +493,18 @@ function normalizeTypographyStyles(input: unknown): ProjectTypographyStyle[] {
   });
 }
 
-function normalizeScale(input: unknown, defaults: ProjectFoundationScaleStep[], options: { allowFullKeyword?: boolean } = {}): ProjectFoundationScaleStep[] {
+function normalizeScale(
+  input: unknown,
+  defaults: ProjectFoundationScaleStep[],
+  options: { allowFullKeyword?: boolean; idMigration?: Record<string, string> } = {},
+): ProjectFoundationScaleStep[] {
   const source = Array.isArray(input) ? input : [];
 
   return defaults.map((defaultStep) => {
-    const rawStep = source.find((step) => isRecord(step) && String(step.id) === defaultStep.id);
+    const rawStep = source.find((step) => isRecord(step) && String(step.id) === defaultStep.id) ?? source.find((step) => {
+      if (!isRecord(step)) return false;
+      return options.idMigration?.[String(step.id)] === defaultStep.id;
+    });
     if (!isRecord(rawStep)) return { ...defaultStep };
 
     const value = options.allowFullKeyword && rawStep.value === "full" ? defaultStep.value : getFiniteNumber(rawStep.value);
@@ -345,14 +525,14 @@ function normalizeTypographyFoundation(input: unknown): ProjectFoundations["typo
 function normalizeSpacingFoundation(input: unknown): ProjectFoundations["spacing"] {
   const foundation = isRecord(input) ? input : {};
   return {
-    scale: normalizeScale(foundation.scale, DEFAULT_SPACING_SCALE),
+    scale: normalizeScale(foundation.scale, DEFAULT_SPACING_SCALE, { idMigration: LEGACY_SPACING_ID_MAP }),
   };
 }
 
 function normalizeRadiusFoundation(input: unknown): ProjectFoundations["radius"] {
   const foundation = isRecord(input) ? input : {};
   return {
-    scale: normalizeScale(foundation.scale, DEFAULT_RADIUS_SCALE, { allowFullKeyword: true }),
+    scale: normalizeScale(foundation.scale, DEFAULT_RADIUS_SCALE, { allowFullKeyword: true, idMigration: LEGACY_RADIUS_ID_MAP }),
   };
 }
 
