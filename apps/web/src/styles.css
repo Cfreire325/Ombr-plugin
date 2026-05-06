@@ -600,6 +600,65 @@ p {
   background: rgba(63, 111, 95, 0.14);
 }
 
+.foundation-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-spacing-xl);
+  margin-top: var(--ds-spacing-2xl);
+}
+
+.foundation-preview-surface {
+  display: grid;
+  gap: var(--ds-spacing-lg);
+  min-height: 360px;
+  border: 1px solid;
+}
+
+.foundation-preview-mode-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-spacing-md);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.foundation-preview-mode-head i {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+}
+
+.foundation-preview-card {
+  display: grid;
+  align-self: center;
+  border: 1px solid;
+}
+
+.foundation-preview-copy {
+  display: grid;
+  gap: var(--ds-spacing-sm);
+}
+
+.foundation-preview-copy h3,
+.foundation-preview-copy p,
+.foundation-preview-copy small {
+  margin: 0;
+}
+
+.foundation-preview-button {
+  width: fit-content;
+  border: 0;
+  color: #ffffff;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.foundation-preview-button:active {
+  transform: translateY(1px);
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -854,6 +913,7 @@ p {
   }
 
   .content-grid,
+  .foundation-preview-grid,
   .hero-panel,
   .palette-card-grid,
   .brand-card-fields,

@@ -3,11 +3,12 @@ import type { LocalProject, ProjectBaseColorKey, ProjectTypographyStyle, Project
 import type { TokenBundleSummary } from "../domain/token-bundle";
 import ExportJsonView from "./ExportJsonView";
 import FoundationsColorsView from "./FoundationsColorsView";
+import FoundationsPreviewView from "./FoundationsPreviewView";
 import FoundationsRadiusView from "./FoundationsRadiusView";
 import FoundationsSpacingView from "./FoundationsSpacingView";
 import FoundationsTypographyView from "./FoundationsTypographyView";
 
-export type CreatorSection = "colors" | "preview-json" | "export-json" | "typography" | "spacing" | "radius" | "semantic" | "figma-handoff";
+export type CreatorSection = "colors" | "preview" | "preview-json" | "export-json" | "typography" | "spacing" | "radius" | "semantic" | "figma-handoff";
 
 type CreatorShellProps = {
   project: LocalProject;
@@ -38,6 +39,7 @@ const navigation: Array<{ id: CreatorSection; label: string; disabled?: boolean;
   { id: "typography", label: "Typography" },
   { id: "spacing", label: "Spacing" },
   { id: "radius", label: "Radius" },
+  { id: "preview", label: "Preview" },
   { id: "preview-json", label: "Preview JSON" },
   { id: "export-json", label: "Export JSON" },
   { id: "semantic", label: "Component tokens", disabled: true, note: "Apres Color Modes" },
@@ -73,6 +75,10 @@ function renderSection(props: CreatorShellProps) {
 
   if (props.activeSection === "radius") {
     return <FoundationsRadiusView project={props.project} validation={props.validation} onRadiusStepChange={props.onRadiusStepChange} />;
+  }
+
+  if (props.activeSection === "preview") {
+    return <FoundationsPreviewView project={props.project} bundle={props.bundle} validation={props.validation} />;
   }
 
   if (props.activeSection === "export-json") {

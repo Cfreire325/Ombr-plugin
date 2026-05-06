@@ -588,3 +588,46 @@ Keep entries short. Link to detailed docs when more context is needed.
 ### Recommended next step
 
 - Commit the current web foundations/refinement changes together, or do a small browser QA pass on the Color Modes editor before commit if visual confidence is needed.
+
+## 2026-05-06 - Add Foundations Preview MVP
+
+### Summary
+
+- Added a dedicated `Preview` section to the web Creator navigation.
+- Added a MVP foundations preview view showing light and dark surfaces together.
+- The preview uses existing LocalProject/TokenBundle data: semantic Color Modes, typography styles, spacing scale, radius scale, and brand primitives for a sample action button.
+- Invalid TokenBundle / Color Mode references show a partial/unavailable preview state instead of crashing.
+- Kept the pass inside `apps/web`; no plugin, manifest, TokenBundle contract, component tokens, CSS export, Tailwind export, or Figma sync work was added.
+
+### Files created
+
+- `apps/web/src/views/FoundationsPreviewView.tsx`
+
+### Files modified
+
+- `apps/web/src/views/CreatorShell.tsx`
+- `apps/web/src/styles.css`
+- `docs/agent/CURRENT_STATE.md`
+- `docs/agent/PROJECT_LOG.md`
+
+### Decisions made
+
+- No new durable decision beyond existing `LRN-001`, `LRN-002`, and `LRN-006`.
+- Preview logic remains view-local for this MVP and does not change the shared TokenBundle contract.
+
+### Tests run
+
+- `npm.cmd --workspace @starter-tokens/web test`: passed.
+- `npm.cmd run typecheck:web`: passed.
+- `npm.cmd run build:web`: failed inside sandbox with `spawn EPERM`, then passed when rerun outside the sandbox.
+- Browser QA at `http://127.0.0.1:5173/`: Preview renders light and dark modes, invalid Color Mode reference shows partial preview without crash, restoring the reference restores active preview, and console errors were empty.
+
+### Known risks / follow-ups
+
+- Full repo and plugin test suites were not run.
+- Preview is intentionally MVP-level and not a polished component preview system.
+- The view uses semantic color aliases and existing primitives only; component tokens remain out of scope.
+
+### Recommended next step
+
+- Commit the preview pass, then decide whether to refine the preview visuals or start component semantics.

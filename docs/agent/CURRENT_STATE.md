@@ -21,9 +21,9 @@ Unknown / not verified yet:
 
 Verified local uncommitted work from `git status --short` on 2026-05-06:
 
-- `apps/web` has uncommitted web Creator foundation changes covering local project normalization, Color Modes MVP/refinement, typography, spacing, radius, TokenBundle generation, storage tests, and small dashboard/export UI updates.
-- `apps/web/src/views/FoundationsTypographyView.tsx`, `apps/web/src/views/FoundationsSpacingView.tsx`, and `apps/web/src/views/FoundationsRadiusView.tsx` are new/untracked.
-- `docs/agent/CURRENT_STATE.md`, `docs/agent/PROJECT_LOG.md`, and `docs/memory/LEARNINGS.md` have memory updates including `LRN-006`.
+- `apps/web` has uncommitted web Creator preview changes on top of the committed foundations work.
+- `apps/web/src/views/FoundationsPreviewView.tsx` is new/untracked.
+- `apps/web/src/views/CreatorShell.tsx`, `apps/web/src/styles.css`, `docs/agent/CURRENT_STATE.md`, and `docs/agent/PROJECT_LOG.md` are modified by the preview pass.
 
 ## Current Architecture
 
@@ -52,6 +52,7 @@ From repo documentation and package evidence:
 - `apps/web` now separates color primitives from Color Modes in the colors UI and TokenBundle semantic aliases.
 - `apps/web` now stores minimal editable Color Modes in `LocalProject` and generates semantic `color/*` aliases from that local model.
 - `apps/web` now validates Color Mode light/dark references against generated color primitives before TokenBundle generation and shows unknown primitive references inline in the Color Modes editor.
+- `apps/web` now includes a MVP Preview view showing foundations together across light/dark surfaces: semantic colors, typography, spacing, radius, and a sample action button.
 
 Unknown / not verified yet:
 
@@ -92,12 +93,12 @@ Unknown / not verified yet:
 
 - `apps/web` is present but does not yet cover the full V1 Creator workflow.
 - Color Modes are editable and reference-validated at MVP level, but the full semantic color model, add/remove flows, token-picker interaction, and component-token consumption are not implemented yet.
-- Typography, spacing, and radius have editable MVP views, but no advanced preview pass or product light/dark preview refinement has been completed.
+- Typography, spacing, and radius have editable MVP views and a first combined light/dark preview, but no advanced product preview refinement has been completed.
 - `packages/exporters` currently implements JSON export only; CSS variables and Tailwind config exports are planned but not verified as implemented.
 - No `packages/figma-adapter` package exists yet; adapter-like Figma mapping still appears to live in plugin runtime code.
 - Some older docs may still describe `apps/web` or `packages/exporters` as future/nonexistent; prefer active learnings and current package evidence.
 - `legacy/root-plugin` and `backups` may confuse agents if they are not treated as historical references.
-- The working tree has uncommitted/untracked web app and documentation changes; web checks passed on 2026-05-06, but full repo and plugin tests were not run.
+- The working tree has uncommitted/untracked preview and documentation changes; web checks passed on 2026-05-06, but full repo and plugin tests were not run.
 
 ## Recommended Next Steps
 
@@ -108,7 +109,7 @@ Unknown / not verified yet:
 5. Continue extracting pure token behavior into `packages/ds-core` only when it is product-neutral and covered by tests.
 6. Add exporter targets in `packages/exporters` as pure TokenBundle transformations with focused tests.
 7. Keep plugin work focused on current stabilization and future import/sync behavior.
-8. Next web pass should either commit the current web foundations/refinement changes, add a small foundations preview pass, or start component semantics only after the Color Modes UX is confirmed.
+8. Next web pass should commit the preview changes, then choose between deeper preview QA/refinement, component semantics, or developer export work.
 
 ## Last Updated
 
