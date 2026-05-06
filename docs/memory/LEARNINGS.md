@@ -5,12 +5,12 @@ Short, evidenced memory for Ombr Studio. Read this file before structuring produ
 ## Index By Area
 
 - product / ux: LRN-001
-- design-system / tokens: LRN-002, LRN-003
+- design-system / tokens: LRN-002, LRN-003, LRN-006
 - ds-core: LRN-002, LRN-003
 - plugin-runtime: LRN-001, LRN-002
-- apps-web: LRN-001, LRN-005
+- apps-web: LRN-001, LRN-005, LRN-006
 - exporters: LRN-004
-- qa-tests: LRN-002, LRN-003, LRN-004, LRN-005
+- qa-tests: LRN-002, LRN-003, LRN-004, LRN-005, LRN-006
 - docs-workflow: LRN-001, LRN-003
 
 ## Active Learnings
@@ -68,4 +68,15 @@ Découverte: `apps/web` is a React/Vite/TypeScript workspace that depends on `@s
 Evidence: `package.json`; `apps/web/package.json`; `apps/web/src/domain/project.ts`; `apps/web/src/domain/token-bundle.ts`; `apps/web/src/storage/local-projects.ts`; `apps/web/src/domain/token-bundle.test.mjs`
 Impact: Docs that say `apps/web` does not exist are stale and should not be treated as current implementation evidence.
 Application: When working on the web app, preserve the local-first shell and shared-package dependency boundary; update stale architecture notes during the next consolidation.
+Status: active
+
+### LRN-006 : Color modes carry intent, not color primitives
+
+Date: 2026-05-04
+Area: design-system / tokens; apps-web; qa-tests
+Contexte: Ombr needed to correct product logic where the web Creator could make brands and palettes look like light/dark decisions.
+DÃ©couverte: Brand colors, palette colors, neutral colors, spacing, and radius are primitives; light/dark intent belongs in semantic aliases / Color Modes, and future component tokens should point to semantics instead of primitives.
+Evidence: `apps/web/src/domain/project.ts`; `apps/web/src/domain/token-bundle.ts`; `apps/web/src/domain/token-bundle.test.mjs`; `apps/web/src/views/FoundationsColorsView.tsx`
+Impact: UI and exports should preserve the chain `Primitives -> Color Modes / semantic aliases -> future component semantics -> Figma/dev exports`.
+Application: Do not add light/dark mapping UI to brand or palette primitive tables. Store editable mode-specific references in the local Color Modes layer, generate semantic `color/*` aliases from it, and cover that boundary with TokenBundle tests.
 Status: active

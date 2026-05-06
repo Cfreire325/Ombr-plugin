@@ -8,20 +8,22 @@ The repo is a monorepo with active packages for the Figma plugin, shared design-
 
 ## Current Focus
 
-- Stabilize the current plugin UX/UI and foundation generation behavior.
+- Stabilize the current web Creator foundations model and generation behavior.
 - Preserve and strengthen shared TokenBundle boundaries.
 - Continue the web-app-primary direction without importing plugin runtime code into `apps/web`.
 - Keep exporters pure and TokenBundle-based.
+- Continue foundations UI work in small passes before adding exporter or Figma sync scope.
+- Preserve the color architecture chain: primitives first, Color Modes / semantic aliases for light/dark intent, future component tokens later.
 
 Unknown / not verified yet:
 
-- Whether the current immediate implementation milestone is plugin UX stabilization, web app expansion, exporter MVP, or another task.
+- Whether the next implementation milestone after Color Modes MVP is Color Modes refinement, component semantics, exporter MVP, or another task.
 
-Verified local uncommitted work from `git status --short` on 2026-05-03:
+Verified local uncommitted work from `git status --short` on 2026-05-06:
 
-- `apps/web` has uncommitted web Creator color-foundation changes, including a new color preset domain helper and tests.
-- Agent memory docs under `docs/agent` and durable memory docs under `docs/memory` are new/untracked.
-- `AGENTS.md` and `docs/technical/current-product-architecture-status.md` have documentation updates.
+- `apps/web` has uncommitted web Creator foundation changes covering local project normalization, Color Modes MVP/refinement, typography, spacing, radius, TokenBundle generation, storage tests, and small dashboard/export UI updates.
+- `apps/web/src/views/FoundationsTypographyView.tsx`, `apps/web/src/views/FoundationsSpacingView.tsx`, and `apps/web/src/views/FoundationsRadiusView.tsx` are new/untracked.
+- `docs/agent/CURRENT_STATE.md`, `docs/agent/PROJECT_LOG.md`, and `docs/memory/LEARNINGS.md` have memory updates including `LRN-006`.
 
 ## Current Architecture
 
@@ -43,10 +45,17 @@ From repo documentation and package evidence:
 - Agent memory structure was initialized in `docs/agent` on 2026-05-03.
 - A reusable session closeout routine exists at `docs/agent/SESSION_CLOSEOUT_SKILL.md`.
 - Anti-regression and memory consolidation docs exist under `docs/memory`.
+- `apps/web` now normalizes/repairs local `LocalProject` color-foundation data at the storage boundary and validates color values before TokenBundle generation.
+- `apps/web` now includes domain-level `LocalProject` defaults, normalization, and validation for typography, spacing, and radius foundations.
+- `apps/web` now maps typography, spacing, and radius foundations into TokenBundle primitive tokens.
+- `apps/web` now exposes minimal Creator UI editing views for typography, spacing, and radius foundations.
+- `apps/web` now separates color primitives from Color Modes in the colors UI and TokenBundle semantic aliases.
+- `apps/web` now stores minimal editable Color Modes in `LocalProject` and generates semantic `color/*` aliases from that local model.
+- `apps/web` now validates Color Mode light/dark references against generated color primitives before TokenBundle generation and shows unknown primitive references inline in the Color Modes editor.
 
 Unknown / not verified yet:
 
-- Whether all package tests currently pass on this machine.
+- Whether all non-web package tests currently pass on this machine.
 
 ## Important Decisions
 
@@ -55,6 +64,7 @@ Unknown / not verified yet:
 - `LRN-003`: Normalized TokenBundle output names are canonical slash-case with kebab-case segments.
 - `LRN-004`: Exporters are pure TokenBundle transformations and must not depend on plugin UI or Figma runtime code.
 - `LRN-005`: `apps/web` exists as a local-first Vite shell and should preserve shared-package boundaries.
+- `LRN-006`: Color primitives do not carry intent or light/dark mapping; Color Modes / semantic aliases do.
 
 ## Files/Directories To Know
 
@@ -81,11 +91,13 @@ Unknown / not verified yet:
 ## Known Open Issues
 
 - `apps/web` is present but does not yet cover the full V1 Creator workflow.
+- Color Modes are editable and reference-validated at MVP level, but the full semantic color model, add/remove flows, token-picker interaction, and component-token consumption are not implemented yet.
+- Typography, spacing, and radius have editable MVP views, but no advanced preview pass or product light/dark preview refinement has been completed.
 - `packages/exporters` currently implements JSON export only; CSS variables and Tailwind config exports are planned but not verified as implemented.
 - No `packages/figma-adapter` package exists yet; adapter-like Figma mapping still appears to live in plugin runtime code.
 - Some older docs may still describe `apps/web` or `packages/exporters` as future/nonexistent; prefer active learnings and current package evidence.
 - `legacy/root-plugin` and `backups` may confuse agents if they are not treated as historical references.
-- The working tree has uncommitted/untracked web app and documentation changes; tests were not run during the Git-enabled closeout audit.
+- The working tree has uncommitted/untracked web app and documentation changes; web checks passed on 2026-05-06, but full repo and plugin tests were not run.
 
 ## Recommended Next Steps
 
@@ -96,7 +108,8 @@ Unknown / not verified yet:
 5. Continue extracting pure token behavior into `packages/ds-core` only when it is product-neutral and covered by tests.
 6. Add exporter targets in `packages/exporters` as pure TokenBundle transformations with focused tests.
 7. Keep plugin work focused on current stabilization and future import/sync behavior.
+8. Next web pass should either commit the current web foundations/refinement changes, add a small foundations preview pass, or start component semantics only after the Color Modes UX is confirmed.
 
 ## Last Updated
 
-2026-05-03
+2026-05-06

@@ -1,14 +1,17 @@
 import type { TokenBundle, TokenBundleValidationResult } from "@starter-tokens/ds-core";
-import type { LocalProject, ProjectBaseColorKey } from "../domain/project";
+import type { LocalProject, ProjectBaseColorKey, ProjectTypographyStyle, ProjectTypographyStyleId } from "../domain/project";
 import type { TokenBundleSummary } from "../domain/token-bundle";
 import ExportJsonView from "./ExportJsonView";
 import FoundationsColorsView from "./FoundationsColorsView";
+import FoundationsRadiusView from "./FoundationsRadiusView";
+import FoundationsSpacingView from "./FoundationsSpacingView";
+import FoundationsTypographyView from "./FoundationsTypographyView";
 
 export type CreatorSection = "colors" | "preview-json" | "export-json" | "typography" | "spacing" | "radius" | "semantic" | "figma-handoff";
 
 type CreatorShellProps = {
   project: LocalProject;
-  bundle: TokenBundle;
+  bundle: TokenBundle | null;
   summary: TokenBundleSummary;
   validation: TokenBundleValidationResult;
   activeSection: CreatorSection;
@@ -16,21 +19,28 @@ type CreatorShellProps = {
   onBackToDashboard: () => void;
   onAddBrand: () => void;
   onBaseColorChange: (colorKey: ProjectBaseColorKey, colorValue: string) => void;
+  onColorModeAliasChange: (aliasName: string, patch: { light?: string; dark?: string }) => void;
   onColorPresetChange: (colorPresetId: string) => void;
   onNeutralChoiceChange: (neutralChoice: string) => void;
+  onRadiusStepChange: (stepId: string, value: number) => void;
   onRemoveBrand: (brandId: string) => void;
   onSelectedPaletteChange: (paletteKey: string, selected: boolean) => void;
+  onSpacingStepChange: (stepId: string, value: number) => void;
+  onTypographyStyleChange: (
+    styleId: ProjectTypographyStyleId,
+    patch: Partial<Pick<ProjectTypographyStyle, "fontFamily" | "fontSize" | "lineHeight" | "fontWeight">>,
+  ) => void;
   onUpdateBrand: (brandId: string, patch: { name?: string; color?: string }) => void;
 };
 
 const navigation: Array<{ id: CreatorSection; label: string; disabled?: boolean; note?: string }> = [
   { id: "colors", label: "Foundations / Colors" },
+  { id: "typography", label: "Typography" },
+  { id: "spacing", label: "Spacing" },
+  { id: "radius", label: "Radius" },
   { id: "preview-json", label: "Preview JSON" },
   { id: "export-json", label: "Export JSON" },
-  { id: "typography", label: "Typography", disabled: true, note: "Hors scope Phase B" },
-  { id: "spacing", label: "Spacing", disabled: true, note: "Hors scope Phase B" },
-  { id: "radius", label: "Radius", disabled: true, note: "Hors scope Phase B" },
-  { id: "semantic", label: "Semantic tokens", disabled: true, note: "Hors scope Phase B" },
+  { id: "semantic", label: "Component tokens", disabled: true, note: "Apres Color Modes" },
   { id: "figma-handoff", label: "Figma handoff", disabled: true, note: "Préparation seulement" },
 ];
 
@@ -43,6 +53,7 @@ function renderSection(props: CreatorShellProps) {
         validation={props.validation}
         onAddBrand={props.onAddBrand}
         onBaseColorChange={props.onBaseColorChange}
+        onColorModeAliasChange={props.onColorModeAliasChange}
         onColorPresetChange={props.onColorPresetChange}
         onNeutralChoiceChange={props.onNeutralChoiceChange}
         onRemoveBrand={props.onRemoveBrand}
@@ -52,8 +63,20 @@ function renderSection(props: CreatorShellProps) {
     );
   }
 
+  if (props.activeSection === "typography") {
+    return <FoundationsTypographyView project={props.project} validation={props.validation} onTypographyStyleChange={props.onTypographyStyleChange} />;
+  }
+
+  if (props.activeSection === "spacing") {
+    return <FoundationsSpacingView project={props.project} validation={props.validation} onSpacingStepChange={props.onSpacingStepChange} />;
+  }
+
+  if (props.activeSection === "radius") {
+    return <FoundationsRadiusView project={props.project} validation={props.validation} onRadiusStepChange={props.onRadiusStepChange} />;
+  }
+
   if (props.activeSection === "export-json") {
-    return <ExportJsonView bundle={props.bundle} />;
+    return <ExportJsonView bundle={props.bundle} validation={props.validation} />;
   }
 
   if (props.activeSection === "preview-json") {
@@ -66,7 +89,15 @@ function renderSection(props: CreatorShellProps) {
           </div>
           <span className={props.validation.valid ? "status-pill is-valid" : "status-pill is-danger"}>{props.validation.valid ? "Valide" : "Invalide"}</span>
         </div>
-        <pre className="code-preview">{JSON.stringify(props.bundle, null, 2)}</pre>
+        {props.bundle ? (
+          <pre className="code-preview">{JSON.stringify(props.bundle, null, 2)}</pre>
+        ) : (
+          <div className="inline-error">
+            {props.validation.errors.map((error) => (
+              <p key={error}>{error}</p>
+            ))}
+          </div>
+        )}
       </section>
     );
   }

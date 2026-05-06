@@ -1,18 +1,23 @@
 import { useMemo, useState } from "react";
-import { validateTokenBundle } from "@starter-tokens/ds-core";
-import { buildMinimalTokenBundle, summarizeTokenBundle } from "./domain/token-bundle";
+import { buildTokenBundleResult } from "./domain/token-bundle";
 import {
   addProjectBrand,
   createLocalProject,
   removeProjectBrand,
   updateProjectBrand,
   updateProjectBaseColor,
+  updateProjectColorModeAlias,
   updateProjectColorPreset,
   updateProjectNeutralChoice,
+  updateProjectRadiusStep,
   updateProjectSelectedPalette,
+  updateProjectSpacingStep,
+  updateProjectTypographyStyle,
   type CreateProjectInput,
   type LocalProject,
   type ProjectBaseColorKey,
+  type ProjectTypographyStyle,
+  type ProjectTypographyStyleId,
 } from "./domain/project";
 import { loadProjects, saveProjects, upsertProject } from "./storage/local-projects";
 import DashboardView from "./views/DashboardView";
@@ -28,13 +33,29 @@ function App() {
   const [activeSection, setActiveSection] = useState<CreatorSection>("colors");
 
   const activeProject = projects.find((project) => project.id === activeProjectId) ?? projects[0] ?? null;
-  const activeBundle = useMemo(() => (activeProject ? buildMinimalTokenBundle(activeProject) : null), [activeProject]);
-  const activeSummary = useMemo(() => (activeBundle ? summarizeTokenBundle(activeBundle) : null), [activeBundle]);
-  const validation = useMemo(() => (activeBundle ? validateTokenBundle(activeBundle) : { valid: false, errors: ["No active project."] }), [activeBundle]);
+  const activeBundleResult = useMemo(
+    () =>
+      activeProject
+        ? buildTokenBundleResult(activeProject)
+        : {
+            bundle: null,
+            summary: { primitiveCount: 0, semanticCount: 0, componentCount: 0, tokenCount: 0 },
+            validation: { valid: false, errors: ["No active project."] },
+          },
+    [activeProject],
+  );
 
   function persist(nextProjects: LocalProject[]) {
     setProjects(nextProjects);
     saveProjects(nextProjects);
+  }
+
+  function persistActiveProject(updatedProject: LocalProject) {
+    const nextProjects = projects.some((project) => project.id === updatedProject.id)
+      ? projects.map((project) => (project.id === updatedProject.id ? updatedProject : project))
+      : [updatedProject, ...projects];
+    persist(nextProjects);
+    setActiveProjectId(updatedProject.id);
   }
 
   function handleCreateProject(input: CreateProjectInput) {
@@ -108,26 +129,53 @@ function App() {
     setActiveProjectId(updated.id);
   }
 
+  function handleColorModeAliasChange(aliasName: string, patch: { light?: string; dark?: string }) {
+    if (!activeProject) return;
+    persistActiveProject(updateProjectColorModeAlias(activeProject, aliasName, patch));
+  }
+
+  function handleTypographyStyleChange(
+    styleId: ProjectTypographyStyleId,
+    patch: Partial<Pick<ProjectTypographyStyle, "fontFamily" | "fontSize" | "lineHeight" | "fontWeight">>,
+  ) {
+    if (!activeProject) return;
+    persistActiveProject(updateProjectTypographyStyle(activeProject, styleId, patch));
+  }
+
+  function handleSpacingStepChange(stepId: string, value: number) {
+    if (!activeProject) return;
+    persistActiveProject(updateProjectSpacingStep(activeProject, stepId, value));
+  }
+
+  function handleRadiusStepChange(stepId: string, value: number) {
+    if (!activeProject) return;
+    persistActiveProject(updateProjectRadiusStep(activeProject, stepId, value));
+  }
+
   if (view === "new-project") {
     return <NewProjectView onCancel={() => setView("dashboard")} onCreateProject={handleCreateProject} hasProjects={projects.length > 0} />;
   }
 
-  if (view === "creator" && activeProject && activeBundle && activeSummary) {
+  if (view === "creator" && activeProject) {
     return (
       <CreatorShell
         project={activeProject}
-        bundle={activeBundle}
-        summary={activeSummary}
-        validation={validation}
+        bundle={activeBundleResult.bundle}
+        summary={activeBundleResult.summary}
+        validation={activeBundleResult.validation}
         activeSection={activeSection}
         onSelectSection={setActiveSection}
         onBackToDashboard={() => setView("dashboard")}
         onAddBrand={handleAddBrand}
         onBaseColorChange={handleBaseColorChange}
+        onColorModeAliasChange={handleColorModeAliasChange}
         onColorPresetChange={handleColorPresetChange}
         onNeutralChoiceChange={handleNeutralChoiceChange}
+        onRadiusStepChange={handleRadiusStepChange}
         onRemoveBrand={handleRemoveBrand}
         onSelectedPaletteChange={handleSelectedPaletteChange}
+        onSpacingStepChange={handleSpacingStepChange}
+        onTypographyStyleChange={handleTypographyStyleChange}
         onUpdateBrand={handleUpdateBrand}
       />
     );

@@ -32,13 +32,33 @@ async function importExporter() {
   return import(url);
 }
 
-const { createLocalProject } = await importTs("project.ts");
-const { buildMinimalTokenBundle, summarizeTokenBundle } = await importTs("token-bundle.ts");
+const { createLocalProject, updateProjectColorModeAlias } = await importTs("project.ts");
+const { buildMinimalTokenBundle, buildTokenBundleResult, getProjectColorPrimitiveReferences, summarizeTokenBundle } = await importTs("token-bundle.ts");
 const { buildBrandScale, validateTokenBundle } = await import(dsCoreUrl);
 const { exportTokenBundleJson } = await importExporter();
 
 function tokenByName(bundle, collection, name) {
   return bundle.collections[collection].find((token) => token.name === name);
+}
+
+function assertPrimitiveToken(bundle, name, type, value) {
+  const token = tokenByName(bundle, "primitives", name);
+  assert.ok(token, `Expected primitive token ${name}`);
+  assert.equal(token.type, type);
+  assert.deepEqual(token.values, { light: value, dark: value });
+  return token;
+}
+
+function assertSemanticAliasesResolveToPrimitives(bundle) {
+  const primitiveNames = new Set(bundle.collections.primitives.map((token) => token.name));
+  for (const token of bundle.collections.semantic) {
+    for (const modeName of ["light", "dark"]) {
+      const value = token.values[modeName];
+      assert.ok(value && typeof value === "object" && typeof value.alias === "string", `${token.name} ${modeName} should be an alias`);
+      assert.ok(value.alias.startsWith("primitives/"), `${token.name} ${modeName} should point to primitives`);
+      assert.ok(primitiveNames.has(value.alias.replace(/^primitives\//, "")), `${token.name} ${modeName} points to missing primitive ${value.alias}`);
+    }
+  }
 }
 
 const project = createLocalProject({
@@ -51,6 +71,7 @@ const project = createLocalProject({
 const bundle = buildMinimalTokenBundle(project);
 const validation = validateTokenBundle(bundle);
 assert.equal(validation.valid, true, validation.errors.join(" | "));
+assertSemanticAliasesResolveToPrimitives(bundle);
 assert.equal(bundle.source, "web");
 assert.ok(bundle.collections.primitives.length > 20, "color primitives include base, neutral, gray aliases, and brand scale");
 assert.equal(bundle.collections.semantic.length, 2);
@@ -67,9 +88,86 @@ assert.deepEqual(tokenByName(bundle, "primitives", "colors/brand/500").values, {
 assert.deepEqual(tokenByName(bundle, "primitives", "colors/brand/50").values, { light: brandScale[50], dark: brandScale[50] });
 assert.deepEqual(tokenByName(bundle, "primitives", "colors/brand/950").values, { light: brandScale[950], dark: brandScale[950] });
 
-const textPrimary = tokenByName(bundle, "semantic", "text/primary");
-assert.deepEqual(textPrimary.values.light, { alias: "primitives/colors/base/black" });
-assert.deepEqual(textPrimary.values.dark, { alias: "primitives/colors/base/white" });
+const colorPrimitives = bundle.collections.primitives.filter((token) => token.type === "COLOR");
+assert.ok(colorPrimitives.length > 0, "color primitives are generated");
+assert.equal(
+  colorPrimitives.every((token) => JSON.stringify(token.values.light) === JSON.stringify(token.values.dark)),
+  true,
+  "color primitives do not carry separate light/dark mappings",
+);
+assert.equal(
+  colorPrimitives.some((token) => token.name.startsWith("colors/brand/")),
+  true,
+  "brand colors are generated as primitives",
+);
+assert.equal(
+  colorPrimitives.some((token) => token.name.startsWith("colors/red/")),
+  true,
+  "selected palette colors are generated as primitives",
+);
+
+assertPrimitiveToken(bundle, "font-family/display", "STRING", "Inter");
+assertPrimitiveToken(bundle, "font-size/display", "FLOAT", 48);
+assertPrimitiveToken(bundle, "line-height/display", "FLOAT", 56);
+assertPrimitiveToken(bundle, "font-weight/display", "FLOAT", 700);
+assertPrimitiveToken(bundle, "font-family/heading", "STRING", "Inter");
+assertPrimitiveToken(bundle, "font-size/heading", "FLOAT", 32);
+assertPrimitiveToken(bundle, "line-height/heading", "FLOAT", 40);
+assertPrimitiveToken(bundle, "font-weight/heading", "FLOAT", 700);
+assertPrimitiveToken(bundle, "font-family/body", "STRING", "Inter");
+assertPrimitiveToken(bundle, "font-size/body", "FLOAT", 16);
+assertPrimitiveToken(bundle, "line-height/body", "FLOAT", 24);
+assertPrimitiveToken(bundle, "font-weight/body", "FLOAT", 400);
+assertPrimitiveToken(bundle, "font-family/label", "STRING", "Inter");
+assertPrimitiveToken(bundle, "font-size/label", "FLOAT", 14);
+assertPrimitiveToken(bundle, "line-height/label", "FLOAT", 20);
+assertPrimitiveToken(bundle, "font-weight/label", "FLOAT", 600);
+assertPrimitiveToken(bundle, "font-family/caption", "STRING", "Inter");
+assertPrimitiveToken(bundle, "font-size/caption", "FLOAT", 12);
+assertPrimitiveToken(bundle, "line-height/caption", "FLOAT", 16);
+assertPrimitiveToken(bundle, "font-weight/caption", "FLOAT", 400);
+
+for (const [step, value] of [
+  ["0", 0],
+  ["1", 4],
+  ["2", 8],
+  ["3", 12],
+  ["4", 16],
+  ["6", 24],
+  ["8", 32],
+  ["10", 40],
+  ["12", 48],
+  ["16", 64],
+]) {
+  assertPrimitiveToken(bundle, `spacing/${step}`, "FLOAT", value);
+}
+
+for (const [step, value] of [
+  ["none", 0],
+  ["xs", 2],
+  ["sm", 4],
+  ["md", 8],
+  ["lg", 12],
+  ["xl", 16],
+  ["2xl", 24],
+  ["full", 9999],
+]) {
+  assertPrimitiveToken(bundle, `radius/${step}`, "FLOAT", value);
+}
+
+const textPrimary = tokenByName(bundle, "semantic", "color/text/primary");
+assert.deepEqual(textPrimary.values.light, { alias: "primitives/colors/gray/900" });
+assert.deepEqual(textPrimary.values.dark, { alias: "primitives/colors/gray/50" });
+
+const backgroundPrimary = tokenByName(bundle, "semantic", "color/background/primary");
+assert.deepEqual(backgroundPrimary.values.light, { alias: "primitives/colors/brand/50" });
+assert.deepEqual(backgroundPrimary.values.dark, { alias: "primitives/colors/brand/900" });
+
+assert.equal(
+  bundle.collections.semantic.every((token) => token.name.startsWith("color/")),
+  true,
+  "current semantic aliases are explicit color modes",
+);
 
 const summary = summarizeTokenBundle(bundle);
 assert.equal(summary.primitiveCount, bundle.collections.primitives.length);
@@ -79,6 +177,107 @@ assert.equal(summary.tokenCount, bundle.collections.primitives.length + 2);
 
 const exported = exportTokenBundleJson(bundle);
 assert.equal(JSON.parse(exported).collections.semantic.length, 2);
+
+const customColorModeProject = updateProjectColorModeAlias(
+  updateProjectColorModeAlias(project, "color/text/primary", {
+    light: "colors/brand/600",
+    dark: "colors/gray/100",
+  }),
+  "color/background/primary",
+  {
+    light: "colors/gray/50",
+    dark: "colors/gray/950",
+  },
+);
+const customColorModeBundle = buildMinimalTokenBundle(customColorModeProject);
+const customTextPrimary = tokenByName(customColorModeBundle, "semantic", "color/text/primary");
+assert.deepEqual(customTextPrimary.values.light, { alias: "primitives/colors/brand/600" });
+assert.deepEqual(customTextPrimary.values.dark, { alias: "primitives/colors/gray/100" });
+const customBackgroundPrimary = tokenByName(customColorModeBundle, "semantic", "color/background/primary");
+assert.deepEqual(customBackgroundPrimary.values.light, { alias: "primitives/colors/gray/50" });
+assert.deepEqual(customBackgroundPrimary.values.dark, { alias: "primitives/colors/gray/950" });
+assertSemanticAliasesResolveToPrimitives(customColorModeBundle);
+assert.equal(validateTokenBundle(customColorModeBundle).valid, true);
+
+const primitiveReferenceOptions = getProjectColorPrimitiveReferences(project);
+assert.equal(primitiveReferenceOptions.includes("colors/gray/900"), true);
+assert.equal(primitiveReferenceOptions.includes("colors/brand/600"), true);
+assert.equal(primitiveReferenceOptions.every((reference) => reference.startsWith("colors/")), true);
+
+const invalidColorModeResult = buildTokenBundleResult(
+  updateProjectColorModeAlias(project, "color/text/primary", {
+    light: "colors/missing/500",
+  }),
+);
+assert.equal(invalidColorModeResult.bundle, null);
+assert.equal(invalidColorModeResult.validation.valid, false);
+assert.ok(
+  invalidColorModeResult.validation.errors.includes(
+    "Color mode Text primary light reference must point to an existing color primitive: colors/missing/500",
+  ),
+);
+assert.equal(
+  invalidColorModeResult.validation.errors.some((error) => error.startsWith("TokenBundle generation failed")),
+  false,
+);
+assert.equal(invalidColorModeResult.summary.tokenCount, 0);
+
+const validResult = buildTokenBundleResult(project);
+assert.ok(validResult.bundle, "valid project returns a TokenBundle");
+assert.equal(validResult.validation.valid, true);
+assert.equal(validResult.summary.tokenCount, summary.tokenCount);
+
+const invalidColorResult = buildTokenBundleResult({
+  ...project,
+  foundations: {
+    ...project.foundations,
+    colors: {
+      ...project.foundations.colors,
+      brands: [{ id: "brand-primary", name: "Primary", color: "not-a-color" }],
+    },
+  },
+});
+assert.equal(invalidColorResult.bundle, null, "invalid color does not throw through the safe builder");
+assert.equal(invalidColorResult.validation.valid, false);
+assert.ok(invalidColorResult.validation.errors[0].includes("Invalid brand color for Primary: not-a-color"));
+assert.equal(invalidColorResult.summary.tokenCount, 0);
+
+const invalidBaseColorResult = buildTokenBundleResult({
+  ...project,
+  foundations: {
+    ...project.foundations,
+    colors: {
+      ...project.foundations.colors,
+      baseWhite: "white-ish",
+    },
+  },
+});
+assert.equal(invalidBaseColorResult.bundle, null);
+assert.equal(invalidBaseColorResult.validation.valid, false);
+assert.ok(invalidBaseColorResult.validation.errors.some((error) => error.includes("Invalid base white color: white-ish")));
+assert.equal(invalidBaseColorResult.summary.tokenCount, 0);
+
+const invalidFoundationResult = buildTokenBundleResult({
+  ...project,
+  foundations: {
+    ...project.foundations,
+    typography: {
+      styles: [
+        {
+          ...project.foundations.typography.styles[0],
+          fontFamily: "",
+          fontSize: 0,
+        },
+        ...project.foundations.typography.styles.slice(1),
+      ],
+    },
+  },
+});
+assert.equal(invalidFoundationResult.bundle, null);
+assert.equal(invalidFoundationResult.validation.valid, false);
+assert.ok(invalidFoundationResult.validation.errors.some((error) => error.includes("Typography style display needs a font family.")));
+assert.ok(invalidFoundationResult.validation.errors.some((error) => error.includes("Typography style display needs a positive font size.")));
+assert.equal(invalidFoundationResult.summary.tokenCount, 0);
 
 const materialProject = {
   ...project,

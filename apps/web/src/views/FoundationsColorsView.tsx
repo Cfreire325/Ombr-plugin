@@ -1,14 +1,23 @@
 import { parseColorInput, type TokenBundle, type TokenBundleValidationResult } from "@starter-tokens/ds-core";
 import { getAvailableColorPresetSummaries, getSelectedColorPreset } from "../domain/color-presets";
-import { getProjectBrands, getProjectSelectedPalettes, MAX_PROJECT_BRANDS, type LocalProject, type ProjectBaseColorKey } from "../domain/project";
+import { getProjectColorPrimitiveReferences } from "../domain/token-bundle";
+import {
+  getProjectBrands,
+  getProjectColorModeAliases,
+  getProjectSelectedPalettes,
+  MAX_PROJECT_BRANDS,
+  type LocalProject,
+  type ProjectBaseColorKey,
+} from "../domain/project";
 
 type FoundationsColorsViewProps = {
   project: LocalProject;
-  bundle: TokenBundle;
+  bundle: TokenBundle | null;
   validation: TokenBundleValidationResult;
   onAddBrand: () => void;
   onBaseColorChange: (colorKey: ProjectBaseColorKey, colorValue: string) => void;
   onColorPresetChange: (colorPresetId: string) => void;
+  onColorModeAliasChange: (aliasName: string, patch: { light?: string; dark?: string }) => void;
   onNeutralChoiceChange: (neutralChoice: string) => void;
   onRemoveBrand: (brandId: string) => void;
   onSelectedPaletteChange: (paletteKey: string, selected: boolean) => void;
@@ -17,6 +26,10 @@ type FoundationsColorsViewProps = {
 
 function formatValue(value: unknown): string {
   return typeof value === "object" && value !== null ? JSON.stringify(value) : String(value);
+}
+
+function getPrimitiveValue(value: unknown): string {
+  return formatValue(value);
 }
 
 function isValidColor(value: string): boolean {
@@ -36,19 +49,32 @@ function getTokenColorValue(value: unknown): string | null {
   return typeof value === "string" ? value : null;
 }
 
+function normalizePrimitiveReference(reference: string): string {
+  return reference.replace(/^primitives\//, "");
+}
+
+function isKnownPrimitiveReference(reference: string, primitiveReferences: string[]): boolean {
+  return primitiveReferences.includes(normalizePrimitiveReference(reference));
+}
+
 function FoundationsColorsView({
   project,
   bundle,
   validation,
   onAddBrand,
   onBaseColorChange,
+  onColorModeAliasChange,
   onColorPresetChange,
   onNeutralChoiceChange,
   onRemoveBrand,
   onSelectedPaletteChange,
   onUpdateBrand,
 }: FoundationsColorsViewProps) {
-  const tokens = [...bundle.collections.primitives, ...bundle.collections.semantic];
+  const colorPrimitiveTokens = bundle ? bundle.collections.primitives.filter((token) => token.type === "COLOR") : [];
+  const colorModeTokens = bundle ? bundle.collections.semantic.filter((token) => token.type === "COLOR" && token.name.startsWith("color/")) : [];
+  const colorModeAliases = getProjectColorModeAliases(project);
+  const colorPrimitiveReferences = getProjectColorPrimitiveReferences(project);
+  const colorPrimitiveNames = colorPrimitiveReferences.length ? colorPrimitiveReferences : colorPrimitiveTokens.map((token) => token.name);
   const brands = getProjectBrands(project);
   const selectedPaletteKeys = getProjectSelectedPalettes(project);
   const presetSummaries = getAvailableColorPresetSummaries();
@@ -56,7 +82,7 @@ function FoundationsColorsView({
   const previewPalettes = selectedPreset.previewPalettes.slice(0, 6);
   const baseWhiteValid = isValidColor(project.foundations.colors.baseWhite);
   const baseBlackValid = isValidColor(project.foundations.colors.baseBlack);
-  const primaryBrandScale = bundle.collections.primitives
+  const primaryBrandScale = (bundle?.collections.primitives ?? [])
     .filter((token) => token.name.startsWith("colors/brand/"))
     .map((token) => ({ name: token.name, value: getTokenColorValue(token.values.light) }))
     .filter((token): token is { name: string; value: string } => Boolean(token.value));
@@ -80,10 +106,11 @@ function FoundationsColorsView({
         <div className="section-head">
           <div>
             <p className="eyebrow">Foundations / Colors</p>
-            <h2>Base couleur minimale</h2>
+            <h2>Color primitives</h2>
           </div>
           <span className={validation.valid ? "status-pill is-valid" : "status-pill is-danger"}>{validation.valid ? "TokenBundle valide" : "Validation à corriger"}</span>
         </div>
+        <p className="helper">Brands, palettes et neutrals sont des primitives: elles servent de matiere premiere et ne portent pas l'intention light/dark.</p>
 
         <div className="field">
           <label htmlFor="creator-color-preset">Palette library</label>
@@ -99,7 +126,7 @@ function FoundationsColorsView({
               </option>
             ))}
           </select>
-          <p className="helper">Source partagÃ©e depuis ds-core. Les palettes complÃ¨tes et la sÃ©lection fine arriveront dans une phase suivante.</p>
+          <p className="helper">Source partagée depuis ds-core. Les palettes complètes et la sélection fine arriveront dans une phase suivante.</p>
         </div>
 
         <div className="base-color-grid">
@@ -139,7 +166,7 @@ function FoundationsColorsView({
                 </option>
               ))}
             </select>
-            <p className="helper">Prepare les futurs aliases colors/gray/* sans generer toute la palette dans cette phase.</p>
+            <p className="helper">Prepare les primitives neutral/gray utilisees ensuite par les Color Modes.</p>
           </div>
         </div>
 
@@ -177,11 +204,11 @@ function FoundationsColorsView({
           <div className="brand-editor-head">
             <div>
               <p className="eyebrow">Selected palettes</p>
-              <h3>Palettes incluses</h3>
+              <h3>Palette primitives incluses</h3>
             </div>
             <span className="status-pill">{selectedPaletteKeys.length} selected</span>
           </div>
-          <p className="helper">La neutral selectionnee est toujours incluse dans les primitives, meme si elle n'est pas cochee.</p>
+          <p className="helper">La neutral selectionnee est toujours incluse comme primitive, meme si elle n'est pas cochee.</p>
 
           <div className="palette-card-grid">
             {paletteCards.map((palette) => (
@@ -212,7 +239,7 @@ function FoundationsColorsView({
           <div className="brand-editor-head">
             <div>
               <p className="eyebrow">Brand colors</p>
-              <h3>Primary et brands additionnelles</h3>
+              <h3>Brand primitives</h3>
             </div>
             <button className="button button-secondary" type="button" onClick={onAddBrand} disabled={brands.length >= MAX_PROJECT_BRANDS}>
               Ajouter
@@ -267,7 +294,7 @@ function FoundationsColorsView({
             })}
           </div>
 
-          <p className="helper">La premiere brand genere colors/brand/*. Les brands additionnelles generent des primitives nommees de facon stable.</p>
+          <p className="helper">La premiere brand genere colors/brand/*. Les brands additionnelles generent aussi des primitives stables, sans mapping light/dark direct.</p>
 
           <div className="brand-scale-preview" aria-label="Primary brand generated scale">
             {primaryBrandScale.slice(0, 12).map((token) => (
@@ -276,6 +303,58 @@ function FoundationsColorsView({
           </div>
 
           {brands.length >= MAX_PROJECT_BRANDS ? <p className="field-error">Limite atteinte: 10 brand colors maximum.</p> : null}
+        </div>
+
+        <div className="color-mode-editor">
+          <div className="brand-editor-head">
+            <div>
+              <p className="eyebrow">Color Modes</p>
+              <h3>Semantic aliases</h3>
+            </div>
+            <span className="status-pill">{colorModeAliases.length} aliases</span>
+          </div>
+          <p className="helper">Ces aliases portent le choix light/dark. Ils pointent vers les primitives couleur generees au-dessus.</p>
+          <datalist id="color-mode-primitive-options">
+            {colorPrimitiveNames.map((name) => (
+              <option key={name} value={name} />
+            ))}
+          </datalist>
+          <div className="color-mode-list">
+            {colorModeAliases.map((alias) => {
+              const lightReferenceValid = isKnownPrimitiveReference(alias.light, colorPrimitiveNames);
+              const darkReferenceValid = project.modeSetup === "light" || isKnownPrimitiveReference(alias.dark, colorPrimitiveNames);
+              return (
+                <div className="color-mode-row" key={alias.name}>
+                  <div className="scale-label">
+                    <strong>{alias.label}</strong>
+                    <span>{alias.name}</span>
+                  </div>
+                  <div className="field">
+                    <label htmlFor={`color-mode-light-${alias.name}`}>Light</label>
+                    <input
+                      id={`color-mode-light-${alias.name}`}
+                      className={lightReferenceValid ? "input" : "input input-invalid"}
+                      list="color-mode-primitive-options"
+                      value={alias.light}
+                      onChange={(event) => onColorModeAliasChange(alias.name, { light: event.target.value })}
+                    />
+                    {!lightReferenceValid ? <p className="field-error">Reference primitive inconnue.</p> : null}
+                  </div>
+                  <div className="field">
+                    <label htmlFor={`color-mode-dark-${alias.name}`}>Dark</label>
+                    <input
+                      id={`color-mode-dark-${alias.name}`}
+                      className={darkReferenceValid ? "input" : "input input-invalid"}
+                      list="color-mode-primitive-options"
+                      value={alias.dark}
+                      onChange={(event) => onColorModeAliasChange(alias.name, { dark: event.target.value })}
+                    />
+                    {!darkReferenceValid ? <p className="field-error">Reference primitive inconnue.</p> : null}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {validation.errors.length ? (
@@ -290,10 +369,40 @@ function FoundationsColorsView({
       <div className="panel content-panel">
         <div className="section-head">
           <div>
-            <p className="eyebrow">Token table</p>
-            <h2>Primitives et semantic</h2>
+            <p className="eyebrow">Color primitives</p>
+            <h2>Matiere premiere</h2>
           </div>
         </div>
+        <p className="helper">Ces tokens ne decident pas du theme. La valeur affichee est la meme pour les modes du TokenBundle.</p>
+        <div className="token-table">
+          <div className="token-row token-row-head token-row-primitive">
+            <span>Token</span>
+            <span>Value</span>
+            <span>Type</span>
+          </div>
+          {colorPrimitiveTokens.map((token) => (
+            <div className="token-row token-row-primitive" key={`${token.collection}/${token.name}`}>
+              <strong>{token.name}</strong>
+              <code>{getPrimitiveValue(token.values.light)}</code>
+              <span>{token.type}</span>
+            </div>
+          ))}
+          {!colorPrimitiveTokens.length ? (
+            <div className="token-row token-row-primitive">
+              <strong>Aucune primitive couleur</strong>
+              <code>Corrige les erreurs de couleur</code>
+              <span>Erreur</span>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="section-head token-section-head">
+          <div>
+            <p className="eyebrow">Color Modes</p>
+            <h2>Semantic aliases</h2>
+          </div>
+        </div>
+        <p className="helper">C'est ici que les references light/dark existent. Les futurs composants pointeront vers cette couche, pas vers les primitives.</p>
         <div className="token-table">
           <div className="token-row token-row-head">
             <span>Token</span>
@@ -301,7 +410,7 @@ function FoundationsColorsView({
             <span>Dark</span>
             <span>Type</span>
           </div>
-          {tokens.map((token) => (
+          {colorModeTokens.map((token) => (
             <div className="token-row" key={`${token.collection}/${token.name}`}>
               <strong>{token.name}</strong>
               <code>{formatValue(token.values.light)}</code>
@@ -309,6 +418,14 @@ function FoundationsColorsView({
               <span>{token.type}</span>
             </div>
           ))}
+          {!colorModeTokens.length ? (
+            <div className="token-row">
+              <strong>Aucun TokenBundle généré</strong>
+              <code>Corrige les erreurs de couleur</code>
+              <code>Corrige les erreurs de couleur</code>
+              <span>Erreur</span>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

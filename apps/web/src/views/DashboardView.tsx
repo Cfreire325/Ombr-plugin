@@ -1,5 +1,5 @@
 import { getModeCount, type LocalProject } from "../domain/project";
-import { buildMinimalTokenBundle, summarizeTokenBundle } from "../domain/token-bundle";
+import { buildTokenBundleResult } from "../domain/token-bundle";
 
 type DashboardViewProps = {
   projects: LocalProject[];
@@ -71,12 +71,12 @@ function DashboardView({ projects, onCreateProject, onOpenProject }: DashboardVi
               <span>Action</span>
             </div>
             {projects.map((project) => {
-              const summary = summarizeTokenBundle(buildMinimalTokenBundle(project));
+              const { summary, validation } = buildTokenBundleResult(project);
               return (
                 <div className="project-row" key={project.id}>
                   <strong>{project.name}</strong>
                   <span>{formatDate(project.updatedAt)}</span>
-                  <span className="status-pill">Non connecté</span>
+                  <span className={validation.valid ? "status-pill" : "status-pill is-danger"}>{validation.valid ? "Non connecté" : "À corriger"}</span>
                   <span>{summary.tokenCount}</span>
                   <span>{getModeCount(project)}</span>
                   <button className="button button-ghost" type="button" onClick={() => onOpenProject(project.id)}>

@@ -8,8 +8,22 @@ import {
   type ColorPresetDefinition,
   type TokenEntry,
   type TokenBundle,
+  type TokenModeValue,
+  type TokenType,
+  type TokenBundleValidationResult,
 } from "@starter-tokens/ds-core";
-import { getProjectBrands, getProjectSelectedPalettes, type LocalProject, type ProjectBrandColor } from "./project";
+import {
+  getProjectBrands,
+  getProjectColorModeAliases,
+  getProjectRadiusScale,
+  getProjectSelectedPalettes,
+  getProjectSpacingScale,
+  getProjectTypographyStyles,
+  normalizeLocalProject,
+  validateProjectFoundations,
+  type LocalProject,
+  type ProjectBrandColor,
+} from "./project";
 import { DEFAULT_COLOR_PRESET_ID } from "./color-presets";
 
 export type TokenBundleSummary = {
@@ -19,12 +33,29 @@ export type TokenBundleSummary = {
   tokenCount: number;
 };
 
+export type TokenBundleBuildResult = {
+  bundle: TokenBundle | null;
+  summary: TokenBundleSummary;
+  validation: TokenBundleValidationResult;
+};
+
+const EMPTY_TOKEN_BUNDLE_SUMMARY: TokenBundleSummary = {
+  primitiveCount: 0,
+  semanticCount: 0,
+  componentCount: 0,
+  tokenCount: 0,
+};
+
 function rawColorToken(name: string, value: string, description: string): TokenEntry {
+  return rawToken(name, "COLOR", value, ["ALL_SCOPES"], description);
+}
+
+function rawToken(name: string, type: TokenType, value: TokenModeValue, scopes: string[], description: string): TokenEntry {
   return {
     name,
-    type: "COLOR",
+    type,
     values: { light: value, dark: value },
-    scopes: ["ALL_SCOPES"],
+    scopes,
     description,
   };
 }
@@ -141,35 +172,118 @@ function buildColorPrimitiveTokens(project: LocalProject): TokenEntry[] {
   return tokens;
 }
 
+export function getProjectColorPrimitiveReferences(project: LocalProject): string[] {
+  const normalizedProject = normalizeLocalProject(project);
+  if (!normalizedProject) return [];
+
+  try {
+    return buildColorPrimitiveTokens(normalizedProject)
+      .filter((token) => token.type === "COLOR")
+      .map((token) => token.name);
+  } catch {
+    return [];
+  }
+}
+
+function buildTypographyPrimitiveTokens(project: LocalProject): TokenEntry[] {
+  const tokens: TokenEntry[] = [];
+
+  for (const style of getProjectTypographyStyles(project)) {
+    tokens.push(rawToken(`font-family/${style.id}`, "STRING", style.fontFamily, ["FONT_FAMILY"], `${style.name} font family.`));
+    tokens.push(rawToken(`font-size/${style.id}`, "FLOAT", style.fontSize, ["FONT_SIZE"], `${style.name} font size.`));
+    tokens.push(rawToken(`line-height/${style.id}`, "FLOAT", style.lineHeight, ["FONT_SIZE"], `${style.name} line height.`));
+    tokens.push(rawToken(`font-weight/${style.id}`, "FLOAT", style.fontWeight, ["ALL_SCOPES"], `${style.name} font weight.`));
+  }
+
+  return tokens;
+}
+
+function buildSpacingPrimitiveTokens(project: LocalProject): TokenEntry[] {
+  return getProjectSpacingScale(project).map((step) =>
+    rawToken(`spacing/${step.id}`, "FLOAT", step.value, ["GAP"], `${step.name} spacing value.`),
+  );
+}
+
+function buildRadiusPrimitiveTokens(project: LocalProject): TokenEntry[] {
+  return getProjectRadiusScale(project).map((step) =>
+    rawToken(`radius/${step.id}`, "FLOAT", step.value, ["CORNER_RADIUS"], `${step.name} radius value.`),
+  );
+}
+
+function buildPrimitiveTokens(project: LocalProject): TokenEntry[] {
+  return [
+    ...buildColorPrimitiveTokens(project),
+    ...buildTypographyPrimitiveTokens(project),
+    ...buildSpacingPrimitiveTokens(project),
+    ...buildRadiusPrimitiveTokens(project),
+  ];
+}
+
+function toPrimitiveAliasPath(reference: string): string {
+  return reference.startsWith("primitives/") ? reference : `primitives/${reference}`;
+}
+
+function normalizePrimitiveReference(reference: string): string {
+  return reference.replace(/^primitives\//, "");
+}
+
+function validateColorModeReferences(project: LocalProject, primitiveTokens: TokenEntry[]) {
+  const primitiveNames = new Set(primitiveTokens.filter((token) => token.type === "COLOR").map((token) => token.name));
+  const issues: string[] = [];
+
+  for (const alias of getProjectColorModeAliases(project)) {
+    const references: Array<["light" | "dark", string]> = [["light", alias.light]];
+    if (project.modeSetup === "light-dark") references.push(["dark", alias.dark]);
+
+    for (const [modeName, reference] of references) {
+      const normalizedReference = normalizePrimitiveReference(reference);
+      if (!primitiveNames.has(normalizedReference)) {
+        issues.push(`Color mode ${alias.label} ${modeName} reference must point to an existing color primitive: ${reference}`);
+      }
+    }
+  }
+
+  return issues;
+}
+
+function buildSemanticColorTokens(project: LocalProject, primitiveTokens: TokenEntry[]): TokenEntry[] {
+  const primitiveNames = new Set(primitiveTokens.map((token) => token.name));
+
+  return getProjectColorModeAliases(project).map((alias) => {
+    const lightReference = normalizePrimitiveReference(alias.light);
+    const darkReference = project.modeSetup === "light-dark" ? normalizePrimitiveReference(alias.dark) : lightReference;
+
+    if (!primitiveNames.has(lightReference)) {
+      throw new Error(`Color mode ${alias.name} light reference does not match a primitive: ${alias.light}`);
+    }
+
+    if (!primitiveNames.has(darkReference)) {
+      throw new Error(`Color mode ${alias.name} dark reference does not match a primitive: ${alias.dark}`);
+    }
+
+    return {
+      name: alias.name,
+      type: "COLOR",
+      values: {
+        light: { alias: toPrimitiveAliasPath(lightReference) },
+        dark: { alias: toPrimitiveAliasPath(darkReference) },
+      },
+      scopes: alias.scopes,
+      description: alias.description,
+    };
+  });
+}
+
 export function buildMinimalTokenBundle(project: LocalProject): TokenBundle {
+  const primitives = buildPrimitiveTokens(project);
+
   return normalizeTokenBundle({
     schemaVersion: "1.0.0",
     source: "web",
     generatedAt: project.updatedAt,
     collections: {
-      primitives: buildColorPrimitiveTokens(project),
-      semantic: [
-        {
-          name: "text/primary",
-          type: "COLOR",
-          values: {
-            light: { alias: "primitives/colors/base/black" },
-            dark: project.modeSetup === "light-dark" ? { alias: "primitives/colors/base/white" } : { alias: "primitives/colors/base/black" },
-          },
-          scopes: ["TEXT_FILL"],
-          description: "Primary text color.",
-        },
-        {
-          name: "bg/canvas",
-          type: "COLOR",
-          values: {
-            light: { alias: "primitives/colors/base/white" },
-            dark: project.modeSetup === "light-dark" ? { alias: "primitives/colors/base/black" } : { alias: "primitives/colors/base/white" },
-          },
-          scopes: ["FRAME_FILL"],
-          description: "Canvas background color.",
-        },
-      ],
+      primitives,
+      semantic: buildSemanticColorTokens(project, primitives),
       components: [],
     },
   });
@@ -186,4 +300,71 @@ export function summarizeTokenBundle(bundle: TokenBundle): TokenBundleSummary {
     componentCount,
     tokenCount: primitiveCount + semanticCount + componentCount,
   };
+}
+
+export function buildTokenBundleResult(project: LocalProject): TokenBundleBuildResult {
+  try {
+    const normalizedProject = normalizeLocalProject(project);
+    if (!normalizedProject) {
+      return {
+        bundle: null,
+        summary: EMPTY_TOKEN_BUNDLE_SUMMARY,
+        validation: {
+          valid: false,
+          errors: ["Invalid local project."],
+        },
+      };
+    }
+
+    const projectIssues = [...validateProjectFoundations(project), ...validateProjectFoundations(normalizedProject)];
+    if (projectIssues.length) {
+      return {
+        bundle: null,
+        summary: EMPTY_TOKEN_BUNDLE_SUMMARY,
+        validation: {
+          valid: false,
+          errors: projectIssues.map((issue) => issue.message),
+        },
+      };
+    }
+
+    const primitiveTokens = buildPrimitiveTokens(normalizedProject);
+    const colorModeReferenceErrors = validateColorModeReferences(normalizedProject, primitiveTokens);
+    if (colorModeReferenceErrors.length) {
+      return {
+        bundle: null,
+        summary: EMPTY_TOKEN_BUNDLE_SUMMARY,
+        validation: {
+          valid: false,
+          errors: colorModeReferenceErrors,
+        },
+      };
+    }
+
+    const bundle = normalizeTokenBundle({
+      schemaVersion: "1.0.0",
+      source: "web",
+      generatedAt: normalizedProject.updatedAt,
+      collections: {
+        primitives: primitiveTokens,
+        semantic: buildSemanticColorTokens(normalizedProject, primitiveTokens),
+        components: [],
+      },
+    });
+    return {
+      bundle,
+      summary: summarizeTokenBundle(bundle),
+      validation: { valid: true, errors: [] },
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return {
+      bundle: null,
+      summary: EMPTY_TOKEN_BUNDLE_SUMMARY,
+      validation: {
+        valid: false,
+        errors: [`TokenBundle generation failed: ${message}`],
+      },
+    };
+  }
 }
