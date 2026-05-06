@@ -5,12 +5,12 @@ Short, evidenced memory for Ombr Studio. Read this file before structuring produ
 ## Index By Area
 
 - product / ux: LRN-001
-- design-system / tokens: LRN-002, LRN-003, LRN-006
-- ds-core: LRN-002, LRN-003
+- design-system / tokens: LRN-002, LRN-003, LRN-006, LRN-007
+- ds-core: LRN-002, LRN-003, LRN-007
 - plugin-runtime: LRN-001, LRN-002
 - apps-web: LRN-001, LRN-005, LRN-006
 - exporters: LRN-004
-- qa-tests: LRN-002, LRN-003, LRN-004, LRN-005, LRN-006
+- qa-tests: LRN-002, LRN-003, LRN-004, LRN-005, LRN-006, LRN-007
 - docs-workflow: LRN-001, LRN-003
 
 ## Active Learnings
@@ -79,4 +79,15 @@ DÃ©couverte: Brand colors, palette colors, neutral colors, spacing, and radius
 Evidence: `apps/web/src/domain/project.ts`; `apps/web/src/domain/token-bundle.ts`; `apps/web/src/domain/token-bundle.test.mjs`; `apps/web/src/views/FoundationsColorsView.tsx`
 Impact: UI and exports should preserve the chain `Primitives -> Color Modes / semantic aliases -> future component semantics -> Figma/dev exports`.
 Application: Do not add light/dark mapping UI to brand or palette primitive tables. Store editable mode-specific references in the local Color Modes layer, generate semantic `color/*` aliases from it, and cover that boundary with TokenBundle tests.
+Status: active
+
+### LRN-007 : Canonical foundation presets start in ds-core
+
+Date: 2026-05-06
+Area: design-system / tokens; ds-core; qa-tests
+Contexte: The web Creator typography, spacing, and radius MVP model was shorter than the current Figma plugin coverage and needed a shared source before app migration.
+Decouverte: Canonical Pixel, Spacing, Radius, and Typography preset coverage belongs in `packages/ds-core` as pure data-only TokenBundle-compatible primitive tokens. Canonical names use slash-case paths like `spacing/md`, `radius/2xl`, and `font-size/text-md`; plugin-style flat names like `spacing-md` are not canonical output names.
+Evidence: `packages/ds-core/src/foundation-presets.js`; `packages/ds-core/tests/foundation-presets.test.mjs`; `packages/ds-core/src/index.d.ts`
+Impact: Future web, exporter, and adapter work can consume shared preset token data without importing plugin runtime code or inventing parallel names.
+Application: Use `CANONICAL_PIXEL_TOKENS`, `CANONICAL_SPACING_TOKENS`, `CANONICAL_RADIUS_TOKENS`, and `CANONICAL_TYPOGRAPHY_TOKENS` for foundation preset defaults and TokenBundle output. Keep spacing/radius aliases pointed to `primitives/pixel/*`, keep `font-weight/*` as `STRING`, and keep Figma text styles as a future adapter concern.
 Status: active

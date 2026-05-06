@@ -631,3 +631,47 @@ Keep entries short. Link to detailed docs when more context is needed.
 ### Recommended next step
 
 - Commit the preview pass, then decide whether to refine the preview visuals or start component semantics.
+
+## 2026-05-06 - Add ds-core Canonical Foundation Presets
+
+### Summary
+
+- Added data-only canonical Pixel, Spacing, Radius, and Typography preset tokens in `packages/ds-core`.
+- Kept canonical names slash-case, including `spacing/md`, `radius/2xl`, and `font-size/text-md`.
+- Made spacing and radius aliases point to `primitives/pixel/*`.
+- Kept typography `font-weight/*` tokens as `STRING`.
+- Did not migrate `apps/web`, modify the Figma plugin, update the manifest, start component semantics, or add CSS/Tailwind/Figma sync work.
+
+### Files created
+
+- `packages/ds-core/src/foundation-presets.js`
+- `packages/ds-core/tests/foundation-presets.test.mjs`
+
+### Files modified
+
+- `packages/ds-core/package.json`
+- `packages/ds-core/src/index.js`
+- `packages/ds-core/src/index.d.ts`
+- `docs/agent/CURRENT_STATE.md`
+- `docs/agent/PROJECT_LOG.md`
+- `docs/memory/LEARNINGS.md`
+
+### Decisions made
+
+- `pixel/*` is now represented as canonical raw `FLOAT` primitive preset data in `ds-core`.
+- `spacing/*` and `radius/*` canonical preset data are TokenBundle-compatible `FLOAT` aliases to `primitives/pixel/*`.
+- Typography canonical preset data is variable-oriented and excludes Figma text styles.
+
+### Tests run
+
+- `node packages/ds-core/tests/foundation-presets.test.mjs`: failed first on missing exports, then passed after implementation.
+- `npm.cmd --workspace @starter-tokens/ds-core test`: passed.
+
+### Known risks / follow-ups
+
+- `apps/web` does not consume the canonical presets yet.
+- No web, plugin, exporter, CSS/Tailwind, Figma sync, or full repo checks were run.
+
+### Recommended next step
+
+- Implement Passe 1B: migrate `apps/web` `LocalProject` typography, spacing, and radius defaults to the canonical `ds-core` presets.

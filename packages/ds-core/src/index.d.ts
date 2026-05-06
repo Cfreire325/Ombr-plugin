@@ -38,6 +38,10 @@ export const TOKEN_MODES: readonly TokenMode[];
 export const TOKEN_TYPES: readonly TokenType[];
 export const DEFAULT_SCHEMA_VERSION: "1.0.0";
 export const DEFAULT_SOURCE: "figma";
+export const CANONICAL_PIXEL_TOKENS: readonly TokenEntry[];
+export const CANONICAL_SPACING_TOKENS: readonly TokenEntry[];
+export const CANONICAL_RADIUS_TOKENS: readonly TokenEntry[];
+export const CANONICAL_TYPOGRAPHY_TOKENS: readonly TokenEntry[];
 
 export function normalizeTokenName(input: unknown): string;
 export function isSlashCaseTokenName(name: string): boolean;

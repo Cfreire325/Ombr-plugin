@@ -308,3 +308,10 @@ export {
   getColorPresetById,
   getColorPresetSummaries,
 } from "./presets/index.js";
+
+export {
+  CANONICAL_PIXEL_TOKENS,
+  CANONICAL_RADIUS_TOKENS,
+  CANONICAL_SPACING_TOKENS,
+  CANONICAL_TYPOGRAPHY_TOKENS,
+} from "./foundation-presets.js";
